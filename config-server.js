@@ -42,6 +42,51 @@ const server = http.createServer((req, res) => {
                 res.end(JSON.stringify({ success: false, message: 'Error interno al guardar.' }));
             }
         });
+    } else if (req.method === 'GET' && req.url.startsWith('/api/find-asset')) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const filename = url.searchParams.get('filename');
+
+        if (!filename) {
+            res.writeHead(400);
+            res.end(JSON.stringify({ error: 'Filename is required' }));
+            return;
+        }
+
+        const mediaDir = path.join(__dirname, 'public', 'media');
+
+        function findFileRecursive(dir, targetFile) {
+            const files = fs.readdirSync(dir);
+            for (const file of files) {
+                const fullPath = path.join(dir, file);
+                const stat = fs.statSync(fullPath);
+                if (stat.isDirectory()) {
+                    const found = findFileRecursive(fullPath, targetFile);
+                    if (found) return found;
+                } else if (file === targetFile) {
+                    return fullPath;
+                }
+            }
+            return null;
+        }
+
+        try {
+            const absolutePath = findFileRecursive(mediaDir, filename);
+            if (absolutePath) {
+                // Convert back to web path (relative to public)
+                const relativePath = path.relative(path.join(__dirname, 'public'), absolutePath)
+                    .replace(/\\/g, '/'); // Ensure forward slashes for URLs
+
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ path: '/' + relativePath }));
+            } else {
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ path: '/media/' + filename })); // Fallback
+            }
+        } catch (error) {
+            console.error('Error finding asset:', error);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'Internal server error' }));
+        }
     } else {
         res.writeHead(404);
         res.end();

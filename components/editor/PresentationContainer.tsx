@@ -188,7 +188,7 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                                     <span className="text-sm font-bold text-gray-700 truncate">{content.title}</span>
                                 </div>
                                 <a
-                                    href={previewUrl || encodeURI(content.src || '')}
+                                    href={encodeURI(content.src || 'error')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0"

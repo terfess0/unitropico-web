@@ -153,6 +153,21 @@ const Editor: React.FC = () => {
         });
     };
 
+    const handleUpdateContentSrc = (contentId: string, newSrc: string) => {
+        setProjectConfig(prev => {
+            if (!prev) return null;
+            const content = prev.contents[contentId];
+            if (!content) return prev;
+            return {
+                ...prev,
+                contents: {
+                    ...prev.contents,
+                    [contentId]: { ...content, src: newSrc }
+                }
+            };
+        });
+    };
+
     const handleAddHtmlContent = () => {
         if (!projectConfig || !selectedSequenceId) return;
 
@@ -188,25 +203,50 @@ const Editor: React.FC = () => {
         setSelectedContentId(newId);
     };
 
-    const handleUploadContent = (file: File) => {
+    const handleUploadContent = async (file: File) => {
         if (!projectConfig || !selectedSequenceId) return;
 
         const objectUrl = URL.createObjectURL(file);
         const newContentId = `content-${Date.now()}`;
-        // Strip extension for a cleaner default title (e.g. "Titulo.PNG" → "Titulo")
         const defaultTitle = file.name.replace(/\.[^/.]+$/, '');
+
+        // Intelligent folder mapping
+        let folder = '/media/';
+        const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+        if (isPdf) {
+            folder = '/media/pdf/';
+        } else if (selectedSequenceId === 'seq-01') {
+            folder = '/media/denominacion/';
+        } else if (selectedSequenceId === 'seq-02') {
+            folder = '/media/justificacion/';
+        } else if (selectedSequenceId === 'seq-05') {
+            folder = '/media/investigacion/';
+        }
+
+        let finalSrc = `${folder}${file.name}`;
+
+        // Attempt to find actual file location on server
+        try {
+            const response = await fetch(`http://localhost:3001/api/find-asset?filename=${encodeURIComponent(file.name)}`);
+            if (response.ok) {
+                const data = await response.json();
+                if (data.path) {
+                    finalSrc = data.path;
+                }
+            }
+        } catch (error) {
+            console.warn('Could not reach config server for path discovery, using fallback:', error);
+        }
 
         const newContent = {
             id: newContentId,
             title: defaultTitle,
-            type: (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
-                ? 'pdf'
-                : file.type.startsWith('video') ? 'video' : 'image') as any,
-            src: `/media/${file.name}`,
+            type: (isPdf ? 'pdf' : file.type.startsWith('video') ? 'video' : 'image') as any,
+            src: finalSrc,
             hotspots: [] as any[]
         };
 
-        // Store blob URL separately for in-session preview only
         setPreviewUrls(prev => ({ ...prev, [newContentId]: objectUrl }));
 
         setProjectConfig(prev => {
@@ -449,6 +489,7 @@ const Editor: React.FC = () => {
                     onDeleteHotspot={handleDeleteHotspot}
                     onUpdateContentTitle={handleUpdateContentTitle}
                     onUpdateContentHtml={handleUpdateContentHtml}
+                    onUpdateContentSrc={handleUpdateContentSrc}
                 />
             }
         />

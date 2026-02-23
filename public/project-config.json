@@ -57,7 +57,8 @@
       "contents": [
         "html-1771599766397",
         "html-1771606107194",
-        "content-1771857311851"
+        "content-1771861204374",
+        "content-1771861223807"
       ]
     },
     {
@@ -361,11 +362,18 @@
       "allowScripts": true,
       "hotspots": []
     },
-    "content-1771857311851": {
-      "id": "content-1771857311851",
-      "title": "anexo2",
+    "content-1771861204374": {
+      "id": "content-1771861204374",
+      "title": "Director Ganaderos Daniel Salamanca",
+      "type": "video",
+      "src": "/media/investigacion/Director Ganaderos Daniel Salamanca.mp4",
+      "hotspots": []
+    },
+    "content-1771861223807": {
+      "id": "content-1771861223807",
+      "title": "malla",
       "type": "pdf",
-      "src": "/media/pdf/anexo2.pdf",
+      "src": "/media/pdf/malla.pdf",
       "hotspots": []
     }
   }

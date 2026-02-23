@@ -9,6 +9,7 @@ interface PropertiesPanelProps {
     onDeleteHotspot: (hotspotId: string) => void;
     onUpdateContentTitle: (contentId: string, newTitle: string) => void;
     onUpdateContentHtml: (contentId: string, newHtml: string) => void;
+    onUpdateContentSrc: (contentId: string, newSrc: string) => void;
 }
 
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
@@ -18,7 +19,8 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     onUpdateHotspot,
     onDeleteHotspot,
     onUpdateContentTitle,
-    onUpdateContentHtml
+    onUpdateContentHtml,
+    onUpdateContentSrc
 }) => {
     if (!selectedContent && !selectedHotspot) {
         return (
@@ -83,16 +85,20 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                             </p>
                         </div>
                     ) : (
-                        /* Read-only src reference for image/video */
+                        /* Editable src reference for image/video/pdf */
                         <div>
                             <label className="block text-xs font-semibold uppercase text-gray-500 mb-1">
                                 Archivo (src)
                             </label>
-                            <p
-                                className="text-xs text-gray-400 dark:text-gray-500 truncate bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded border border-gray-200 dark:border-gray-700"
-                                title={srcLabel}
-                            >
-                                {srcLabel}
+                            <input
+                                type="text"
+                                value={selectedContent.src || ''}
+                                onChange={(e) => onUpdateContentSrc(selectedContent.id, e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="/media/ruta/archivo.ext"
+                            />
+                            <p className="mt-1 text-[10px] text-gray-400 italic">
+                                Asegúrate de incluir la carpeta correcta (ej: /media/justificacion/)
                             </p>
                         </div>
                     )}
