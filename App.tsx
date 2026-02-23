@@ -10,6 +10,7 @@ import Enroll from './pages/Enroll';
 import QualityConditions from './pages/QualityConditions';
 import QualityConditionDetail from './pages/QualityConditionDetail';
 import Editor from './pages/Editor';
+import InstitutionalContext from './pages/InstitutionalContext';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -22,7 +23,7 @@ const ScrollToTop = () => {
 const AppContent: React.FC = () => {
   const { pathname } = useLocation();
   // Hide footer on specific presentation/editor routes
-  const hideFooter = pathname.includes('/quality-conditions/') || pathname === '/editor';
+  const hideFooter = pathname.includes('/quality-conditions/') || pathname === '/editor' || pathname === '/institutional-context';
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -38,6 +39,7 @@ const AppContent: React.FC = () => {
           <Route path="/quality-conditions" element={<QualityConditions />} />
           <Route path="/quality-conditions/:id" element={<QualityConditionDetail />} />
           <Route path="/editor" element={<Editor />} />
+          <Route path="/institutional-context" element={<InstitutionalContext />} />
         </Routes>
       </div>
       {!hideFooter && <Footer />}

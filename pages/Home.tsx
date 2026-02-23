@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { extraSections } from '../data/conditions';
 
 const Home: React.FC = () => {
   return (
@@ -99,15 +100,15 @@ const Home: React.FC = () => {
             >
               <span className="subtitulo">Condiciones de Calidad</span>
             </Link>
-            <a
-              href="agenda.html"
+            <Link
+              to="/institutional-context"
               className="flex items-center gap-2 px-6 py-3 rounded font-semibold font-montserrat border-2 transition-all duration-200 hover:text-white"
               style={{ borderColor: '#00594E', color: '#00594E' }}
               onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = '#00594E'; el.style.color = '#fff'; }}
               onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = 'transparent'; el.style.color = '#00594E'; }}
             >
-              <span className="subtitulo">Agenda del Programa</span>
-            </a>
+              <span className="subtitulo">{extraSections.find(s => s.id === '10')?.title || 'Agenda del Programa'}</span>
+            </Link>
             {/* <Link
               to="/editor"
               className="flex items-center gap-2 px-6 py-3 rounded font-medium font-montserrat border-2 transition-all duration-200"

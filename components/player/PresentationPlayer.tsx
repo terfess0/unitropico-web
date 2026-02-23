@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 
 interface PresentationPlayerProps {
     sequenceId: string;
+    backLink?: string;
 }
 
-const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId }) => {
+const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, backLink = '/quality-conditions' }) => {
     const [projectConfig, setProjectConfig] = useState<ProjectConfig | null>(null);
     const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -116,7 +117,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId }) =
             >
                 <div className="p-4 border-b border-gray-800 flex items-center justify-between gap-3 min-w-[20rem]">
                     <div className="flex items-center gap-3">
-                        <Link to="/quality-conditions" className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
+                        <Link to={backLink} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
                             <span className="material-icons">arrow_back</span>
                         </Link>
                         <h2 className="font-black text-sm uppercase tracking-tight leading-tight" style={{ color: '#B5A160' }} title={activeSequence.title}>

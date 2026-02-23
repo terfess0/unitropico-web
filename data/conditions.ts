@@ -11,6 +11,10 @@ export const conditions = [
     { id: '09', title: 'Infraestructura física y tecnológica', icon: 'Building' },
 ];
 
+export const extraSections = [
+    { id: '10', title: 'Contexto Institucional', icon: 'AccountBalance' }
+];
+
 export const conditionDetails: {
     [key: string]: {
         title: string;
@@ -52,4 +56,9 @@ export const conditionDetails: {
     '07': { title: 'Profesores', description: 'Cualificación, dedicación y perfil de los profesores.', sections: [] },
     '08': { title: 'Medios Educativos', description: 'Disponibilidad de medios educativos e infraestructura.', sections: [] },
     '09': { title: 'Infraestructura', description: 'Infraestructura física y tecnológica.', sections: [] },
+    '10': {
+        title: 'Contexto Institucional',
+        description: 'Contexto institucional del programa.',
+        sections: []
+    },
 };
