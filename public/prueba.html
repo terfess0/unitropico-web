@@ -4,322 +4,327 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agenda de Visita - Unitrópico</title>
-  <!-- Fuente Montserrat y CSS base -->
-  <link rel="stylesheet" href="./css_presentaciones/unitropico_base.css">
+  <title>Estructura Orgánica - Unitrópico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
   <style>
-    /* =========================
-       ESTILOS ADICIONALES
-    ========================= */
-    html,
+    :root {
+      --verde: #5A8446;
+      --naranja: #E28743;
+      --dorado: #FFC000;
+      --azul: #4BA8B8;
+      --morado: #A665A2;
+      --linea: #ccc;
+    }
+
     body {
-      height: 100%;
       margin: 0;
-      overflow-x: hidden;
-      background: url("../img/background-1.jpg") no-repeat center center fixed;
-      background-size: cover;
+      padding: 0;
+      background: #fdfdfd;
       font-family: 'Montserrat', sans-serif;
+      color: #333;
     }
 
-    /* Navbar */
-    .navbar-img {
-      width: 100%;
-      background: var(--verde-1);
-      text-align: center;
-    }
-
-    .navbar-img img {
-      width: 100%;
-      height: auto;
-      max-height: 110px;
-      object-fit: contain;
-      display: block;
-    }
-
-    /* Contenedor principal */
-    .container {
-      max-width: 1100px;
-      margin: 10px auto;
-      padding: 0 25px;
-    }
-
-    /* Título del artículo (izquierda) */
-    .top-left-title {
-      margin-bottom: 20px;
-      color: var(--verde-1);
-    }
-
-    /* Encabezado de sección centrado con dos líneas */
-    .section-header-line {
-      margin-bottom: 40px;
-      text-align: center;
-    }
-
-    .section-header-line h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--verde-1);
-      margin: 0 0 0px 0;
-      line-height: 1.2;
-    }
-
-    /* Contenedor de las líneas (flex column para centrarlas) */
-    .lines-container {
+    .main-wrapper {
+      min-width: 1200px;
+      /* Para mantener la estructura en pantallas pequeñas con scroll horizontal */
+      padding: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0px;
-      /* espacio entre líneas */
     }
 
-    /* Línea dorada (larga y delgada) */
-    .line-gold {
-      width: 300px;
-      height: 3px;
-      background-color: var(--bronce-1);
-      border-radius: 2px;
-    }
-
-    /* Línea gris (más corta y más alta) */
-    .line-gray {
-      width: 150px;
-      height: 6px;
-      background-color: #A0A0A0;
-      /* gris suave */
-      border-radius: 3px;
-    }
-
-    /* Contenedor de encabezados de día */
-    .days-header-wrapper {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 25px;
-    }
-
-    .day-box {
-      padding: 10px 30px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--bronce-1);
-      background: rgba(255, 255, 255, 0.7);
-      transition: all 0.3s ease;
-    }
-
-    .day-box.day-1 {
-      border: 1px dashed var(--bronce-1);
-    }
-
-    .day-box.day-2 {
-      border: 1px solid var(--bronce-2);
-    }
-
-    /* Gran caja de agenda (Borde Verde) */
-    .agenda-grid-container {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid #3B7782;
-      display: grid;
-      grid-template-columns: 1fr 1px 1fr;
-      position: relative;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      border-radius: 4px;
-      overflow: hidden;
-      animation: fadeInUp 1s ease-out;
-    }
-
-    .v-line {
-      background-color: #3B7782;
-      height: 100%;
-    }
-
-    .agenda-side {
-      padding: 15px 10px;
-    }
-
-    /* Filas de la agenda */
-    .agenda-row {
-      display: grid;
-      grid-template-columns: 100px 20px 1fr;
-      align-items: center;
-      padding: 4px 15px;
-      font-size: 0.95rem;
-      color: #1a1a1a;
-      transition: all 0.2s ease;
-    }
-
-    .agenda-row:hover {
-      background: rgba(0, 89, 78, 0.05);
-      transform: scale(1.01);
-    }
-
-    .item-time {
-      font-weight: 400;
-      color: #333;
-      white-space: nowrap;
-    }
-
-    .item-sep {
+    .header {
       text-align: center;
-      color: #333;
+      margin-bottom: 40px;
     }
 
-    .item-desc {
-      font-weight: 500;
-      padding-left: 10px;
+    .header h1 {
+      font-size: 2rem;
+      color: #004d40;
+      margin: 0;
+      font-weight: 800;
     }
 
-    /* Animaciones */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .header h2 {
+      font-size: 2.2rem;
+      color: #b08d57;
+      margin: 0;
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      .agenda-grid-container {
-        grid-template-columns: 1fr;
-      }
+    /* Estilos Generales de Nodos */
+    .node {
+      background: #fff;
+      border: 2.5px solid var(--linea);
+      border-radius: 50px;
+      padding: 8px 15px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 140px;
+      max-width: 200px;
+      z-index: 2;
+      position: relative;
+    }
 
-      .v-line {
-        display: none;
-      }
+    .b-green {
+      border-color: var(--verde);
+    }
 
-      .days-header-wrapper {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-      }
+    .b-orange {
+      border-color: var(--naranja);
+    }
 
-      .agenda-row {
-        grid-template-columns: 120px 20px 1fr;
-        font-size: 0.85rem;
-      }
+    .b-gold {
+      border-color: var(--dorado);
+    }
+
+    .b-blue {
+      border-color: var(--azul);
+    }
+
+    .b-purple {
+      border-color: var(--morado);
+    }
+
+    /* Contenedores de Niveles */
+    .tree-level {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Líneas Verticales */
+    .v-line {
+      width: 2px;
+      background: var(--linea);
+      height: 25px;
+      position: relative;
+    }
+
+    /* Layout Superior */
+    .top-layout {
+      display: flex;
+      gap: 100px;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+
+    /* Bloque Central de Oficinas */
+    .middle-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px 0;
+      position: relative;
+      width: 100%;
+    }
+
+    /* Conector horizontal central */
+    .middle-grid::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      width: 2px;
+      height: 25px;
+      background: var(--linea);
+    }
+
+    .office-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Vicerrectorías Layout */
+    .vices-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      width: 100%;
+      margin-top: 30px;
+      position: relative;
+    }
+
+    /* Línea horizontal que une vicerrectorías */
+    .vices-row::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      left: 12.5%;
+      right: 12.5%;
+      height: 2px;
+      background: var(--linea);
+    }
+
+    .vice-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .vice-col::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      width: 2px;
+      height: 25px;
+      background: var(--linea);
+    }
+
+    /* Listas internas de las vicerrectorías */
+    .sub-nodes-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      width: 100%;
+    }
+
+    .sub-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .node-sm {
+      font-size: 10px;
+      padding: 5px 10px;
+      min-width: 120px;
+    }
+
+    /* Estilo para las líneas discontinuas del Consejo Académico */
+    .dashed-line {
+      position: absolute;
+      top: 50%;
+      left: -60px;
+      width: 60px;
+      border-top: 2px dashed var(--linea);
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Navbar de imagen -->
-  <div class="navbar-img">
-    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
-  </div>
-
-  <div class="container">
-
-    <!-- Encabezado Agenda centrado con las dos líneas solicitadas -->
-    <div class="section-header-line">
-      <h2 class="titulo text-verde-1">Agenda</h2>
-      <div class="lines-container">
-        <div class="line-gold"></div>
-        <div class="line-gray"></div>
-      </div>
+  <div class="main-wrapper">
+    <div class="header">
+      <h1>ESTRUCTURA ORGÁNICA</h1>
+      <h2>UNITRÓPICO</h2>
     </div>
 
-    <!-- Encabezados de Día -->
-    <div class="days-header-wrapper">
-      <div class="day-box day-1">Día 1 – 12 marzo 2026</div>
-      <div class="day-box day-2">Día 2 – 13 marzo 2026</div>
-    </div>
-
-    <!-- Red de la Agenda con borde verdoso -->
-    <div class="agenda-grid-container">
-
-      <!-- Lado Día 1 -->
-      <div class="agenda-side">
-        <div class="agenda-row">
-          <div class="item-time">8:00 - 8:30</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Presentación Contexto Institucional</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">8:30 - 10:30</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Condición 1, 2 y 3</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">10:30 - 10:50</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Receso</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">10:50 - 12:30</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Condición 4 y 5</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">12:30 - 2:30</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Almuerzo</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">2:30 - 4:30</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Condición 6 y 7</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">4:30 - 4:50</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Receso</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">4:50 - 5:30</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Condición 8</div>
-        </div>
-      </div>
-
-      <!-- Separador Central -->
+    <div class="tree-level">
+      <div class="node b-green" style="font-size: 14px; padding: 12px 25px;">Consejo Superior Universitario</div>
       <div class="v-line"></div>
 
-      <!-- Lado Día 2 -->
-      <div class="agenda-side">
-        <div class="agenda-row">
-          <div class="item-time">8:00 - 9:00</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Condición 9</div>
+      <div class="top-layout">
+        <div style="position: relative;">
+          <div class="node b-green">Consejo Académico</div>
+          <div style="position: absolute; right: -100px; top: 50%; width: 100px; border-top: 2px dashed #ccc;"></div>
         </div>
-        <div class="agenda-row">
-          <div class="item-time">9:00 - 9:30</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Recorrido institucional (virtual)</div>
+        <div class="node b-orange" style="font-size: 16px;">RECTORÍA</div>
+      </div>
+
+      <div class="v-line"></div>
+
+      <div class="node b-green">Secretaría General</div>
+      <div class="v-line" style="height: 40px;"></div>
+    </div>
+
+    <div class="middle-grid">
+      <div class="office-group">
+        <div class="node b-gold">Oficina de Gestión Documental</div>
+        <div class="node b-purple">División de Archivo</div>
+        <div class="node b-gold">Oficina de Atención al Ciudadano</div>
+      </div>
+
+      <div class="office-group">
+        <div class="node b-gold">Oficina de Control Interno Disciplinario</div>
+        <div class="node b-gold">Oficina de Control Interno y de Gestión</div>
+        <div class="node b-gold">Oficina de Aseguramiento de la Calidad y la Acreditación</div>
+        <div class="node b-purple">División de Autoevaluación y Acreditación</div>
+      </div>
+
+      <div class="office-group">
+        <div class="node b-blue">Oficina Asesora de Planeación</div>
+        <div class="node b-purple">División del Sistema Integrado de Gestión</div>
+        <div class="node b-blue">Oficina Asesora Jurídica y de Contratación</div>
+        <div class="node b-blue">Oficina Asesora de Prensa, Comunicaciones y Mercadeo</div>
+      </div>
+
+      <div class="office-group">
+        <div class="node b-gold">Oficina de Proyectos Especiales y Relaciones Interinstitucionales</div>
+        <div class="node b-gold">Oficina de Relaciones y Cooperación Internacional</div>
+      </div>
+    </div>
+
+    <div class="v-line" style="height: 50px;"></div>
+
+    <div class="vices-row">
+
+      <div class="vice-col">
+        <div class="node b-orange">Vicerrectoría Académica</div>
+        <div class="sub-nodes-container">
+          <div class="sub-col">
+            <div class="node node-sm b-green">Facultad de Artes</div>
+            <div class="node node-sm b-green">Facultad de Ciencias</div>
+            <div class="node node-sm b-green">Facultad de Ciencias Económicas y Administrativas</div>
+            <div class="node node-sm b-green">Facultad de Derecho y Ciencias Políticas</div>
+            <div class="node node-sm b-green">Facultad de Ingenierías</div>
+            <div class="node node-sm b-green">Escuela de Ciencias del Lenguaje</div>
+            <div class="node node-sm b-green">Escuela de Ciencias Humanas</div>
+            <div class="node node-sm b-purple">Biblioteca</div>
+          </div>
+          <div class="sub-col">
+            <div class="node node-sm b-gold">Oficina de Admisiones y Registro</div>
+            <div class="node node-sm b-gold">Oficina de Bienestar Universitario</div>
+          </div>
         </div>
-        <div class="agenda-row">
-          <div class="item-time">9:30 - 10:00</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Receso</div>
+      </div>
+
+      <div class="vice-col">
+        <div class="node b-orange">Vicerrectoría de Investigación</div>
+        <div class="sub-nodes-container">
+          <div class="sub-col">
+            <div class="node node-sm b-green">Subdirección de Producción y Divulgación de la Investigación</div>
+            <div class="node node-sm b-green">Subdirección de Fomento de la Investigación</div>
+            <div class="node node-sm b-green">Subdirección Técnica de la Investigación</div>
+          </div>
         </div>
-        <div class="agenda-row">
-          <div class="item-time">10:00 - 10:30</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Reunión con Profesores</div>
+      </div>
+
+      <div class="vice-col">
+        <div class="node b-orange">Vicerrectoría de Proyección Social</div>
+        <div class="sub-nodes-container">
+          <div class="sub-col">
+            <div class="node node-sm b-purple">División de Emprendimiento</div>
+            <div class="node node-sm b-purple">División de Egresados</div>
+            <div class="node node-sm b-purple">División de Educación Continuada</div>
+            <div class="node node-sm b-purple">División de Articulación con la Educación Media</div>
+          </div>
         </div>
-        <div class="agenda-row">
-          <div class="item-time">10:30 - 11:00</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Reunión con Estudiantes</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">11:00 - 11:30</div>
-          <div class="item-sep">am</div>
-          <div class="item-desc">Reunión con Egresados facultad</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">11:30 - 12:00</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Reunión con Sector productivo</div>
-        </div>
-        <div class="agenda-row">
-          <div class="item-time">12:00 - 12:30</div>
-          <div class="item-sep">pm</div>
-          <div class="item-desc">Cierre de visita</div>
+      </div>
+
+      <div class="vice-col">
+        <div class="node b-orange">Vicerrectoría Administrativa y Financiera</div>
+        <div class="sub-nodes-container">
+          <div class="sub-col">
+            <div class="node node-sm b-gold">Oficina de Talento Humano</div>
+            <div class="node node-sm b-purple">División de Seguridad y Salud en el Trabajo</div>
+            <div class="node node-sm b-gold">Subdirección de Contabilidad</div>
+            <div class="node node-sm b-purple">División de Presupuesto</div>
+            <div class="node node-sm b-gold">Subdirección de Infraestructura y Recursos Físicos</div>
+          </div>
+          <div class="sub-col">
+            <div class="node node-sm b-purple">Tesorería</div>
+            <div class="node node-sm b-purple">División de Sistemas de Información y Tecnología</div>
+            <div class="node node-sm b-purple">Granjas</div>
+          </div>
         </div>
       </div>
 
