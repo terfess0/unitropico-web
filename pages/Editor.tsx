@@ -328,7 +328,7 @@ const Editor: React.FC = () => {
         setSaveStatus('idle');
 
         try {
-            const response = await fetch('http://localhost:3001/api/save-config', {
+            const response = await fetch('http://144.91.123.192:3001/api/save-config', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
