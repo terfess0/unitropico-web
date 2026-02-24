@@ -18,7 +18,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
     // Load project config
     useEffect(() => {
         // In a real app we might cache this or pass it as prop, but fetching is fine for MVP
-        fetch('/project-config.json')
+        fetch(`http://${window.location.hostname}:3001/api/config`)
             .then(res => res.json())
             .then((data: ProjectConfig) => {
                 setProjectConfig(data);

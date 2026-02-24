@@ -7,7 +7,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 3001;
-const CONFIG_PATH = path.join(__dirname, 'public', 'project-config.json');
+const CONFIG_DIR = path.join(__dirname, 'data');
+const CONFIG_PATH = path.join(CONFIG_DIR, 'project-config.json');
+
+if (!fs.existsSync(CONFIG_DIR)) {
+    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+}
+
+// Copy existing config from public if it doesn't exist in data
+const publicConfigPath = path.join(__dirname, 'public', 'project-config.json');
+if (!fs.existsSync(CONFIG_PATH) && fs.existsSync(publicConfigPath)) {
+    fs.copyFileSync(publicConfigPath, CONFIG_PATH);
+}
 
 const server = http.createServer((req, res) => {
     // Enable CORS
@@ -18,6 +29,24 @@ const server = http.createServer((req, res) => {
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
         res.end();
+        return;
+    }
+
+    if (req.method === 'GET' && req.url === '/api/config') {
+        try {
+            if (fs.existsSync(CONFIG_PATH)) {
+                const configData = fs.readFileSync(CONFIG_PATH, 'utf-8');
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(configData);
+            } else {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ error: 'Config file not found' }));
+            }
+        } catch (error) {
+            console.error('Error reading config:', error);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Internal server error' }));
+        }
         return;
     }
 

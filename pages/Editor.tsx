@@ -16,7 +16,7 @@ const Editor: React.FC = () => {
 
     // Load project config
     useEffect(() => {
-        fetch('/project-config.json')
+        fetch(`http://${window.location.hostname}:3001/api/config`)
             .then(res => res.json())
             .then((data: ProjectConfig) => {
                 setProjectConfig(data);
@@ -228,7 +228,7 @@ const Editor: React.FC = () => {
 
         // Attempt to find actual file location on server
         try {
-            const response = await fetch(`http://localhost:3001/api/find-asset?filename=${encodeURIComponent(file.name)}`);
+            const response = await fetch(`http://${window.location.hostname}:3001/api/find-asset?filename=${encodeURIComponent(file.name)}`);
             if (response.ok) {
                 const data = await response.json();
                 if (data.path) {
@@ -328,7 +328,7 @@ const Editor: React.FC = () => {
         setSaveStatus('idle');
 
         try {
-            const response = await fetch('http://144.91.123.192:3001/api/save-config', {
+            const response = await fetch(`http://${window.location.hostname}:3001/api/save-config`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
