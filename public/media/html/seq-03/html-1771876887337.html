@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Título del artículo (izquierda) */
+    .top-left-title {
+      
+      color: var(--verde-1);
+    }
+
+    /* Encabezado de sección centrado con dos líneas */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .section-header-line h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      margin: 0 0 15px 0;
+      line-height: 1.2;
+    }
+
+    /* Contenedor de las líneas (flex column para centrarlas) */
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+      /* espacio entre líneas */
+    }
+
+    /* Línea dorada (larga y delgada) */
+    .line-gold {
+      width: 300px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    /* Línea gris (más corta y más alta) */
+    .line-gray {
+      width: 150px;
+      height: 6px;
+      background-color: #A0A0A0;
+      /* gris suave, puedes cambiarlo por --bronce-4 si prefieres */
+      border-radius: 3px;
+    }
+
+    /* Estilos para el organigrama */
+    .diagram-wrapper {
+      position: relative;
+      width: 100%;
+      margin-top: 40px;
+      margin-bottom: 50px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+    .acuerdo-text {
+      position: absolute;
+      left: 20px;
+      color: #007580;
+      font-size: 1.3rem;
+      font-weight: 500;
+    }
+    .trees-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 15px;
+      min-width: 1050px;
+      margin: 0 auto;
+      padding-top: 50px;
+    }
+    .tree-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .children-container {
+      display: flex;
+      justify-content: center;
+      padding-top: 20px;
+      position: relative;
+      width: 100%;
+    }
+    .children-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #316d82;
+      transform: translateX(-50%);
+    }
+    .child-branch {
+      position: relative;
+      padding: 20px 6px 0 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+    }
+    .child-branch::before, .child-branch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 2px;
+      background: #316d82;
+    }
+    .child-branch::before { right: 50%; }
+    .child-branch::after { left: 50%; }
+    .child-branch:first-child::before { display: none; }
+    .child-branch:last-child::after { display: none; }
+    .single-child .child-branch::before,
+    .single-child .child-branch::after { display: none; }
+    
+    .vert-drop {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: #316d82;
+      transform: translateX(-50%);
+    }
+    .vert-line {
+      width: 2px;
+      height: 15px;
+      background: #316d82;
+      margin: 5px 0;
+    }
+    .t-box {
+      border: 3px solid #004b40;
+      border-radius: 8px;
+      color: white;
+      text-align: center;
+      font-weight: 700;
+      box-shadow: 6px 6px 0 #004b40;
+      z-index: 2;
+      position: relative;
+      font-family: 'Montserrat', sans-serif;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+    .root-box {
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      min-width: 160px;
+      min-height: 50px;
+    }
+    .b-box {
+      padding: 10px 5px;
+      font-size: 0.75rem;
+      width: 105px;
+      min-height: 60px;
+    }
+    .small-box {
+      padding: 8px 5px;
+      font-size: 0.75rem;
+      width: 105px;
+      min-height: 35px;
+    }
+    /* Colores */
+    .box-teal { background-color: #00a69c; }
+    .box-blue { background-color: #008fd3; }
+    .box-purple { background-color: #91278f; }
+    .box-darkgold { background-color: #bfa15f; }
+
+    .box-ygreen { background-color: #b5ce28; color: white; }
+    .box-lgreen { background-color: #00c65c; }
+    .box-greyblue { background-color: #9eacb4; }
+    .box-red { background-color: #c13939; }
+
+    .box-indigo { background-color: #3b5cbd; }
+    .box-lavender { background-color: #a08aff; }
+    .box-mutedblue { background-color: #93a5cc; }
+
+    .box-pinkish { background-color: #c85dc4; }
+    .box-coral { background-color: #ff6a6a; }
+
+    .box-gold-light { background-color: #c7a44f; }
+
+    /* Vigilada MinEducación (opcional) */
+    .vigilada {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--bronce-1);
+      color: var(--verde-1);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+      .section-header-line h2 {
+        font-size: 2rem;
+      }
+      .line-gold {
+        width: 200px;
+      }
+      .line-gray {
+        width: 100px;
+      }
+      .diagram-wrapper {
+        overflow-x: auto;
+        padding: 10px;
+      }
+      /* Permitir scroll horizontal en móviles para ver todo el organigrama */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">Artículo 2.5.3.2.3.2.4.</span> Aspectos curriculares - a) Componentes formativos
+    </div>
+
+    <!-- Encabezado "Estado de la Oferta Internacional" centrado con dos líneas -->
+    <div class="section-header-line">
+
+      <h2>Lineamientos Curriculares<br>del Programa</h2>
+      <div class="lines-container">
+        <div class="line-gold"></div>
+        <div class="line-gray"></div>
+      </div>
+    </div>
+
+    <!-- Contenido: Organigrama -->
+    <div class="diagram-wrapper">
+      <div class="acuerdo-text">Acuerdo CA No. 042 de 2023</div>
+
+      <div class="trees-container">
+        
+        <!-- TREE 1: Formación Profesional -->
+        <div class="tree-col">
+            <div class="t-box root-box box-teal">Formación Profesional</div>
+            <div class="children-container">
+                <!-- Branch 1 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-ygreen">Agrupación 1:<br>Fundamentación</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-greyblue">Líneas</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+                <!-- Branch 2 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-lgreen">Agrupación 2:<br>Profundización</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-red">Líneas</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TREE 2: Praxis Investigativa -->
+        <div class="tree-col">
+            <div class="t-box root-box box-blue">Praxis Investigativa</div>
+            <div class="children-container">
+                <!-- Branch 1 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-indigo">Agrupación 1:<br>Fundamentos de<br>Investigación</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+                <!-- Branch 2 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-lavender">Agrupación 2:<br>Praxis<br>Investigativa<br>Específica</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+                <!-- Branch 3 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-mutedblue">Agrupación 3:<br>Trabajo de Grado</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TREE 3: Formación Integral -->
+        <div class="tree-col">
+            <div class="t-box root-box box-purple">Formación Integral</div>
+            <div class="children-container">
+                <!-- Branch 1 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-pinkish">Agrupación 1:<br>Competencias<br>Genéricas</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+                <!-- Branch 2 -->
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box b-box box-coral">Agrupación 2:<br>Identidad<br>Institucional</div>
+                    <div class="vert-line"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TREE 4: Libre Elección -->
+        <div class="tree-col">
+            <div class="t-box root-box box-darkgold" style="min-width: 110px;">Libre<br>Elección</div>
+            <div class="children-container single-child">
+                <div class="child-branch">
+                    <div class="vert-drop"></div>
+                    <div class="t-box small-box box-gold-light">Asignaturas</div>
+                </div>
+            </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Badge Vigilada MinEducación (comentado) -->
+  <!-- <div class="vigilada">– Vigilada MinEducación –</div> -->
+</body>
+
+</html>

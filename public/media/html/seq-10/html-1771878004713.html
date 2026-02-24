@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1400px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Estilos para Estructura Orgánica HTML */
+    .org-outer-container {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 20px;
+      margin-bottom: 50px;
+      padding-bottom: 20px;
+    }
+
+    .org-chart-box {
+      min-width: 1100px;
+      padding: 30px 20px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      color: #333;
+    }
+
+    .org-header {
+      text-align: center;
+      position: relative;
+    }
+
+    .org-header h2 {
+      font-size: 1.8rem;
+      color: #004b40;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    .org-header h3 {
+      font-size: 1.4rem;
+      color: #ba9b5e;
+      margin: 5px 0 40px 0;
+      font-weight: 500;
+    }
+
+    .org-node {
+      border: 2px solid;
+      border-left-width: 10px;
+      border-right-width: 10px;
+      border-radius: 18px;
+      background: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 6px 12px;
+      box-sizing: border-box;
+      line-height: 1.25;
+      z-index: 2;
+      position: relative;
+    }
+
+    .node-green {
+      border-color: #79a334;
+      color: #5a7d23;
+    }
+
+    .node-orange {
+      border-color: #df9127;
+      color: #b56e10;
+    }
+
+    .node-blue {
+      border-color: #129dbb;
+      color: #0a697d;
+    }
+
+    .node-purple {
+      border-color: #89308e;
+      color: #591b5d;
+    }
+
+    .org-vert-line {
+      width: 1px;
+      background: #b4b4b4;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lg-line {
+      background: #b4b4b4;
+      height: 1px;
+      width: 15px;
+      z-index: 1;
+    }
+
+    /* 4 columns */
+    .org-footer-branch {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .v-col {
+      width: 24%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .v-box {
+      border: 1px solid #d0d0d0;
+      width: 100%;
+      border-radius: 4px;
+      padding: 15px 0 15px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-sizing: border-box;
+      background: #fafafa;
+      position: relative;
+    }
+
+    /* El spine gris de la izquierda para las sub-ramas */
+    .v-spine {
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      bottom: 15px;
+      width: 1px;
+      background: #b4b4b4;
+    }
+
+    .v-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      margin-left: 15px;
+      /* Deja espacio al spine */
+    }
+
+    .h-line-left {
+      position: absolute;
+      left: -15px;
+      top: 50%;
+      width: 15px;
+      height: 1px;
+      background: #b4b4b4;
+    }
+
+    .h-line-mid {
+      width: 12px;
+      height: 1px;
+      background: #b4b4b4;
+      flex-shrink: 0;
+    }
+
+    .v-node-lg {
+      width: 140px;
+      flex-shrink: 0;
+    }
+
+    .v-node-sm {
+      width: 105px;
+      flex-shrink: 0;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .v-node-full {
+      width: 90%;
+    }
+
+    .v-node-admin {
+      width: 130px;
+      flex-shrink: 0;
+    }
+
+    .v-node-admin-sm {
+      width: 100px;
+      flex-shrink: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+        max-width: 100%;
+      }
+
+      .org-chart-box {
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Contenido: Estructura Orgánica HTML -->
+    <div class="org-outer-container">
+      <div class="org-chart-box">
+        <div class="org-header">
+          <h2>Estructura Orgánica</h2>
+          <h3>Unitrópico</h3>
+        </div>
+
+        <!-- Top Hierarchy -->
+        <div
+          style="position: relative; width: 100%; max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+          <!-- CSU -->
+          <div class="org-node node-green" style="font-size: 0.75rem; padding: 6px 16px;">Consejo Superior Universitario
+          </div>
+
+          <!-- Line to Rectory and dotted connection -->
+          <div style="height: 25px; width: 1px; background: #b4b4b4; position: relative;">
+            <div
+              style="position: absolute; left: -250px; top: -1px; width: 250px; height: 35px; border-top: 1px dashed #b4b4b4; border-left: 1px dashed #b4b4b4;">
+            </div>
+          </div>
+
+          <div style="height: 25px; width: 1px; background: #b4b4b4; position: relative;">
+            <div style="position: absolute; left: -250px; top: 0; width: 250px; height: 1px; background: #b4b4b4;">
+            </div>
+            <div class="org-node node-green"
+              style="position: absolute; left:-250px; top:0; transform: translate(-50%, -50%);">Consejo Académico</div>
+          </div>
+
+          <!-- Rectoría -->
+          <div class="org-node node-green" style="font-size: 0.8rem; padding: 8px 18px;">RECTORÍA</div>
+        </div>
+
+        <!-- Main Trunk Area -->
+        <div style="display: flex; width: 100%; max-width: 900px; margin: 0 auto; position: relative;">
+          <!-- Central Trunk -->
+          <div
+            style="position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #b4b4b4; transform: translateX(-50%);">
+          </div>
+
+          <!-- Left Branches -->
+          <div
+            style="width: 50%; display: flex; flex-direction: column; align-items: flex-end; padding-top: 15px; padding-bottom: 25px; gap: 20px;">
+            <!-- Secretaria Gen -->
+            <div
+              style="display: flex; align-items: flex-start; justify-content: flex-end; margin-right: -1px; margin-bottom: 5px;">
+              <div style="display: flex; flex-direction: column; align-items: center; position: relative;">
+                <div class="org-node node-green">Secretaría General</div>
+                <!-- Vertical drop -->
+                <div style="width: 1px; height: 15px; background: #b4b4b4;"></div>
+                <!-- Horizontal bridge -->
+                <div style="width: 250px; height: 1px; background: #b4b4b4; position: relative;">
+                  <div style="position: absolute; left: 0; top: 0; width: 1px; height: 15px; background: #b4b4b4;">
+                  </div>
+                  <div style="position: absolute; right: 0; top: 0; width: 1px; height: 15px; background: #b4b4b4;">
+                  </div>
+                </div>
+                <!-- Nodes row -->
+                <div style="display: flex; justify-content: space-between; width: 250px; margin-top: 15px;">
+                  <div style="display: flex; flex-direction: column; align-items: center;">
+                    <div class="org-node node-orange">Oficina de Gestión<br>Documental</div>
+                    <div style="width: 1px; height: 12px; background: #b4b4b4;"></div>
+                    <div class="org-node node-purple">División de Archivo</div>
+                  </div>
+                  <div>
+                    <div class="org-node node-orange">Oficina de Atención<br>al Ciudadano</div>
+                  </div>
+                </div>
+              </div>
+              <div style="width: 20px; height: 1px; background: #b4b4b4; margin-top: 12px;"></div>
+            </div>
+
+            <!-- Left Nodes -->
+            <div style="display: flex; align-items: center; margin-right: -1px;">
+              <div class="org-node node-orange">Oficina de Control<br>Interno Disciplinario</div>
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-right: -1px;">
+              <div class="org-node node-orange">Oficina de Control Interno<br>y de Gestión</div>
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+            </div>
+
+            <!-- Aseguramiento Calidad -->
+            <div style="display: flex; align-items: flex-start; justify-content: flex-end; margin-right: -1px;">
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="org-node node-orange">Oficina de Aseguramiento<br>de la Calidad y la Acreditación</div>
+                <div style="width: 1px; height: 10px; background: #b4b4b4;"></div>
+                <div class="org-node node-purple">División de Autoevaluación<br>y Acreditación</div>
+              </div>
+              <div style="width: 20px; height: 1px; background: #b4b4b4; margin-top: 15px;"></div>
+            </div>
+
+          </div>
+
+          <!-- Right Branches -->
+          <div
+            style="width: 50%; display: flex; flex-direction: column; align-items: flex-start; padding-top: 80px; gap: 20px;">
+            <div style="display: flex; align-items: flex-start; margin-left: -1px;">
+              <div style="width: 20px; height: 1px; background: #b4b4b4; margin-top: 15px;"></div>
+              <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="org-node node-blue">Oficina Asesora<br>de Planeación</div>
+                <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+                <div class="org-node node-purple">División del Sistema<br>Integrado de Gestión</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-left: -1px;">
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+              <div class="org-node node-blue">Oficina Asesora Jurídica<br>y de Contratación</div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-left: -1px;">
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+              <div class="org-node node-blue">Oficina Asesora de Prensa,<br>Comunicaciones y Mercadeo</div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-left: -1px;">
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+              <div class="org-node node-orange">Oficina de Proyectos Especiales<br>y Relaciones Interinstitucionales
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; margin-left: -1px;">
+              <div style="width: 20px; height: 1px; background: #b4b4b4;"></div>
+              <div class="org-node node-orange">Oficina de Relaciones y<br>Cooperación Internacional</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connection to 4 Columns -->
+        <div style="width: 1px; height: 25px; background: #b4b4b4; margin: 0 auto;"></div>
+        <div style="display: flex; width: 95%; margin: 0 auto; justify-content: space-between; position: relative;">
+          <!-- horizontal line -->
+          <div style="position: absolute; left: 12%; right: 12%; top: 0; height: 1px; background: #b4b4b4;"></div>
+
+          <!-- Col 1 -->
+          <div class="v-col">
+            <div class="org-vert-line" style="height: 15px;"></div>
+            <div class="org-node node-orange" style="width: 80%;">Vicerrectoría Académica</div>
+            <div class="org-vert-line" style="height: 15px;"></div>
+
+            <div class="v-box">
+              <div class="v-spine" style="bottom: auto; height: 85%;"></div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Facultad de Artes</div>
+                <div class="h-line-mid"></div>
+                <div class="org-node node-orange v-node-sm">Oficina de Admisiones<br>y Registro</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Facultad de Ciencias</div>
+                <div class="h-line-mid"></div>
+                <div class="org-node node-orange v-node-sm">Oficina de Bienestar<br>Universitario</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Facultad de Ciencias<br>Económicas y Administrativas</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Facultad de Derecho<br>y Ciencias Políticas</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Facultad de Ingenierías</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Escuela de Ciencias<br>del Lenguaje</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-lg">Escuela de<br>Ciencias Humanas</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-lg">Biblioteca</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 2 -->
+          <div class="v-col">
+            <div class="org-vert-line" style="height: 15px;"></div>
+            <div class="org-node node-orange" style="width: 80%;">Vicerrectoría de<br>Investigación</div>
+            <div class="org-vert-line" style="height: 15px;"></div>
+
+            <div class="v-box">
+              <div class="v-spine"></div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-full">Subdirección de Producción<br>y Divulgación de la
+                  Investigación</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-full">Subdirección de Fomento de<br>la Investigación</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-green v-node-full">Subdirección Técnica<br>de la Investigación</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 3 -->
+          <div class="v-col">
+            <div class="org-vert-line" style="height: 15px;"></div>
+            <div class="org-node node-orange" style="width: 80%;">Vicerrectoría de<br>Proyección Social</div>
+            <div class="org-vert-line" style="height: 15px;"></div>
+
+            <div class="v-box">
+              <div class="v-spine"></div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-full">División de Emprendimiento</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-full">División de Egresados</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-full">División de<br>Educación Continuada</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-full">División de Articulación<br>con la Educación Media</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 4 -->
+          <div class="v-col">
+            <div class="org-vert-line" style="height: 15px;"></div>
+            <div class="org-node node-orange" style="width: 90%;">Vicerrectoría Administrativa<br>y Financiera</div>
+            <div class="org-vert-line" style="height: 15px;"></div>
+
+            <div class="v-box">
+              <div class="v-spine" style="bottom: auto; height: 80%;"></div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-orange v-node-admin">Oficina de Talento Humano</div>
+                <div class="h-line-mid"></div>
+                <div class="org-node node-purple v-node-admin-sm">Tesorería</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-admin">División de Seguridad y<br>Salud en el Trabajo</div>
+                <div class="h-line-mid"></div>
+                <div class="org-node node-purple v-node-admin-sm">División de Sistemas de<br>Información y Tecnología
+                </div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-orange v-node-admin">Subdirección de Contabilidad</div>
+                <div class="h-line-mid"></div>
+                <div class="org-node node-purple v-node-admin-sm">Granjas</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-purple v-node-admin">División de Presupuesto</div>
+              </div>
+              <div class="v-row">
+                <div class="h-line-left"></div>
+                <div class="org-node node-orange v-node-admin">Subdirección de Infraestructura<br>y Recursos Físicos
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer de la caja -->
+        <div
+          style="text-align: center; font-size: 0.75rem; color: #555; margin-top: 50px; border-top: 1px solid #e0e0e0; padding-top: 20px; font-weight: 500;">
+          <strong style="color: #333; font-size: 0.85rem;">Universidad Internacional del Trópico Americano / NIT.
+            844002071-4</strong><br>
+          Cra 19 N. 39 - 40 Ciudadela Universitaria, Yopal - Casanare, Colombia. &nbsp;|&nbsp; (601) 915 70 05
+          &nbsp;|&nbsp; vur@unitropico.edu.co &nbsp;|&nbsp; www.unitropico.edu.co
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

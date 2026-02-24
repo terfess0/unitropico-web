@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 0 25px;
+    }
+
+    /* Título del artículo (izquierda) */
+    .top-left-title {
+      margin-bottom: 20px;
+      color: var(--verde-1);
+    }
+
+    /* Encabezado de sección centrado con dos líneas */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .section-header-line h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      margin: 0 0 15px 0;
+      line-height: 1.2;
+    }
+
+    /* Contenedor de las líneas (flex column para centrarlas) */
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+      /* espacio entre líneas */
+    }
+
+    /* Línea dorada (larga y delgada) */
+    .line-gold {
+      width: 300px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    /* Línea gris (más corta y más alta) */
+    .line-gray {
+      width: 150px;
+      height: 6px;
+      background-color: #A0A0A0;
+      /* gris suave, puedes cambiarlo por --bronce-4 si prefieres */
+      border-radius: 3px;
+    }
+
+    /* --- Estilos Discriminación Horas --- */
+    .diagram-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 50px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .dia-circle {
+      background-color: #C3E0B5;
+      color: #00563F;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.2;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .arrow-right {
+      width: 40px;
+      height: 16px;
+      background-color: #00563F;
+      position: relative;
+    }
+
+    .arrow-right::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -16px;
+      transform: translateY(-50%);
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      border-left: 17px solid #00563F;
+    }
+
+    .dia-pill {
+      background-color: #A0A0A0;
+      color: #FFFFFF;
+      width: 280px;
+      min-height: 70px;
+      border-radius: 35px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.1;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+
+    .dia-box {
+      background-color: #D3C398;
+      border: 2px solid #B8A375;
+      color: #00563F;
+      width: 170px;
+      min-height: 90px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.2;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 10px 0;
+    }
+
+    /* Tabla Grid */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .disc-table {
+      display: grid;
+      grid-template-columns: 180px repeat(9, 1fr);
+      gap: 0;
+      width: 100%;
+      max-width: 850px;
+      margin: 0 auto 60px auto;
+      align-items: stretch;
+      font-family: 'Montserrat', sans-serif;
+      border-top: 1px solid black;
+      border-left: 1px solid black;
+    }
+
+    .disc-table>div {
+      border-right: 1px solid black;
+      border-bottom: 1px solid black;
+      box-sizing: border-box;
+    }
+
+    .disc-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 0;
+      font-weight: 700;
+      color: #00563F;
+    }
+
+    .th-gold {
+      background-color: #C09B66;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .th-green {
+      background-color: #00563F;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .span-6 {
+      grid-column: 1 / 7;
+    }
+
+    .col-8 {
+      grid-column: 8;
+    }
+
+    @media (max-width: 768px) {
+      .diagram-container {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .arrow-right {
+        transform: rotate(90deg);
+        margin: 20px 0;
+      }
+
+      .disc-table {
+        min-width: 800px;
+        /* Force scroll */
+      }
+    }
+
+    /* --- Estilos para los Árboles Pequeños (Praxis, Integral, Electivas) --- */
+    .trees-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 30px;
+      margin-top: 40px;
+      margin-bottom: 50px;
+      width: 100%;
+      flex-wrap: wrap;
+      /* Permitir que bajen en móviles */
+    }
+
+    .small-tree {
+      display: flex;
+      justify-content: center;
+    }
+
+    .small-tree ul {
+      padding-top: 20px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .small-tree li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      list-style-type: none;
+      position: relative;
+      padding: 20px 15px 0 15px;
+    }
+
+    /* Conectores horizontales superiores */
+    .small-tree li::before,
+    .small-tree li::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 50%;
+      border-top: 2px solid #5A8AC6;
+      width: 50%;
+      height: 20px;
+    }
+
+    .small-tree li::after {
+      right: auto;
+      left: 50%;
+      border-left: 2px solid #5A8AC6;
+    }
+
+    /* Raiz */
+    .small-tree li:only-child::after,
+    .small-tree li:only-child::before {
+      display: none;
+    }
+
+    .small-tree li:only-child {
+      padding-top: 0;
+    }
+
+    /* Puntas */
+    .small-tree li:first-child::before,
+    .small-tree li:last-child::after {
+      border: 0 none;
+    }
+
+    .small-tree li:last-child::before {
+      border-right: 2px solid #5A8AC6;
+    }
+
+    /* Conector vertical bajando del padre */
+    .small-tree ul ul::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      border-left: 2px solid #5A8AC6;
+      width: 0;
+      height: 20px;
+      margin-left: -1px;
+    }
+
+    /* Estilos para el nuevo formato en columnas (Praxis Investigativa) */
+    .courses-wrapper {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 50px;
+      width: 100%;
+      align-items: stretch;
+      gap: 15px;
+    }
+
+    .vertical-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 15px;
+      margin-right: 5px;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+    }
+
+    .courses-grid {
+      display: flex;
+      flex: 1;
+      gap: 15px;
+    }
+
+    .course-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-header {
+      display: flex;
+      align-items: center;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 12px 15px;
+      min-height: 60px;
+      line-height: 1.2;
+      border: 3px solid #6C9BC9;
+    }
+
+    .square-white {
+      width: 14px;
+      height: 14px;
+      background-color: #FFFFFF;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    .course-list {
+      list-style: none;
+      padding: 0;
+      margin: 15px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .course-list li {
+      display: flex;
+      align-items: flex-start;
+      font-weight: 500;
+      font-size: 0.85rem;
+      line-height: 1.3;
+    }
+
+    .square-outline {
+      width: 14px;
+      height: 14px;
+      border: 3px solid #6C9BC9;
+      margin-right: 8px;
+      margin-top: 3px;
+      flex-shrink: 0;
+      background-color: transparent;
+    }
+
+    .border-blue {
+      border-color: #5A8AC6;
+    }
+
+    /* Nodos de los arboles pequeños */
+    .st-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .st-node-root {
+      width: 140px;
+    }
+
+    .st-node-child {
+      width: 130px;
+    }
+
+    .st-title {
+      width: 100%;
+      color: #FFFFFF;
+      text-align: center;
+      padding: 8px 6px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.2;
+    }
+
+    .st-subtitle {
+      background-color: #FFFFFF;
+      border: 1px solid #5A8AC6;
+      color: #333333;
+      padding: 2px 4px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      margin-top: -8px;
+      z-index: 3;
+      position: relative;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Colores Específicos de los Nuevos Árboles */
+    .bg-st-praxis-root {
+      background-color: #0088B4;
+    }
+
+    .bg-st-praxis-c1 {
+      background-color: #3366CC;
+    }
+
+    .bg-st-praxis-c2 {
+      background-color: #9999FF;
+    }
+
+    .bg-st-praxis-c3 {
+      background-color: #8C8CB8;
+    }
+
+    .bg-st-integral-root {
+      background-color: #9B2945;
+    }
+
+    .bg-st-integral-c1 {
+      background-color: #A35ECA;
+    }
+
+    .bg-st-integral-c2 {
+      background-color: #FF7575;
+    }
+
+    .bg-st-eleccion-root {
+      background-color: #B28B5C;
+    }
+
+    /* Color mostaza/dorado */
+    .bg-st-eleccion-c1 {
+      background-color: #C09B66;
+    }
+
+    .color-teal {
+      color: var(--verde-1, #00563F);
+    }
+
+    .color-gold {
+      color: var(--bronce-1, #B29B5C);
+    }
+
+    .color-arrow {
+      color: #555555;
+      margin: 0 2px;
+    }
+
+    .color-gray {
+      color: #555555;
+    }
+
+    .color-blue-pct {
+      color: #2A5BA1;
+      font-weight: 700;
+    }
+
+    /* Porcentaje azul */
+    .color-gold-cred {
+      color: #B29B5C;
+      font-weight: 700;
+    }
+
+    /* Creditos dorado */
+
+    /* --- Estilos PEP Timeline (Botones interactivos) --- */
+    .pep-section {
+      width: 100%;
+      margin-top: 80px;
+      margin-bottom: 60px;
+    }
+
+    .timeline-container {
+      position: relative;
+      max-width: 900px;
+      margin: 40px auto 0 auto;
+      padding: 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    /* Línea vertical de fondo */
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 32px;
+      width: 4px;
+      background-color: #B2B2B2;
+      z-index: 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .timeline-item:hover {
+      transform: translateX(15px) scale(1.02);
+      filter: drop-shadow(0px 8px 15px rgba(0, 0, 0, 0.15));
+    }
+
+    .timeline-item:hover .timeline-circle {
+      border-color: var(--verde-1, #00563F);
+      color: var(--bronce-1, #B29B5C);
+    }
+
+    .timeline-circle {
+      width: 56px;
+      height: 56px;
+      background-color: #FFFFFF;
+      border: 3px solid #B2B2B2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--verde-1, #00563F);
+      margin-right: -15px;
+      margin-left: 5px;
+      z-index: 2;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      position: relative;
+      box-sizing: border-box;
+    }
+
+    /* Pequeña línea diagonal superior e inferior */
+    .timeline-item:first-child .timeline-circle::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: -18px;
+      width: 25px;
+      height: 4px;
+      background-color: #B2B2B2;
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+
+    .timeline-item:last-child .timeline-circle::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: -18px;
+      width: 25px;
+      height: 4px;
+      background-color: #B2B2B2;
+      transform: rotate(-45deg);
+      z-index: -1;
+    }
+
+    .timeline-bar {
+      flex-grow: 1;
+      padding: 12px 20px 12px 35px;
+      color: #FFFFFF;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 4px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+      line-height: 1.3;
+      transition: all 0.3s ease;
+    }
+
+    .item-gold .timeline-bar {
+      background-color: #BFA565;
+    }
+
+    .item-teal .timeline-bar {
+      background-color: #9DBEB5;
+    }
+
+    .item-green .timeline-bar {
+      background-color: #00563F;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+
+      .section-header-line h2 {
+        font-size: 2rem;
+      }
+
+      .line-gold {
+        width: 200px;
+      }
+
+      .line-gray {
+        width: 100px;
+      }
+
+      .courses-wrapper {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .vertical-label {
+        writing-mode: horizontal-tb;
+        transform: rotate(0deg);
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+        padding: 10px;
+      }
+
+      .courses-grid {
+        flex-direction: column;
+        width: 100%;
+        gap: 30px;
+      }
+
+      .trees-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+      }
+
+      /* Ajustes para PEP Timeline en móvil */
+      .timeline-container::before {
+        left: 23px;
+      }
+
+      .timeline-item:hover {
+        transform: translateX(5px) scale(1.02);
+      }
+
+      .timeline-circle {
+        width: 46px;
+        height: 46px;
+        font-size: 1.1rem;
+        margin-left: 0;
+        margin-right: -10px;
+      }
+
+      .timeline-bar {
+        font-size: 0.95rem;
+        padding: 10px 15px 10px 25px;
+        min-height: 44px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">2.5.3.2.3.2.5.</span> Organización de actividades académicas y proceso formativo
+    </div>
+
+    <!-- PEP Section -->
+    <div class="pep-section">
+      <div class="section-header-line">
+        <h2><span style="font-weight: 400;" class="text-verde-2">Proyecto Educativo del</span><br>Programa - PEP</h2>
+        <div class="lines-container">
+          <div class="line-gold"></div>
+          <div class="line-gray"></div>
+        </div>
+      </div>
+
+      <div class="timeline-container">
+        <button class="timeline-item item-gold">
+          <div class="timeline-circle">1.</div>
+          <div class="timeline-bar">Denominación</div>
+        </button>
+
+        <button class="timeline-item item-teal">
+          <div class="timeline-circle">2.</div>
+          <div class="timeline-bar">Lineamientos curriculares</div>
+        </button>
+
+        <button class="timeline-item item-green">
+          <div class="timeline-circle">3.</div>
+          <div class="timeline-bar">Lineamientos de investigación</div>
+        </button>
+
+        <button class="timeline-item item-gold">
+          <div class="timeline-circle">4.</div>
+          <div class="timeline-bar">Lineamientos del sector externo</div>
+        </button>
+
+        <button class="timeline-item item-teal">
+          <div class="timeline-circle">5.</div>
+          <div class="timeline-bar">Lineamientos para la gestión profesoral</div>
+        </button>
+
+        <button class="timeline-item item-green">
+          <div class="timeline-circle">6.</div>
+          <div class="timeline-bar">Lineamientos de evaluación y autorregulación del programa</div>
+        </button>
+
+        <button class="timeline-item item-gold">
+          <div class="timeline-circle">7.</div>
+          <div class="timeline-bar">Modelo organizacional del programa de ingeniería en inteligencia artificial</div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Badge Vigilada MinEducación (comentado) -->
+  <!-- <div class="vigilada">– Vigilada MinEducación –</div> -->
+</body>
+
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Estilos para Estrategias de flexibilización */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .section-header-line h2 {
+      font-weight: 400;
+      font-size: 2.2rem;
+      line-height: 1.35;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+
+    /* Estilos para el Icono Lateral */
+    .comp-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 80px;
+      margin-bottom: 90px;
+      gap: 30px;
+    }
+
+    .comp-icon-container {
+      width: 140px;
+      height: 140px;
+      background-color: #fcfcfc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), inset 0 2px 10px rgba(0, 0, 0, 0.02);
+      border: 3px solid #f2f2f2;
+    }
+
+    .comp-icon-container img {
+      width: 55%;
+      height: auto;
+    }
+
+    .comp-text-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #007580;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+
+      .comp-icon-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .comp-text-title {
+        font-size: 1.8rem;
+      }
+
+      .section-header-line h2 {
+        font-size: 1.5rem !important;
+      }
+
+      .line-gold {
+        width: 100% !important;
+        max-width: 550px;
+      }
+
+      .line-gray {
+        width: 80% !important;
+        max-width: 450px;
+      }
+    }
+
+    /* =========================================
+       NUEVO LAYOUT: MECANISMOS DE EVALUACION
+       ========================================= */
+    .eval-header {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .eval-header h2 {
+      font-weight: 700;
+      font-size: 2.3rem;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+    .eval-header h2 span {
+      font-weight: 300;
+      color: #007580;
+    }
+
+    .eval-container {
+      display: flex;
+      max-width: 1000px;
+      margin: 0 auto;
+      gap: 60px;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 80px;
+    }
+
+    .eval-col {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Diagrama Base */
+    .diagram-wrapper {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 30px auto;
+    }
+
+    /* Diagrama Izquierdo (Evaluación) */
+    .ring-mask {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 50%;
+      background: conic-gradient(
+        #00594e 0deg 72deg,
+        #bfa773 72deg 144deg,
+        #009b85 144deg 216deg,
+        #00b2a9 216deg 288deg,
+        #afafaf 288deg 360deg
+      );
+      -webkit-mask: radial-gradient(closest-side, transparent calc(100% - 13px), black calc(100% - 12px));
+      mask: radial-gradient(closest-side, transparent calc(100% - 13px), black calc(100% - 12px));
+      z-index: 1;
+    }
+
+    .eval-node {
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      color: white;
+      font-weight: 700;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 2;
+    }
+    .node-c1 { background-color: #00594e; left: 50%; top: 0%; }
+    .node-c2 { background-color: #bfa773; left: 97.55%; top: 34.55%; }
+    .node-c3 { background-color: #009b85; left: 79.39%; top: 90.45%; }
+    .node-c4 { background-color: #00b2a9; left: 20.61%; top: 90.45%; }
+    .node-c5 { background-color: #afafaf; left: 2.45%; top: 34.55%; }
+
+    .eval-inner {
+      position: absolute;
+      width: 156px;
+      height: 156px;
+      background: white;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #007580;
+      z-index: 10;
+    }
+    .eval-inner::before {
+      content: '';
+      position: absolute;
+      width: 105%; height: 105%;
+      border-radius: 50%;
+      background-color: #ffb703; /* Borde amarillo resplandeciente */
+      top: 0; left: 0;
+      transform: translate(3px, 5px); /* Desfase asimétrico */
+      z-index: -1;
+    }
+
+    /* Diagrama Derecho (Estudiante) */
+    .est-node {
+      position: absolute;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      z-index: 2;
+    }
+    .est-n1 { background-color: #00594e; left: 50%; top: 0%; }
+    .est-n2 { background-color: #009b85; left: 100%; top: 50%; }
+    .est-n3 { background-color: #666666; left: 50%; top: 100%; }
+    .est-n4 { background-color: #bfa773; left: 0%; top: 50%; }
+
+    .est-inner {
+      position: absolute;
+      width: 130px;
+      height: 130px;
+      background: white;
+      border-radius: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.08); 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #007580;
+      z-index: 10;
+    }
+    .est-inner::after {
+      content: '';
+      position: absolute;
+      top: 6px; left: 6px; right: 6px; bottom: 6px;
+      border-radius: 50%;
+      border: 4px solid #f9f9f9;
+    }
+
+    .est-arrow {
+      position: absolute;
+      width: 44px;
+      height: 22px;
+      background-color: #ebebeb;
+      clip-path: polygon(0 35%, 60% 35%, 60% 0, 100% 50%, 60% 100%, 60% 65%, 0 65%);
+      z-index: 1;
+    }
+    .earrow-tr { top: 25%; left: 75%; transform: translate(-50%, -50%) rotate(45deg); }
+    .earrow-rb { top: 75%; left: 75%; transform: translate(-50%, -50%) rotate(135deg); }
+    .earrow-bl { top: 75%; left: 25%; transform: translate(-50%, -50%) rotate(225deg); }
+    .earrow-lt { top: 25%; left: 25%; transform: translate(-50%, -50%) rotate(315deg); }
+
+    @media (max-width: 900px) {
+      .eval-container {
+        flex-direction: column;
+        gap: 90px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">2.5.3.2.3.2.4. Aspectos curriculares -</span> e) Mecanismos de Evaluación
+    </div>
+
+    <!-- Encabezado centrado -->
+    <div class="eval-header">
+      <h2><span>Descripción y diseño de<br></span>los mecanismos de evaluación</h2>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0px;">
+        <div class="line-gold" style="width: 450px; height: 3px; background-color: #ba9b5e; border-radius: 2px;"></div>
+        <div class="line-gray" style="width: 400px; height: 6px; background-color: #e0e0e0; border-radius: 3px;"></div>
+      </div>
+    </div>
+
+    <!-- Contenedor Evaluación Graficos Creados Desde Cero -->
+    <div class="eval-container">
+      
+      <!-- Diagrama Evaluación (Izquierda) -->
+      <div class="eval-col">
+        <div class="diagram-wrapper">
+          <div class="ring-mask"></div>
+          
+          <div class="eval-node node-c1">Continua</div>
+          <div class="eval-node node-c2">Integral</div>
+          <div class="eval-node node-c3">Formativa</div>
+          <div class="eval-node node-c4">Pertinente</div>
+          <div class="eval-node node-c5">Participativa</div>
+
+          <div class="eval-inner">Evaluación</div>
+        </div>
+      </div>
+
+      <!-- Diagrama Estudiante (Derecha) -->
+      <div class="eval-col">
+        <div class="diagram-wrapper" style="width: 270px; height: 270px; margin-top: 45px;">
+          
+          <div class="est-arrow earrow-tr"></div>
+          <div class="est-arrow earrow-rb"></div>
+          <div class="est-arrow earrow-bl"></div>
+          <div class="est-arrow earrow-lt"></div>
+
+          <div class="est-node est-n1">Resultados<br>de<br>Aprendizaje</div>
+          <div class="est-node est-n2">Estrategias<br>de<br>Evaluación</div>
+          <div class="est-node est-n3">Retro<br>alimentación</div>
+          <div class="est-node est-n4">Estrategias<br>de<br>Enseñanza</div>
+
+          <div class="est-inner">Estudiante</div>
+        </div>
+      </div>
+      
+    </div>
+
+  </div>
+</body>
+
+</html>

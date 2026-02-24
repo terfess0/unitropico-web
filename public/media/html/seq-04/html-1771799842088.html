@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Título del artículo (izquierda) */
+    .top-left-title {
+      margin-bottom: 20px;
+      color: var(--verde-1);
+    }
+
+    /* Encabezado de sección centrado con dos líneas */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .section-header-line h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      margin: 0 0 15px 0;
+      line-height: 1.2;
+    }
+
+    /* Contenedor de las líneas (flex column para centrarlas) */
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px; /* espacio entre líneas */
+    }
+
+    /* Línea dorada (larga y delgada) */
+    .line-gold {
+      width: 300px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    /* Línea gris (más corta y más alta) */
+    .line-gray {
+      width: 150px;
+      height: 6px;
+      background-color: #A0A0A0; /* gris suave, puedes cambiarlo por --bronce-4 si prefieres */
+      border-radius: 3px;
+    }
+
+    /* Árbol Jerárquico Complejo usando UL/LI */
+    .tree {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      margin-bottom: 50px;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+
+    .tree ul {
+      padding-top: 20px; 
+      position: relative;
+      display: flex;
+      justify-content: center;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .tree li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      list-style-type: none;
+      position: relative;
+      padding: 20px 8px 0 8px; /* Aumentado el padding horizontal de 4px a 8px */
+    }
+
+    /* Conectores horizontales superiores */
+    .tree li::before, .tree li::after {
+      content: '';
+      position: absolute; 
+      top: 0; 
+      right: 50%;
+      border-top: 2px solid #5A8AC6;
+      width: 50%; 
+      height: 20px;
+    }
+    .tree li::after {
+      right: auto; 
+      left: 50%;
+      border-left: 2px solid #5A8AC6;
+    }
+
+    /* Raiz */
+    .tree li:only-child::after, .tree li:only-child::before {
+      display: none;
+    }
+    .tree li:only-child { padding-top: 0; }
+
+    /* Puntas */
+    .tree li:first-child::before, .tree li:last-child::after {
+      border: 0 none;
+    }
+    .tree li:last-child::before {
+      border-right: 2px solid #5A8AC6;
+    }
+    
+    /* Conector vertical bajando del padre */
+    .tree ul ul::before {
+      content: '';
+      position: absolute; 
+      top: 0; 
+      left: 50%;
+      border-left: 2px solid #5A8AC6;
+      width: 0; 
+      height: 20px;
+      margin-left: -1px;
+    }
+
+    .org-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .node-root { width: 300px; }
+    .node-l2 { width: 260px; }
+    .node-l3 { width: 125px; } 
+
+    .org-title {
+      width: 100%;
+      color: #FFFFFF;
+      text-align: center;
+      padding: 8px 6px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      line-height: 1.2;
+    }
+
+    .org-subtitle {
+      background-color: #FFFFFF;
+      border: 2px solid #5A8AC6;
+      color: #333333;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      margin-top: -6px;
+      z-index: 3;
+      position: relative;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      white-space: nowrap;
+    }
+
+    .subtitle-l3 {
+      font-size: 0.6rem;
+      padding: 2px 4px;
+    }
+
+    .l3-title-long { font-size: 0.75rem; padding: 4px 2px; }
+
+    /* Colores del organigrama */
+    .bg-profesional { background-color: #00A19D; }
+    .bg-fundamentacion { background-color: #B2B424; color: #FFFFFF; }
+    .bg-profundizacion { background-color: #00CF5B; }
+    .bg-matematicas { background-color: #A3BCA9; }
+    .bg-fisicas { background-color: #3A556A; }
+    .bg-fundamentos { background-color: #267963; }
+    .bg-ia { background-color: #C83B5B; }
+    .bg-datos { background-color: #CE863E; }
+    .bg-hardware { background-color: #8C7A74; }
+    .bg-optativas { background-color: #DEAC9F; }
+
+    .fw-bold { font-weight: 700; }
+    .color-blue { color: #5A8AC6; }
+    .color-gray { color: #555555; }
+    .color-gold { color: #B29B5C; }
+    .color-arrow { color: #D4A373; margin: 0 2px; font-weight: bold; }
+    
+    @media (max-width: 1024px) {
+      .node-root { width: 260px; }
+      .node-l2 { width: 200px; }
+      .node-l3 { width: 110px; }
+      .org-title { font-size: 0.8rem; }
+      .org-subtitle { font-size: 0.7rem; }
+    }
+    
+    @media (max-width: 768px) {
+      .tree { justify-content: flex-start; }
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+      .section-header-line h2 { font-size: 2rem; }
+      .line-gold { width: 200px; }
+      .line-gray { width: 100px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">Artículo 2.5.3.2.3.2.5.</span> Organización de actividades académicas y proceso formativo
+    </div>
+
+    <!-- Encabezado "Estado de la Oferta Internacional" centrado con dos líneas -->
+    <div class="section-header-line">
+      
+      <h2><span style="margin:0px;" class="text-verde-2   ">Contenidos </span>  Curriculares</h2>
+      <div class="lines-container">
+        <div class="line-gold"></div>
+        <div class="line-gray"></div>
+      </div>
+    </div>
+
+    <!-- Organigrama Curricular Complejo -->
+    <div class="tree">
+      <ul>
+        <li>
+          <!-- Raíz -->
+          <div class="org-node node-root">
+            <div class="org-title bg-profesional">Formación Profesional</div>
+            <div class="org-subtitle">
+               <span class="fw-bold color-gold">103</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">69,5%</span>
+            </div>
+          </div>
+          <ul>
+            <li>
+              <!-- Rama Izquierda (Fundamentación) -->
+              <div class="org-node node-l2">
+                <div class="org-title bg-fundamentacion">Fundamentación</div>
+                <div class="org-subtitle">
+                  <span class="fw-bold color-gold">38</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">25,6%</span>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title bg-matematicas">Matemáticas</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">27</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">18,1%</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title bg-fisicas">Físicas</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">6</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">4,1%</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title bg-fundamentos">Fundamentos de<br>Ingeniería</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">5</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">3,4%</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+            
+            <li>
+              <!-- Rama Derecha (Profundización) -->
+              <div class="org-node node-l2">
+                <div class="org-title bg-profundizacion">Profundización</div>
+                <div class="org-subtitle">
+                  <span class="fw-bold color-gold">65</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">43,9%</span>
+                </div>
+              </div>
+              <ul>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title bg-ia">Inteligencia<br>Artificial</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">32</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">21,6%</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title bg-datos">Ingeniería de<br>Datos</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">13</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">8,7%</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title l3-title-long bg-hardware">Hardware para<br>Inteligencia Artificial</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">14</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">9,5%</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <div class="org-node node-l3">
+                    <div class="org-title l3-title-long bg-optativas">Optativas de<br>Profundización</div>
+                    <div class="org-subtitle subtitle-l3">
+                      <span class="fw-bold color-gold">6</span> <span class="color-gray">créditos</span> <span class="color-arrow">&rarr;</span> <span class="fw-bold color-gray">4,1%</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Badge Vigilada MinEducación (comentado) -->
+  <!-- <div class="vigilada">– Vigilada MinEducación –</div> -->
+</body>
+</html>

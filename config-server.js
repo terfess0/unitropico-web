@@ -1,29 +1,81 @@
 import http from 'http';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
+import pool from './db.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 3001;
-const CONFIG_DIR = path.join(__dirname, 'data');
-const CONFIG_PATH = path.join(CONFIG_DIR, 'project-config.json');
 
-if (!fs.existsSync(CONFIG_DIR)) {
-    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+async function getFullConfig() {
+    // 1. Get Project
+    const [projects] = await pool.query('SELECT * FROM projects LIMIT 1');
+    const project = projects[0] || { id: 'default', revision: 0 };
+
+    // 2. Get Sequences and ordered contents
+    const [sequences] = await pool.query('SELECT * FROM sequences ORDER BY order_index ASC');
+    const [sequenceContentsMap] = await pool.query('SELECT * FROM sequence_contents ORDER BY sequence_id, order_index ASC');
+
+    // Map contents to sequences
+    const seqMap = sequences.map(s => {
+        const contentIds = sequenceContentsMap
+            .filter(sc => sc.sequence_id === s.id)
+            .map(sc => sc.content_id);
+        return {
+            id: s.id,
+            title: s.title,
+            contents: contentIds
+        };
+    });
+
+    // 3. Get Contents
+    const [contentsRows] = await pool.query('SELECT * FROM contents');
+    const [hotspotsRows] = await pool.query('SELECT * FROM hotspots');
+
+    const contentsMap = {};
+    for (const c of contentsRows) {
+        c.hotspots = hotspotsRows
+            .filter(h => h.content_id === c.id)
+            .sort((a, b) => a.zindex - b.zindex);
+
+        c.allowScripts = c.allow_scripts === 1; // MySQL tinyint
+        delete c.allow_scripts;
+        delete c.project_id;
+
+        // Read physical HTML file if applicable
+        if (c.type === 'html' && c.html && c.html.startsWith('/media/html/')) {
+            try {
+                const filePath = path.join(__dirname, 'public', c.html);
+                if (fs.existsSync(filePath)) {
+                    c.html = fs.readFileSync(filePath, 'utf-8');
+                }
+            } catch (e) {
+                console.error(`Error reading physical HTML file for ${c.id}:`, e);
+            }
+        }
+
+        // hotspots cleanup
+        c.hotspots.forEach(h => {
+            delete h.content_id;
+        });
+
+        contentsMap[c.id] = c;
+    }
+
+    return {
+        projectId: project.id,
+        revision: project.revision,
+        sequences: seqMap,
+        contents: contentsMap
+    };
 }
 
-// Copy existing config from public if it doesn't exist in data
-const publicConfigPath = path.join(__dirname, 'public', 'project-config.json');
-if (!fs.existsSync(CONFIG_PATH) && fs.existsSync(publicConfigPath)) {
-    fs.copyFileSync(publicConfigPath, CONFIG_PATH);
-}
-
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
     // Enable CORS
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
@@ -32,138 +84,198 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // GET /api/config: Read from MySQL
     if (req.method === 'GET' && req.url === '/api/config') {
         try {
-            if (fs.existsSync(CONFIG_PATH)) {
-                const configData = fs.readFileSync(CONFIG_PATH, 'utf-8');
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(configData);
-            } else {
-                res.writeHead(404, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ error: 'Config file not found' }));
-            }
+            const config = await getFullConfig();
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(config));
         } catch (error) {
-            console.error('Error reading config:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Internal server error' }));
+            console.error('Error joining config from DB:', error);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'Internal server error reading config' }));
         }
         return;
     }
 
+    // POST /api/save-config: Smart modular save into MySQL
     if (req.method === 'POST' && req.url === '/api/save-config') {
         let body = '';
-        req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        req.on('end', () => {
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', async () => {
+            let connection;
             try {
-                const incomingConfig = JSON.parse(body);
+                const incoming = JSON.parse(body);
 
-                // Read current config to check version
-                let currentConfig = {};
-                if (fs.existsSync(CONFIG_PATH)) {
-                    currentConfig = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
-                }
+                // Get current DB revision
+                const [projects] = await pool.query('SELECT revision FROM projects WHERE id = ?', [incoming.projectId || 'default']);
+                const currentRev = projects[0]?.revision || 0;
+                const incomingRev = incoming.revision || 0;
 
-                const currentRevision = currentConfig.revision || 0;
-                const incomingRevision = incomingConfig.revision || 0;
-
-                // Optimistic Concurrency Check
-                // If the client revision is older than the server revision, reject with 409
-                if (incomingRevision !== 0 && incomingRevision < currentRevision) {
+                // 1. Concurrency Check
+                if (incomingRev !== 0 && incomingRev < currentRev) {
                     res.writeHead(409, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({
-                        success: false,
-                        message: 'Error de concurrencia: El archivo ha sido modificado por otro usuario.',
-                        latestRevision: currentRevision
-                    }));
+                    res.end(JSON.stringify({ success: false, message: 'Conflicto: El proyecto fue modificado por otro usuario.' }));
                     return;
                 }
 
-                // Smart Merge:
-                // We increment the revision and merge the contents map.
-                // For sequences, we take the incoming ones as they define the order.
-                const newRevision = Math.max(currentRevision, incomingRevision) + 1;
+                // TRANSACTION
+                connection = await pool.getConnection();
+                await connection.beginTransaction();
 
-                const mergedConfig = {
-                    ...incomingConfig, // Take incoming as base
-                    revision: newRevision,
-                    // Ensure we don't accidentally delete contents that might have been added by others
-                    // while we were editing (if we only sent a partial update, but currently client sends all)
-                    contents: {
-                        ...(currentConfig.contents || {}),
-                        ...(incomingConfig.contents || {})
+                const newRev = currentRev + 1;
+                const projectId = incoming.projectId || 'default';
+
+                // 2. Increment Revision
+                await connection.execute(
+                    'INSERT INTO projects (id, revision) VALUES (?, ?) ON DUPLICATE KEY UPDATE revision = ?',
+                    [projectId, newRev, newRev]
+                );
+
+                // 3. Save Sequences
+                const contentToSequenceMap = {};
+                if (Array.isArray(incoming.sequences)) {
+                    for (let i = 0; i < incoming.sequences.length; i++) {
+                        const seq = incoming.sequences[i];
+                        await connection.execute(
+                            'INSERT INTO sequences (id, project_id, title, order_index) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE title=?, order_index=?',
+                            [seq.id, projectId, seq.title || '', i, seq.title || '', i]
+                        );
+
+                        // Delete old sequence contents mapping for this sequence to rebuild
+                        await connection.execute('DELETE FROM sequence_contents WHERE sequence_id = ?', [seq.id]);
+
+                        // Insert new mapping
+                        if (Array.isArray(seq.contents)) {
+                            for (let j = 0; j < seq.contents.length; j++) {
+                                const contentId = seq.contents[j];
+                                contentToSequenceMap[contentId] = seq.id;
+                                await connection.execute(
+                                    'INSERT IGNORE INTO sequence_contents (sequence_id, content_id, order_index) VALUES (?, ?, ?)',
+                                    [seq.id, contentId, j]
+                                );
+                            }
+                        }
                     }
-                };
+                }
 
-                fs.writeFileSync(CONFIG_PATH, JSON.stringify(mergedConfig, null, 2), 'utf-8');
+                // 4. Save Contents
+                if (incoming.contents) {
+                    for (const [id, c] of Object.entries(incoming.contents)) {
+                        let htmlValueToSave = c.html || '';
 
-                console.log('Project config saved successfully (Revision ' + newRevision + ') at:', CONFIG_PATH);
+                        // If it's an HTML content, save the raw code to a .html file inside public/media/html/<sectionId>
+                        if (c.type === 'html' && htmlValueToSave) {
+                            const sectionId = contentToSequenceMap[id] || 'unassigned';
+                            const htmlDir = path.join(__dirname, 'public', 'media', 'html', sectionId);
+                            if (!fs.existsSync(htmlDir)) {
+                                fs.mkdirSync(htmlDir, { recursive: true });
+                            }
+                            const htmlFilename = `${id}.html`;
+                            const htmlFilePath = path.join(htmlDir, htmlFilename);
 
+                            // Only write if it's the actual raw HTML code, not just a returning path
+                            if (!htmlValueToSave.startsWith('/media/html/')) {
+                                fs.writeFileSync(htmlFilePath, htmlValueToSave, 'utf-8');
+                            }
+                            // Store the path in the DB instead of the raw code
+                            htmlValueToSave = `/media/html/${sectionId}/${htmlFilename}`;
+                        }
+
+                        await connection.execute(
+                            `INSERT INTO contents (id, project_id, title, type, src, html, allow_scripts) 
+                             VALUES (?, ?, ?, ?, ?, ?, ?)
+                             ON DUPLICATE KEY UPDATE title=?, type=?, src=?, html=?, allow_scripts=?`,
+                            [
+                                id, projectId, c.title || '', c.type || 'image', c.src || '', htmlValueToSave, c.allowScripts !== false,
+                                c.title || '', c.type || 'image', c.src || '', htmlValueToSave, c.allowScripts !== false
+                            ]
+                        );
+
+                        // Rebuild hotspots
+                        if (c.hotspots) {
+                            await connection.execute('DELETE FROM hotspots WHERE content_id = ?', [id]);
+                            for (const h of c.hotspots) {
+                                await connection.execute(
+                                    `INSERT INTO hotspots (id, content_id, x, y, width, height, action, target, title, zindex)
+                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                    [h.id, id, h.x, h.y, h.width, h.height, h.action, h.target || '', h.title || '', h.zindex || 0]
+                                );
+                            }
+                        }
+                    }
+                }
+
+                // 5. Deletion of orphaned contents
+                if (incoming.contents) {
+                    const incomingIds = Object.keys(incoming.contents);
+                    if (incomingIds.length > 0) {
+                        const placeholders = incomingIds.map(() => '?').join(',');
+                        await connection.query(`DELETE FROM contents WHERE project_id = ? AND id NOT IN (${placeholders})`, [projectId, ...incomingIds]);
+                    }
+                }
+
+                await connection.commit();
+                connection.release();
+
+                console.log(`Saved Revision ${newRev} to MySQL.`);
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({
-                    success: true,
-                    message: 'Configuración guardada correctamente.',
-                    revision: newRevision
-                }));
+                res.end(JSON.stringify({ success: true, revision: newRev }));
+
             } catch (error) {
-                console.error('Error saving config:', error);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, message: 'Error interno al guardar.' }));
+                if (connection) {
+                    await connection.rollback();
+                    connection.release();
+                }
+                console.error('Error saving modular config:', error);
+                res.writeHead(500);
+                res.end(JSON.stringify({ success: false, message: 'Error interno al guardar en BD' }));
             }
         });
-    } else if (req.method === 'GET' && req.url.startsWith('/api/find-asset')) {
+        return;
+    }
+
+    // Asset Discovery
+    if (req.method === 'GET' && req.url.startsWith('/api/find-asset')) {
         const url = new URL(req.url, `http://${req.headers.host}`);
         const filename = url.searchParams.get('filename');
-
-        if (!filename) {
-            res.writeHead(400);
-            res.end(JSON.stringify({ error: 'Filename is required' }));
-            return;
-        }
+        if (!filename) { res.writeHead(400); res.end(); return; }
 
         const mediaDir = path.join(__dirname, 'public', 'media');
-
         function findFileRecursive(dir, targetFile) {
             const files = fs.readdirSync(dir);
             for (const file of files) {
                 const fullPath = path.join(dir, file);
-                const stat = fs.statSync(fullPath);
-                if (stat.isDirectory()) {
-                    const found = findFileRecursive(fullPath, targetFile);
-                    if (found) return found;
-                } else if (file === targetFile) {
-                    return fullPath;
-                }
+                try {
+                    if (fs.statSync(fullPath).isDirectory()) {
+                        const found = findFileRecursive(fullPath, targetFile);
+                        if (found) return found;
+                    } else if (file === targetFile) return fullPath;
+                } catch (e) { }
             }
             return null;
         }
 
         try {
-            const absolutePath = findFileRecursive(mediaDir, filename);
-            if (absolutePath) {
-                // Convert back to web path (relative to public)
-                const relativePath = path.relative(path.join(__dirname, 'public'), absolutePath)
-                    .replace(/\\/g, '/'); // Ensure forward slashes for URLs
-
+            const absPath = findFileRecursive(mediaDir, filename);
+            if (absPath) {
+                const relPath = path.relative(path.join(__dirname, 'public'), absPath).replace(/\\/g, '/');
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ path: '/' + relativePath }));
+                res.end(JSON.stringify({ path: '/' + relPath }));
             } else {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ path: '/media/' + filename })); // Fallback
+                res.end(JSON.stringify({ path: '/media/' + filename }));
             }
-        } catch (error) {
-            console.error('Error finding asset:', error);
-            res.writeHead(500);
-            res.end(JSON.stringify({ error: 'Internal server error' }));
+        } catch (e) {
+            res.writeHead(500); res.end();
         }
-    } else {
-        res.writeHead(404);
-        res.end();
+        return;
     }
+
+    res.writeHead(404);
+    res.end();
 });
 
 server.listen(PORT, () => {
-    console.log(`Config server (No-Dependencies) running at http://localhost:${PORT}`);
-    console.log(`Writing to: ${CONFIG_PATH}`);
+    console.log(`🚀 MySQL Config Server running at http://localhost:${PORT}`);
 });

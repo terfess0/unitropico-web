@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Estilos para Estrategias de flexibilización */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .section-header-line h2 {
+      font-weight: 400;
+      font-size: 2.2rem;
+      line-height: 1.35;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+
+    /* Estilos para el Icono Lateral */
+    .comp-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 80px;
+      margin-bottom: 90px;
+      gap: 30px;
+    }
+
+    .comp-icon-container {
+      width: 140px;
+      height: 140px;
+      background-color: #fcfcfc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), inset 0 2px 10px rgba(0, 0, 0, 0.02);
+      border: 3px solid #f2f2f2;
+    }
+
+    .comp-icon-container img {
+      width: 55%;
+      height: auto;
+    }
+
+    .comp-text-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #007580;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+
+      .comp-icon-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .comp-text-title {
+        font-size: 1.8rem;
+      }
+
+      .section-header-line h2 {
+        font-size: 1.5rem !important;
+      }
+
+      .line-gold {
+        width: 100% !important;
+        max-width: 550px;
+      }
+
+      .line-gray {
+        width: 80% !important;
+        max-width: 450px;
+      }
+    }
+
+    /* =========================================
+       NUEVO LAYOUT: SEGUIMIENTO SISTEMATICO RAE
+       ========================================= */
+    .rae-header {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .rae-header h2 {
+      font-weight: 700;
+      font-size: 2.3rem;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+
+    .rae-container {
+      position: relative;
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+      height: 600px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .rae-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .rae-circle {
+      position: absolute;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      font-weight: 700;
+      line-height: 1.25;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      z-index: 5;
+      transform: translate(-50%, -50%);
+    }
+
+    .center-circle {
+      width: 160px;
+      height: 160px;
+      background-color: #89797d; /* grayish purple */
+      top: 300px;
+      left: 525px;
+      font-size: 0.95rem;
+      border: 4px solid white;
+    }
+
+    .btn-circle {
+      width: 140px;
+      height: 140px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, filter 0.2s;
+    }
+
+    .btn-circle:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .top-circle {
+      background-color: #00594e;
+      top: 120px;
+      left: 525px;
+    }
+
+    .bl-circle {
+      background-color: #2b7d72; /* teal */
+      top: 450px;
+      left: 325px;
+    }
+
+    .br-circle {
+      background-color: #bfa773; /* gold */
+      top: 450px;
+      left: 725px;
+    }
+
+    /* Text boxes hidden initially */
+    .rae-text {
+      position: absolute;
+      background: white;
+      border: 2px solid #bfa773;
+      border-radius: 12px;
+      padding: 15px 20px;
+      color: #007580;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      text-align: center;
+      box-sizing: border-box;
+      z-index: 10;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      pointer-events: none;
+    }
+
+    .rae-text.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .text-box-1 {
+      top: 80px;
+      left: 630px;
+      width: 320px;
+    }
+
+    .text-box-2 {
+      top: 380px;
+      left: -75px;
+      width: 320px;
+    }
+
+    .text-box-3 {
+      top: 380px;
+      right: -100px;
+      width: 340px;
+    }
+
+    @media (max-width: 900px) {
+      .rae-container {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding-bottom: 50px;
+      }
+      .rae-svg { display: none; }
+      .rae-circle {
+        position: static;
+        transform: none !important;
+      }
+      .rae-text {
+        position: static;
+        width: 90%;
+        max-width: 320px;
+      }
+      .rae-text.active {
+        display: block;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">2.5.3.2.3.2.4. Aspectos curriculares -</span> e) Mecanismos de Evaluación
+    </div>
+
+    <!-- Encabezado centrado -->
+    <div class="rae-header">
+      <h2>Seguimiento sistemático a los RAE</h2>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0px;">
+        <div class="line-gold" style="width: 450px; height: 3px; background-color: #ba9b5e; border-radius: 2px;"></div>
+        <div class="line-gray" style="width: 400px; height: 6px; background-color: #e0e0e0; border-radius: 3px;"></div>
+      </div>
+    </div>
+
+    <!-- Contenedor Interactivo Graficos RAE -->
+    <div class="rae-container" id="rae-container">
+      
+      <svg class="rae-svg" viewBox="0 0 1050 600">
+        <line x1="525" y1="300" x2="525" y2="120" stroke="#4c779e" stroke-width="3" />
+        <line x1="525" y1="300" x2="325" y2="450" stroke="#4c779e" stroke-width="3" />
+        <line x1="525" y1="300" x2="725" y2="450" stroke="#4c779e" stroke-width="3" />
+      </svg>
+
+      <div class="rae-circle center-circle">
+        Instrumentos<br>evaluación<br>por<br>observación<br>RAE
+      </div>
+
+      <!-- Top -->
+      <div class="rae-circle btn-circle top-circle" onclick="toggleRaeText('rae-text-1')">
+        Rúbrica
+      </div>
+      <div class="rae-text text-box-1" id="rae-text-1">
+        Una rúbrica señala con precisión la<br>actividad o producto que van a ser<br>evaluados
+      </div>
+
+      <!-- Bottom Left -->
+      <div class="rae-circle btn-circle bl-circle" onclick="toggleRaeText('rae-text-2')">
+        Participación<br>en clases
+      </div>
+      <div class="rae-text text-box-2" id="rae-text-2">
+        El profesor elabora un registro de la<br>frecuencia con que los estudiantes<br>aportan verbalmente ideas<br>relacionadas con el tema
+      </div>
+
+      <!-- Bottom Right -->
+      <div class="rae-circle btn-circle br-circle" onclick="toggleRaeText('rae-text-3')">
+        Demostración
+      </div>
+      <div class="rae-text text-box-3" id="rae-text-3">
+        Se le solicita al alumno que de manera<br>práctica muestre el manejo de un<br>instrumento, experimento o actividad<br>que requiera la secuencia de un<br>proceso o la manipulación de una<br>herramienta u objeto
+      </div>
+      
+    </div>
+
+  </div>
+
+  <!-- Script for interactions -->
+  <script>
+    function toggleRaeText(id) {
+      // En lugar de ocultar los demás, simplemente mostramos el objetivo (o lo alternamos)
+      const target = document.getElementById(id);
+      if (target) {
+        // Toggle the 'active' class to show the specific text box
+        target.classList.add('active');
+      }
+    }
+  </script>
+</body>
+
+</html>

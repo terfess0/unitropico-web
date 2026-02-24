@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <!-- Plugin de etiquetas para Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Título del artículo */
+    .top-left-title {
+      margin-bottom: 20px;
+    }
+
+    /* Encabezado de sección centrado con dos líneas */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .section-header-line h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      margin: 0 0 15px 0;
+      line-height: 1.2;
+    }
+
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+    }
+
+    .line-gold {
+      width: 300px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    .line-gray {
+      width: 150px;
+      height: 6px;
+      background-color: #A0A0A0;
+      border-radius: 3px;
+    }
+
+    /* ===== ESTILOS DE GRÁFICOS ===== */
+    .charts-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .chart-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 89, 78, 0.05);
+      border: 1px solid rgba(204, 222, 220, 0.4);
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .chart-card:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .chart-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      color: var(--verde-2);
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* Gráfico de Barras personalizado (horizontal) */
+    .bar-chart-container {
+      display: flex;
+      height: 300px;
+      position: relative;
+    }
+
+    .y-axis-wrapper {
+      display: flex;
+      align-items: stretch;
+      margin-right: 10px;
+    }
+
+    .y-axis-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--verde-1);
+      text-align: center;
+      margin-right: 8px;
+      padding-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .y-axis {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: right;
+      padding-right: 15px;
+      font-size: 11px;
+      color: var(--verde-1);
+      font-weight: 600;
+      width: 120px;
+      padding-bottom: 25px;
+    }
+
+    .bars-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid var(--verde-4);
+      border-bottom: 1px solid var(--verde-4);
+      padding-bottom: 5px;
+      position: relative;
+    }
+
+    .bar-row {
+      height: 22px;
+      display: flex;
+      align-items: center;
+    }
+
+    .bar {
+      height: 100%;
+      background-color: var(--bronce-1);
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 2px 0 10px rgba(181, 161, 96, 0.3);
+    }
+
+    .x-axis {
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--verde-1);
+      font-weight: 600;
+    }
+
+    .axis-label-bottom {
+      text-align: center;
+      font-size: 14px;
+      color: var(--verde-1);
+      margin-top: 35px;
+      font-weight: 600;
+    }
+
+    /* Gráfico de Torta */
+    .pie-container {
+      height: 350px;
+      position: relative;
+    }
+
+    /* Fuente */
+    .footer-source {
+      margin-top: 50px;
+      border-top: 1px solid var(--verde-5);
+      border-bottom: 1px solid var(--verde-5);
+      padding: 15px 0;
+      text-align: center;
+      font-style: italic;
+      color: var(--verde-1);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+      .section-header-line h2 {
+        font-size: 2rem;
+      }
+      .line-gold {
+        width: 200px;
+      }
+      .line-gray {
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">Artículo 2.5.3.2.3.2.3</span> Justificación del programa – Estado de la oferta de educación – Análisis Estadístico de la Oferta
+    </div>
+
+    <!-- Distribución Geográfica -->
+    <div class="section-header-line">
+      <h2 class="titulo">Distribución Geográfica</h2>
+      <div class="lines-container">
+        <div class="line-gold"></div>
+        <div class="line-gray"></div>
+      </div>
+    </div>
+
+    <!-- Contenedor de Gráficos en VERTICAL -->
+<div class="charts-stack">
+
+  <!-- HISTOGRAMA -->
+  <div class="chart-card">
+    <h3 class="chart-title subtitulo">Distribución de número de créditos</h3>
+    <div class="pie-container">
+      <canvas id="creditosChart"></canvas>
+    </div>
+  </div>
+
+  <!-- BARRAS POR SEMESTRES -->
+  <div class="chart-card">
+    <h3 class="chart-title subtitulo">
+      Distribución de programas de Ingeniería en IA según semestres
+    </h3>
+    <div class="pie-container">
+      <canvas id="semestresChart"></canvas>
+    </div>
+  </div>
+
+</div>
+    <!-- Fuente (exactamente como en la imagen) -->
+    <div class="footer-source">
+      <p class="parrafo" style="font-style: italic;">Fuente: Facultad de Ingenierías, 2025. Tomado Ministerio de Educación Nacional - Sistema Nacional de Información de la Educación Superior – SNIES (2025)</p>
+    </div>
+  </div>
+
+  <script>
+Chart.defaults.font.family = 'Montserrat';
+Chart.defaults.color = '#00594E';
+
+/* =========================
+   HISTOGRAMA DE CRÉDITOS
+========================= */
+
+// Datos simulados similares a la imagen
+const creditosData = [130,135,138,140,142,144,139,141,143,145,155];
+
+const ctxCreditos = document.getElementById('creditosChart').getContext('2d');
+
+new Chart(ctxCreditos, {
+    type: 'bar',
+    data: {
+        labels: creditosData,
+        datasets: [
+            {
+                type: 'bar',
+                label: 'Frecuencia',
+                data: [1,1,1,3,4,2,1,2,1,1,1],
+                backgroundColor: 'rgba(181,161,96,0.55)',
+                borderColor: '#B5A160',
+                borderWidth: 1.5,
+                borderRadius: 6
+            },
+            {
+                type: 'line',
+                label: 'Tendencia',
+                data: [0.4,0.6,1,1.6,1.8,1.5,1.2,1,0.8,0.5,0.3],
+                borderColor: '#F59E0B',
+                backgroundColor: 'rgba(245,158,11,0.2)',
+                tension: 0.4,
+                fill: false,
+                pointRadius: 0,
+                borderWidth: 2
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Créditos',
+                    font: { weight: '600' }
+                },
+                grid: { display: false }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Frecuencia',
+                    font: { weight: '600' }
+                },
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: { display: false }
+        },
+        animation: {
+            duration: 2000,
+            easing: 'easeOutQuart'
+        }
+    }
+});
+
+
+/* =========================
+   BARRAS POR SEMESTRES
+========================= */
+
+const ctxSemestres = document.getElementById('semestresChart').getContext('2d');
+
+new Chart(ctxSemestres, {
+    type: 'bar',
+    data: {
+        labels: ['8', '9'],
+        datasets: [{
+            data: [10, 4],
+            backgroundColor: [
+                '#5A4A3F',   // café oscuro como en imagen
+                '#D67C3C'    // naranja institucional
+            ],
+            borderRadius: 10,
+            barThickness: 120
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Duración en semestres',
+                    font: { weight: '600' }
+                },
+                grid: { display: false }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Número de programas',
+                    font: { weight: '600' }
+                },
+                beginAtZero: true,
+                ticks: { stepSize: 2 }
+            }
+        },
+        plugins: {
+            legend: { display: false },
+            datalabels: {
+                anchor: 'end',
+                align: 'end',
+                color: '#000',
+                font: { weight: 'bold' },
+                formatter: (v) => v
+            }
+        },
+        animation: {
+            duration: 2200,
+            easing: 'easeOutBack'
+        }
+    },
+    plugins: [ChartDataLabels]
+});
+</script>
+</body>
+</html>

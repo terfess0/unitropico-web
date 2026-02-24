@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <!-- Plugin de etiquetas para Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Título del artículo */
+    .top-left-title {
+      margin-bottom: 20px;
+    }
+
+    /* Encabezado de sección centrado con dos líneas */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .section-header-line h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      margin: 0 0 15px 0;
+      line-height: 1.2;
+    }
+
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0px;
+    }
+
+    .line-gold {
+      width: 300px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    .line-gray {
+      width: 150px;
+      height: 6px;
+      background-color: #A0A0A0;
+      border-radius: 3px;
+    }
+
+    /* Vigilada (opcional) */
+    .vigilada {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--bronce-1);
+      color: var(--verde-1);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+
+    /* Responsive general */
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+
+      .section-header-line h2 {
+        font-size: 2rem;
+      }
+
+      .line-gold {
+        width: 200px;
+      }
+
+      .line-gray {
+        width: 100px;
+      }
+    }
+
+    /* ===== ESTILOS DE GRÁFICOS ===== */
+    .charts-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .chart-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 89, 78, 0.05);
+      border: 1px solid rgba(204, 222, 220, 0.4);
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .chart-card:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .chart-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      color: var(--verde-2);
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* Gráfico de Barras personalizado */
+    .bar-chart-container {
+      display: flex;
+      height: 300px;
+      position: relative;
+    }
+
+    /* Contenedor del eje Y con etiqueta vertical */
+    .y-axis-wrapper {
+      display: flex;
+      align-items: stretch;
+      margin-right: 10px;
+    }
+
+    .y-axis-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--verde-1);
+      text-align: center;
+      margin-right: 8px;
+      padding-bottom: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .y-axis {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: right;
+      padding-right: 15px;
+      font-size: 11px;
+      color: var(--verde-1);
+      font-weight: 600;
+      width: 120px;
+      padding-bottom: 25px;
+    }
+
+    .bars-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-left: 1px solid var(--verde-4);
+      border-bottom: 1px solid var(--verde-4);
+      padding-bottom: 5px;
+      position: relative;
+    }
+
+    .bar-row {
+      height: 22px;
+      display: flex;
+      align-items: center;
+    }
+
+    .bar {
+      height: 100%;
+      background-color: var(--bronce-1);
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 2px 0 10px rgba(181, 161, 96, 0.3);
+    }
+
+    .x-axis {
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--verde-1);
+      font-weight: 600;
+    }
+
+    /* Etiqueta del eje X (Cantidad de programas) con el mismo estilo que Departamento */
+    .axis-label-bottom {
+      text-align: center;
+      font-size: 14px;
+      color: var(--verde-1);
+      margin-top: 35px;
+      font-weight: 600;
+    }
+
+    /* Gráfico de Torta */
+    .pie-container {
+      height: 350px;
+      position: relative;
+    }
+
+    .footer-source {
+      margin-top: 50px;
+      border-top: 1px solid var(--verde-5);
+      border-bottom: 1px solid var(--verde-5);
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    .footer-source {
+      margin-top: 50px;
+      border-top: 1px solid var(--verde-5);
+      border-bottom: 1px solid var(--verde-5);
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">Artículo 2.5.3.2.3.2.3</span> Justificación del programa - Estado de la oferta de
+      educación - Análisis Estadístico de la Oferta
+    </div>
+
+    <!-- Distribución Geográfica -->
+    <div class="section-header-line">
+      <h2 class="titulo">Distribución Geográfica</h2>
+      <div class="lines-container">
+        <div class="line-gold"></div>
+        <div class="line-gray"></div>
+      </div>
+    </div>
+
+    <!-- Contenedor de Gráficos en VERTICAL -->
+    <div class="charts-stack">
+      <!-- Gráfico de Barras -->
+      <div class="chart-card">
+        <h3 class="chart-title subtitulo" style="font-size:1.2rem;">Número de programas por departamento</h3>
+        <div class="bar-chart-container">
+          <!-- Wrapper para eje Y con etiqueta vertical -->
+          <div class="y-axis-wrapper">
+            <div class="y-axis-label">Departamento</div>
+            <div class="y-axis">
+              <span>Boyacá</span>
+              <span>Caldas</span>
+              <span>Virtual</span>
+              <span>Presencial-Virtual</span>
+              <span>Valle Del Cauca</span>
+              <span>Santander</span>
+              <span>Bogotá, D.C.</span>
+            </div>
+          </div>
+          <div class="bars-area">
+            <!-- Barras con valores reales -->
+            <div class="bar-row">
+              <div class="bar" data-value="25"></div>
+            </div> <!-- Boyacá 1/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="25"></div>
+            </div> <!-- Caldas 1/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="25"></div>
+            </div> <!-- Virtual 1/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="25"></div>
+            </div> <!-- Presencial-Virtual 1/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="25"></div>
+            </div> <!-- Valle 1/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="50"></div>
+            </div> <!-- Santander 2/4 -->
+            <div class="bar-row">
+              <div class="bar" data-value="100"></div>
+            </div> <!-- Bogotá 4/4 -->
+            <!-- Eje X -->
+            <div class="x-axis">
+              <span>0.0</span><span>0.5</span><span>1.0</span><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span><span>3.5</span><span>4.0</span>
+            </div>
+          </div>
+        </div>
+        <!-- Etiqueta inferior con el mismo estilo que Departamento -->
+        <p class="axis-label-bottom">Cantidad de programas</p>
+      </div>
+
+      <!-- Gráfico de Torta -->
+      <div class="chart-card">
+        <h3 class="chart-title subtitulo" style="font-size:1.2rem;">Distribución de programas por modalidad</h3>
+        <div class="pie-container">
+          <canvas id="modalidadChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fuente -->
+    <div class="footer-source">
+      <p class="subtitulo">Fuente: Facultad de Ingenierías, 2025. Tomado Ministerio de Educación Nacional - Sistema
+        Nacional de
+        Información de la Educación Superior – SNIES (2025)</p>
+    </div>
+  </div>
+
+  <script>
+    // Animación de barras al cargar
+    window.addEventListener('load', () => {
+      const bars = document.querySelectorAll('.bar');
+      bars.forEach(bar => {
+        const value = bar.getAttribute('data-value');
+        bar.style.width = value + '%';
+      });
+    });
+
+    // Gráfico de Torta con Chart.js y plugin de datalabels
+    const ctx = document.getElementById('modalidadChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Presencial', 'Presencial-Virtual', 'Virtual'],
+        datasets: [{
+          data: [72.7, 18.2, 9.1],
+          backgroundColor: [
+            '#B5A160', // Bronce 1
+            '#C4B47F', // Bronce 2
+            '#EF4444'  // Rojo para Virtual
+          ],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              font: {
+                family: 'Montserrat',
+                weight: '600',
+                size: 12
+              },
+              color: '#00594E',
+              padding: 20
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                return context.label + ': ' + context.raw + '%';
+              }
+            }
+          },
+          datalabels: {
+            display: true,
+            color: '#ffffff',
+            font: {
+              family: 'Montserrat',
+              weight: 'bold',
+              size: 14
+            },
+            formatter: (value) => value + '%',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            borderRadius: 10,
+            padding: {
+              top: 4,
+              bottom: 4,
+              left: 8,
+              right: 8
+            }
+          }
+        },
+        animation: {
+          duration: 2000,
+          easing: 'easeOutQuart'
+        }
+      },
+      plugins: [ChartDataLabels]
+    });
+  </script>
+</body>
+
+</html>

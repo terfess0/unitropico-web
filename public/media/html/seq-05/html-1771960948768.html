@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investigación, Innovación y Creación — Ingeniería en Inteligencia Artificial | Unitrópico 2026</title>
+    <meta name="description"
+        content="Presentación institucional 2026 del Programa de Ingeniería en Inteligencia Artificial de Unitrópico.">
+    <style>
+        /* ============================================================
+   PALETA OFICIAL UNITRÓPICO
+   Verde institucional : #1B6B5A
+   Verde oscuro        : #144845
+   Dorado/Oro          : #B8943F
+   Fondo               : #FFFFFF
+============================================================ */
+        :root {
+            --verde: #1B6B5A;
+            --verde-dark: #144845;
+            --verde-mid: #1f7d68;
+            --gold: #B8943F;
+            --gold-light: #d4aa5a;
+            --white: #FFFFFF;
+            --bg: #F5F7F5;
+            --text: #1A2E28;
+            --text-muted: #4a6560;
+            --card-bg: #FFFFFF;
+            --card-bdr: rgba(27, 107, 90, 0.18);
+            --shadow: 0 4px 18px rgba(27, 107, 90, 0.11);
+            --shadow-md: 0 8px 28px rgba(27, 107, 90, 0.16);
+            --radius: 10px;
+            --radius-sm: 6px;
+            --transition: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-h: 60px;
+            --footer-h: 46px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--verde-dark);
+            color: var(--text);
+        }
+
+        /* ── BARRA DE PROGRESO ─────────────────────────── */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            width: 0%;
+            transition: width 0.4s ease;
+            z-index: 200;
+        }
+
+        /* ── HEADER ─────────────────────────────────────── */
+        #site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            z-index: 150;
+            background: linear-gradient(90deg, var(--verde-dark) 0%, var(--verde) 55%, var(--verde-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hdr-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hdr-logo img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .hdr-logo .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: -0.02em;
+        }
+
+        .hdr-logo .logo-sub {
+            font-size: 0.6rem;
+            color: rgba(255, 255, 255, 0.65);
+            font-weight: 400;
+            line-height: 1.3;
+            max-width: 150px;
+        }
+
+        .hdr-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hdr-badge {
+            background: var(--gold);
+            color: var(--white);
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            padding: 5px 12px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .hdr-year {
+            color: var(--gold);
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        #counter {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.98rem;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── FOOTER ─────────────────────────────────────── */
+        #site-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--footer-h);
+            z-index: 150;
+            background: var(--verde-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .ftr-left {
+            background: var(--gold);
+            color: var(--white);
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 3px;
+        }
+
+        .ftr-center {
+            font-size: 1.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.04em;
+        }
+
+        .ftr-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(184, 148, 63, 0.15);
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            padding: 7px 22px;
+            border-radius: 22px;
+            font-size: 1.02rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            letter-spacing: 0.04em;
+        }
+
+        .nav-btn:hover {
+            background: rgba(184, 148, 63, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ── DECK & SLIDES ──────────────────────────────── */
+        #deck {
+            position: fixed;
+            top: var(--header-h);
+            bottom: var(--footer-h);
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 28px;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(50px);
+            transition: opacity var(--transition), transform var(--transition);
+        }
+
+        .slide.active {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .slide.active>* {
+            animation: fadeUp 0.42s ease both;
+        }
+
+        .slide.active>*:nth-child(1) {
+            animation-delay: 0.04s;
+        }
+
+        .slide.active>*:nth-child(2) {
+            animation-delay: 0.10s;
+        }
+
+        .slide.active>*:nth-child(3) {
+            animation-delay: 0.16s;
+        }
+
+        .slide.active>*:nth-child(4) {
+            animation-delay: 0.22s;
+        }
+
+        .slide.active>*:nth-child(5) {
+            animation-delay: 0.28s;
+        }
+
+        .slide.active>*:nth-child(6) {
+            animation-delay: 0.34s;
+        }
+
+        /* ── TIPOGRAFÍA ─────────────────────────────────── */
+        .slide-title {
+            font-size: clamp(3.5rem, 6.5vw, 5rem);
+            font-weight: 800;
+            color: var(--verde);
+            text-align: center;
+            margin-bottom: 4px;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+        }
+
+        .slide-title .accent {
+            color: var(--gold);
+        }
+
+        .slide-subtitle {
+            font-size: 1.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 14px;
+        }
+
+        .divider {
+            width: 56px;
+            height: 4px;
+            margin: 8px auto 16px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--verde), var(--gold));
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(27, 107, 90, 0.08);
+            border: 1px solid var(--verde);
+            color: var(--verde);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* ── CARDS ──────────────────────────────────────── */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-bdr);
+            border-radius: var(--radius);
+            padding: 20px 22px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--verde);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title .icon {
+            font-size: 1.7rem;
+        }
+
+        /* ── LISTAS ─────────────────────────────────────── */
+        .check-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 1.9rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .check-list li::before {
+            content: '';
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--gold);
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        /* ── GRIDS ──────────────────────────────────────── */
+        .g2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            width: 100%;
+        }
+
+        .g3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            width: 100%;
+        }
+
+        .g4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        /* ── BADGES ─────────────────────────────────────── */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .badge-v {
+            background: rgba(27, 107, 90, 0.1);
+            color: var(--verde);
+            border: 1px solid var(--verde);
+        }
+
+        .badge-g {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .badge-gout {
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+
+        /* ── TABLA ──────────────────────────────────────── */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.7rem;
+        }
+
+        .data-table th {
+            background: var(--verde);
+            color: var(--white);
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+        }
+
+        .data-table th:first-child {
+            border-radius: var(--radius-sm) 0 0 0;
+        }
+
+        .data-table th:last-child {
+            border-radius: 0 var(--radius-sm) 0 0;
+        }
+
+        .data-table td {
+            padding: 8px 14px;
+            color: var(--text);
+            border-bottom: 1px solid rgba(27, 107, 90, 0.08);
+            font-size: 1.08rem;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:nth-child(even) td {
+            background: rgba(27, 107, 90, 0.03);
+        }
+
+        .data-table tr:hover td {
+            background: rgba(184, 148, 63, 0.06);
+        }
+
+        /* ── SLIDE 1 — PORTADA ──────────────────────────── */
+        #slide-1 {
+            flex-direction: row;
+            padding: 0;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        .cover-left {
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(160deg, var(--verde-dark) 0%, var(--verde) 55%, rgba(27, 107, 90, 0.65) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            clip-path: polygon(0 0, 85% 0, 100% 100%, 0 100%);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .cover-right {
+            flex: 1;
+            padding: 44px 52px 44px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cover-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: flex;
+            align-items: stretch;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .cover-badge .cb-year {
+            background: var(--gold);
+            color: var(--white);
+            font-size: 1.45rem;
+            font-weight: 800;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .cover-badge .cb-prog {
+            background: var(--verde);
+            color: var(--white);
+            font-size: 1.06rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            line-height: 1.4;
+        }
+
+        .cover-title {
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 800;
+            color: var(--verde);
+            line-height: 1.08;
+            margin-bottom: 18px;
+        }
+
+        .cover-line {
+            width: 64px;
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            border-radius: 2px;
+            margin-bottom: 20px;
+        }
+
+        .cover-sub {
+            font-size: 1.7rem;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 26px;
+        }
+
+        .cover-logo-area {
+            position: absolute;
+            bottom: 22px;
+            right: 28px;
+            text-align: right;
+        }
+
+        .cover-logo-area img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .cover-logo-area .cl-name {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--gold);
+            letter-spacing: -0.01em;
+        }
+
+        .cover-logo-area .cl-sub {
+            font-size: 0.80rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ── LEADER CARD ─────────────────────────────────── */
+        .leader-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, rgba(27, 107, 90, 0.06), rgba(184, 148, 63, 0.06));
+            border: 2px solid var(--verde);
+            border-radius: var(--radius);
+            padding: 18px 28px;
+            width: 100%;
+            margin-bottom: 18px;
+        }
+
+        .leader-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--verde), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+
+        .leader-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--verde);
+        }
+
+        .leader-role {
+            font-size: 1.02rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .leader-deg {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+
+        /* ── PATENT ──────────────────────────────────────── */
+        .patent-card {
+            background: linear-gradient(135deg, rgba(27, 107, 90, 0.04), rgba(184, 148, 63, 0.04));
+            border: 2px solid var(--verde);
+            border-radius: var(--radius);
+            padding: 30px 44px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .patent-num {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--verde);
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+        }
+
+        .patent-tit {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 18px;
+            line-height: 1.3;
+        }
+
+        .patent-row {
+            font-size: 1.7rem;
+            color: var(--text-muted);
+            margin-bottom: 7px;
+            line-height: 1.55;
+        }
+
+        .patent-row strong {
+            color: var(--text);
+        }
+
+        /* ── NETWORK CHIPS ───────────────────────────────── */
+        .net-chip {
+            background: var(--white);
+            border: 1px solid var(--card-bdr);
+            border-radius: var(--radius);
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .net-chip:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .net-chip .abbr {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--verde);
+        }
+
+        .net-chip .full {
+            font-size: 0.94rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.45;
+        }
+
+        /* ── CERTIFICATE ─────────────────────────────────── */
+        .cert-card {
+            background: var(--white);
+            border: 2px solid var(--verde);
+            border-radius: var(--radius);
+            padding: 36px 52px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cert-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--verde), var(--gold));
+        }
+
+        .cert-label {
+            font-size: 1.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cert-event {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--verde);
+            margin-bottom: 8px;
+        }
+
+        .cert-detail {
+            font-size: 1.12rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .cert-name {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* ── FORMATIVA GRID ──────────────────────────────── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            width: 100%;
+        }
+
+        .form-card {
+            background: var(--white);
+            border: 1px solid var(--card-bdr);
+            border-radius: var(--radius);
+            padding: 18px 14px;
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--verde);
+        }
+
+        .form-card .fi {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .form-card .ft {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--verde);
+            margin-bottom: 6px;
+        }
+
+        .form-card .fc {
+            font-size: 1.7rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        /* ── PROJECTIONS ─────────────────────────────────── */
+        .proj-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            border-left: 4px solid var(--gold);
+            background: rgba(27, 107, 90, 0.03);
+            margin-bottom: 10px;
+            width: 100%;
+            transition: background 0.2s;
+        }
+
+        .proj-item:hover {
+            background: rgba(27, 107, 90, 0.07);
+        }
+
+        .proj-icon {
+            font-size: 1.45rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .proj-text {
+            font-size: 1.7rem;
+            color: var(--text);
+            line-height: 1.55;
+        }
+
+        /* ── PUBLICATIONS ────────────────────────────────── */
+        .pub-wrap {
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        .pub-item {
+            border-left: 4px solid var(--verde);
+            padding: 10px 16px;
+            background: rgba(27, 107, 90, 0.03);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            margin-bottom: 9px;
+        }
+
+        .pub-item .year {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 0.07em;
+        }
+
+        .pub-item .tit {
+            font-size: 1.12rem;
+            color: var(--text);
+            font-weight: 600;
+            line-height: 1.35;
+            margin: 3px 0;
+        }
+
+        .pub-item .jrn {
+            font-size: 1.7rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ── CIERRE ──────────────────────────────────────── */
+        .thanks {
+            font-size: clamp(3.5rem, 9vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--verde), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cierre-uni {
+            font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+            font-weight: 800;
+            color: var(--gold);
+            margin-top: 10px;
+        }
+
+        .contact-row {
+            font-size: 1.06rem;
+            color: var(--text-muted);
+            margin-top: 16px;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contact-row span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ── RESPONSIVE ──────────────────────────────────── */
+        @media(max-width:768px) {
+            .slide {
+                padding: 12px 14px;
+            }
+
+            .g2,
+            .g3,
+            .g4,
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            #slide-1 {
+                flex-direction: column;
+            }
+
+            .cover-left {
+                width: 100%;
+                height: 30%;
+                clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+                padding: 20px;
+            }
+
+            .cover-right {
+                padding: 16px 20px;
+            }
+        }
+
+        @media(max-width:520px) {
+
+            .g3,
+            .g4,
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── BOX-CHECK-LIST (plantilla oficial) ─────────── */
+        .box-check-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .box-check-list li {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 2rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .box-check-list li::before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            border: 2.5px solid var(--verde);
+            border-radius: 4px;
+            background: rgba(27, 107, 90, 0.06);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="progress-bar"></div>
+
+    <!-- HEADER -->
+    <header id="site-header">
+        <div class="hdr-logo">
+            <img src="simbolo-color.png" alt="Unitrópico" height="44">
+            <div>
+                <div class="logo-text">Unitrópico</div>
+                <div class="logo-sub">Universidad Internacional del Trópico Americano</div>
+            </div>
+        </div>
+        <div class="hdr-right">
+            <div class="hdr-badge">Ingeniería en Inteligencia Artificial</div>
+            <div class="hdr-year">2026</div>
+            <div id="counter">1 / 14</div>
+        </div>
+    </header>
+
+    <!-- DECK -->
+    <div id="deck">
+
+        <!-- ===== SLIDE 1: PORTADA ===== -->
+        <section class="slide" id="slide-1">
+            <div class="cover-left">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 520"
+                    style="position:absolute;inset:0;width:100%;height:100%">
+                    <defs>
+                        <linearGradient id="covOv" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#0d3330" stop-opacity=".65" />
+                            <stop offset="100%" stop-color="#1B6B5A" stop-opacity=".1" />
+                        </linearGradient>
+                    </defs>
+                    <g opacity=".25">
+                        <rect x="-30" y="50" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,50)" />
+                        <rect x="-30" y="88" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,88)" />
+                        <rect x="-30" y="126" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,126)" />
+                        <rect x="-30" y="164" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,164)" />
+                        <rect x="-30" y="202" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,202)" />
+                        <rect x="-30" y="240" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,240)" />
+                        <rect x="-30" y="278" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,278)" />
+                        <rect x="-30" y="316" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,316)" />
+                        <rect x="-30" y="354" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,354)" />
+                        <rect x="-30" y="392" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,392)" />
+                        <rect x="-30" y="430" width="410" height="16" rx="3" fill="#6fcf8f"
+                            transform="rotate(-6,-30,430)" />
+                        <rect x="-30" y="468" width="410" height="16" rx="3" fill="#4dba72"
+                            transform="rotate(-6,-30,468)" />
+                    </g>
+                    <rect width="320" height="520" fill="url(#covOv)" />
+                    <g stroke="#B8943F" stroke-width="1.2" opacity=".65">
+                        <line x1="55" y1="130" x2="160" y2="200" />
+                        <line x1="265" y1="110" x2="160" y2="200" />
+                        <line x1="160" y1="200" x2="200" y2="320" />
+                        <line x1="160" y1="200" x2="95" y2="355" />
+                        <line x1="95" y1="355" x2="200" y2="320" />
+                        <line x1="55" y1="130" x2="95" y2="355" />
+                        <line x1="265" y1="110" x2="200" y2="320" />
+                        <line x1="130" y1="255" x2="265" y2="110" />
+                        <line x1="130" y1="255" x2="55" y2="130" />
+                    </g>
+                    <g fill="#B8943F">
+                        <circle cx="55" cy="130" r="6" />
+                        <circle cx="160" cy="200" r="11" />
+                        <circle cx="265" cy="110" r="6" />
+                        <circle cx="200" cy="320" r="7" />
+                        <circle cx="95" cy="355" r="6" />
+                        <circle cx="130" cy="255" r="5" />
+                    </g>
+                    <circle cx="160" cy="200" r="18" fill="none" stroke="#B8943F" stroke-width="1.5" opacity=".4">
+                        <animate attributeName="r" values="12;30;12" dur="3s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" values=".5;0;.5" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <g>
+                        <rect x="196" y="56" width="22" height="7" rx="2" fill="rgba(255,255,255,.9)" />
+                        <circle cx="193" cy="54" r="5" fill="none" stroke="#B8943F" stroke-width="1.3" />
+                        <circle cx="221" cy="54" r="5" fill="none" stroke="#B8943F" stroke-width="1.3" />
+                        <circle cx="193" cy="66" r="5" fill="none" stroke="#B8943F" stroke-width="1.3" />
+                        <circle cx="221" cy="66" r="5" fill="none" stroke="#B8943F" stroke-width="1.3" />
+                        <line x1="207" y1="63" x2="207" y2="76" stroke="rgba(255,255,255,.7)" stroke-width="1" />
+                        <circle cx="207" cy="78" r="2.5" fill="#B8943F" />
+                        <animateTransform attributeName="transform" type="translate" values="0,0;4,-5;0,0" dur="4s"
+                            repeatCount="indefinite" />
+                    </g>
+                    <g opacity=".78">
+                        <rect x="43" y="222" width="16" height="6" rx="2" fill="rgba(255,255,255,.85)" />
+                        <circle cx="41" cy="221" r="4" fill="none" stroke="#B8943F" stroke-width="1.2" />
+                        <circle cx="61" cy="221" r="4" fill="none" stroke="#B8943F" stroke-width="1.2" />
+                        <circle cx="41" cy="229" r="4" fill="none" stroke="#B8943F" stroke-width="1.2" />
+                        <circle cx="61" cy="229" r="4" fill="none" stroke="#B8943F" stroke-width="1.2" />
+                        <animateTransform attributeName="transform" type="translate" values="0,0;-4,-4;0,0" dur="5.5s"
+                            repeatCount="indefinite" />
+                    </g>
+                    <g opacity=".88">
+                        <line x1="105" y1="430" x2="105" y2="462" stroke="rgba(255,255,255,.7)" stroke-width="2" />
+                        <circle cx="105" cy="428" r="5" fill="#B8943F" />
+                        <circle cx="105" cy="428" r="10" fill="none" stroke="#B8943F" stroke-width="1" opacity=".5">
+                            <animate attributeName="r" values="5;16;5" dur="2.5s" repeatCount="indefinite" />
+                            <animate attributeName="opacity" values=".7;0;.7" dur="2.5s" repeatCount="indefinite" />
+                        </circle>
+                        <line x1="205" y1="415" x2="205" y2="447" stroke="rgba(255,255,255,.7)" stroke-width="2" />
+                        <circle cx="205" cy="413" r="5" fill="#B8943F" />
+                        <line x1="248" y1="392" x2="248" y2="424" stroke="rgba(255,255,255,.7)" stroke-width="2" />
+                        <circle cx="248" cy="390" r="5" fill="#B8943F" />
+                    </g>
+                    <rect x="28" y="370" width="106" height="68" rx="7" fill="rgba(255,255,255,.1)"
+                        stroke="rgba(184,148,63,.75)" stroke-width="1.3" />
+                    <text x="38" y="388" fill="#B8943F" font-family="monospace" font-size="7.5"
+                        font-weight="700">PRECISION AI</text>
+                    <rect x="38" y="393" width="74" height="3.5" rx="2" fill="rgba(163,230,160,.25)" />
+                    <rect x="38" y="393" width="60" height="3.5" rx="2" fill="#6fcf8f" />
+                    <text x="38" y="410" fill="rgba(255,255,255,.88)" font-family="monospace" font-size="7">Moisture:
+                        73%</text>
+                    <text x="38" y="422" fill="rgba(255,255,255,.88)" font-family="monospace" font-size="7">NDVI:
+                        0.82</text>
+                    <text x="38" y="434" fill="rgba(255,255,255,.88)" font-family="monospace" font-size="7">AI Score:
+                        94.1</text>
+                    <text x="160" y="508" text-anchor="middle" fill="rgba(255,255,255,.6)" font-size="8.5"
+                        font-family="sans-serif" letter-spacing=".06em">Vigilada MinEducación</text>
+                </svg>
+            </div>
+            <div class="cover-right">
+                <div class="cover-badge">
+                    <div class="cb-year">2026</div>
+                    <div class="cb-prog">Ingeniería en<br>Inteligencia Artificial</div>
+                </div>
+                <div class="cover-title">Investigación,<br>Innovación y/o<br>Creación Artística<br>y Cultural</div>
+                <div class="cover-line"></div>
+                <div class="cover-sub">Programa de Ingeniería en Inteligencia Artificial<br>Universidad Internacional
+                    del Trópico
+                    Americano</div>
+                <div class="cover-logo-area">
+                    <img src="simbolo-color.png" alt="Unitrópico" style="height:52px;width:auto;">
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 2: DECLARACIÓN DE INCORPORACIÓN DE INVESTIGACIÓN ===== -->
+        <section class="slide" id="slide-2"
+            style="justify-content:flex-start;padding:20px 36px 16px;overflow-y:auto;gap:0;">
+
+            <!-- TÍTULO PRINCIPAL CENTRADO -->
+            <div style="width:100%;text-align:center;margin-bottom:10px;">
+                <div style="font-size:1.6rem;font-weight:700;color:var(--text);letter-spacing:-0.01em;line-height:1.3;">
+                    Declaración de <span
+                        style="color:var(--verde);text-decoration:underline;text-underline-offset:4px;">incorporación de
+                        investigación</span>
+                </div>
+            </div>
+
+            <!-- ARTÍCULO EN NEGRITA -->
+            <div
+                style="width:100%;background:rgba(27,107,90,0.07);border-radius:8px;padding:10px 16px;margin-bottom:14px;">
+                <div style="font-size:0.8rem;font-weight:800;color:var(--text);line-height:1.6;">
+                    <span style="color:var(--verde);">ARTÍCULO 2.5.3.2.3.2.6.</span> Investigación, innovación y/o
+                    creación artística y cultural –
+                    Declaración de la incorporación de la investigación, innovación y/o creación artística y cultural
+                    en el desarrollo del conocimiento
+                </div>
+            </div>
+
+            <!-- CUERPO PRINCIPAL: texto izq. + 4 columnas de imágenes der. -->
+            <div style="display:grid;grid-template-columns:1fr 2.2fr;gap:16px;width:100%;flex:1;min-height:0;">
+
+                <!-- COLUMNA IZQUIERDA: párrafo descriptivo -->
+                <div
+                    style="border:2px solid rgba(27,107,90,0.35);border-radius:12px;padding:20px;display:flex;flex-direction:column;justify-content:center;background:rgba(27,107,90,0.04);box-shadow:0 2px 8px rgba(27,107,90,0.08);">
+                    <div style="font-size:1.64rem;color:var(--text);line-height:1.7;text-align:center;">
+                        Los procesos investigativos del programa de Ingeniería en Inteligencia Artificial
+                        están soportados por la <strong>sinergia entre los grupos de investigación</strong> de la
+                        facultad y la colaboración de otros grupos, lo que enriquece significativamente
+                        la generación de conocimiento.
+                    </div>
+                    <div style="margin-top:10px;font-size:1.64rem;color:var(--text);line-height:1.7;text-align:center;">
+                        Esta <strong>articulación multidisciplinaria</strong> enriquece el proceso investigativo y
+                        genera un entorno propicio para la innovación y el desarrollo de soluciones a
+                        problemas complejos.
+                    </div>
+                    <div style="margin-top:10px;font-size:1.64rem;color:var(--text);line-height:1.7;text-align:center;">
+                        En este contexto, el soporte investigativo del Programa de Ingeniería en Inteligencia Artificial
+                        se organiza en
+                        <strong>cuatro perspectivas clave.</strong>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: 4 tarjetas de imagen + rótulo -->
+                <div style="display:flex;flex-direction:column;gap:0;min-height:0;">
+                    <!-- 4 tarjetas horizontales -->
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex:1;">
+
+                        <!-- Perspectiva 1 -->
+                        <div
+                            style="display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1.5px solid rgba(27,107,90,0.2);">
+                            <div style="flex:1;overflow:hidden;min-height:0;">
+                                <img src="grupos_inv/image3.jpg" alt="Integración interdisciplinaria"
+                                    style="width:100%;height:100%;object-fit:cover;display:block;" />
+                            </div>
+                            <div style="padding:8px 6px;background:rgba(27,107,90,0.06);text-align:center;">
+                                <div style="font-size:2.04rem;font-weight:600;color:var(--verde);line-height:1.4;">
+                                    Fomento de la integración interdisciplinaria a nivel institucional
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perspectiva 2 -->
+                        <div
+                            style="display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1.5px solid rgba(27,107,90,0.2);">
+                            <div style="flex:1;overflow:hidden;min-height:0;">
+                                <img src="grupos_inv/image4.jpg" alt="Colaboración grupos externos"
+                                    style="width:100%;height:100%;object-fit:cover;display:block;" />
+                            </div>
+                            <div style="padding:8px 6px;background:rgba(27,107,90,0.06);text-align:center;">
+                                <div style="font-size:2.04rem;font-weight:600;color:var(--verde);line-height:1.4;">
+                                    Fortalecimiento de la colaboración con grupos de investigación externos
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perspectiva 3 -->
+                        <div
+                            style="display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1.5px solid rgba(27,107,90,0.2);">
+                            <div style="flex:1;overflow:hidden;min-height:0;">
+                                <img src="grupos_inv/image5.jpg" alt="Investigación regional y nacional"
+                                    style="width:100%;height:100%;object-fit:cover;display:block;" />
+                            </div>
+                            <div style="padding:8px 6px;background:rgba(27,107,90,0.06);text-align:center;">
+                                <div style="font-size:2.04rem;font-weight:600;color:var(--verde);line-height:1.4;">
+                                    Proyectos de investigación aplicados al desarrollo regional y nacional
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Perspectiva 4 -->
+                        <div
+                            style="display:flex;flex-direction:column;border-radius:12px;overflow:hidden;border:1.5px solid rgba(27,107,90,0.2);">
+                            <div style="flex:1;overflow:hidden;min-height:0;">
+                                <img src="grupos_inv/image6.jpeg" alt="Innovación tecnológica global"
+                                    style="width:100%;height:100%;object-fit:cover;display:block;" />
+                            </div>
+                            <div style="padding:8px 6px;background:rgba(27,107,90,0.06);text-align:center;">
+                                <div style="font-size:2.04rem;font-weight:600;color:var(--verde);line-height:1.4;">
+                                    Proyectos de Innovación tecnológica para la solución de problemáticas globales
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- FRANJA VERDE "Perspectivas de investigación del programa" -->
+                    <div
+                        style="margin-top:10px;background:linear-gradient(90deg,var(--verde) 0%,#2d9e7a 100%);border-radius:8px;padding:9px 20px;display:flex;align-items:center;justify-content:center;gap:12px;">
+                        <span style="color:rgba(255,255,255,0.8);font-size:1.1rem;">◀</span>
+                        <span
+                            style="font-size:1.7rem;font-weight:700;color:#fff;letter-spacing:0.04em;text-align:center;">
+                            Perspectivas de investigación del programa
+                        </span>
+                        <span style="color:rgba(255,255,255,0.8);font-size:1.1rem;">▶</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- LOGO UNITRÓPICO abajo a la derecha -->
+            <div style="width:100%;display:flex;justify-content:flex-end;margin-top:10px;">
+                <img src="simbolo-color.png" alt="Unitrópico" style="height:36px;width:auto;opacity:0.85;" />
+            </div>
+
+        </section>
+
+        <!-- ===== SLIDE 3: INVESTIGACIÓN EN EL PROGRAMA ===== -->
+        <section class="slide" id="slide-3">
+            <div class="slide-title">Investigación <strong style="color:var(--text);font-weight:800">en el
+                    Programa</strong></div>
+            <div class="divider"></div>
+            <div
+                style="border:2.5px solid #B8943F;border-radius:12px;width:100%;padding:28px 36px;display:flex;align-items:stretch;flex:1;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;width:100%;">
+                    <div style="display:flex;flex-direction:column;">
+                        <div
+                            style="text-align:center;color:var(--verde);font-size:3.75rem;font-weight:800;margin-bottom:14px;">
+                            Investigación</div>
+                        <div
+                            style="background:#7aaab8;color:white;text-align:center;font-weight:700;font-size:2.6rem;padding:12px;border-radius:6px;margin-bottom:20px;">
+                            Profesores</div>
+                        <ul class="box-check-list">
+                            <li>Proyectos de investigación</li>
+                            <li>Publicación y Divulgación</li>
+                            <li>Desarrollo tecnológico e innovación</li>
+                            <li>Colaboración y Redes</li>
+                            <li>Apropiación social del conocimiento</li>
+                        </ul>
+                    </div>
+                    <div style="display:flex;flex-direction:column;">
+                        <div
+                            style="text-align:center;color:var(--verde);font-size:3.75rem;font-weight:800;margin-bottom:14px;">
+                            Investigación Formativa</div>
+                        <div
+                            style="background:var(--gold);color:white;text-align:center;font-weight:700;font-size:2.6rem;padding:12px;border-radius:6px;margin-bottom:20px;">
+                            Estudiantes</div>
+                        <ul class="box-check-list">
+                            <li>Praxis investigativa</li>
+                            <li>Semilleros de Investigación</li>
+                            <li>Trabajos de grado</li>
+                            <li>Proyectos de aula</li>
+                            <li>Jornadas de investigación</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 4: GRUPOS DE INVESTIGACIÓN ACTUALES DE LA FACULTAD ===== -->
+        <section class="slide" id="slide-4"
+            style="justify-content:center;padding:24px 40px 20px;overflow-y:auto;gap:0;">
+
+            <!-- TÍTULO PRINCIPAL -->
+            <div style="width:100%;text-align:center;margin-bottom:28px;">
+                <span style="font-size:2.86rem;font-weight:800;color:var(--verde);letter-spacing:0.02em;">
+                    Grupos </span><span
+                    style="font-size:2.86rem;font-weight:800;color:var(--text);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;letter-spacing:0.02em;">
+                    de investigación actuales de la Facultad</span>
+            </div>
+
+            <!-- CONTENIDO: Línea vertical + 3 grupos -->
+            <div style="position:relative;width:80%;margin:0 auto;padding-left:70px;">
+
+                <!-- Línea vertical dorada conectora -->
+                <div
+                    style="position:absolute;left:42px;top:30px;bottom:30px;width:3px;background:linear-gradient(180deg,var(--gold),rgba(184,148,63,0.3));border-radius:2px;">
+                </div>
+
+                <!-- GRUPO 1: TICTROPICO -->
+                <div style="display:flex;align-items:center;gap:20px;margin-bottom:36px;position:relative;">
+                    <div style="position:absolute;left:-28px;top:50%;width:28px;height:3px;background:var(--gold);">
+                    </div>
+                    <div
+                        style="width:126px;height:126px;border-radius:50%;overflow:hidden;border:3px solid var(--verde);flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(27,107,90,0.15);">
+                        <img src="grupos_inv/image2.jpg" alt="TICTROPICO"
+                            style="width:100%;height:100%;object-fit:cover;" />
+                    </div>
+                    <div style="flex:1;">
+                        <div
+                            style="background:linear-gradient(135deg,var(--verde),#2d9e7a);color:#fff;padding:12px 20px;border-radius:10px;font-size:1.95rem;font-weight:700;line-height:1.4;box-shadow:0 3px 10px rgba(27,107,90,0.2);">
+                            Grupo de investigación en tecnologías de información y comunicaciones, TICTROPICO
+                        </div>
+                        <div
+                            style="text-align:center;margin-top:8px;font-size:1.69rem;color:var(--text-muted);font-style:italic;font-weight:500;">
+                            Ingeniería de Sistemas
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRUPO 2: GIIAS -->
+                <div style="display:flex;align-items:center;gap:20px;margin-bottom:36px;position:relative;">
+                    <div style="position:absolute;left:-28px;top:50%;width:28px;height:3px;background:var(--gold);">
+                    </div>
+                    <div
+                        style="width:126px;height:126px;border-radius:50%;overflow:hidden;border:3px solid var(--verde);flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(27,107,90,0.15);">
+                        <img src="grupos_inv/image4.jpg" alt="GIIAS" style="width:100%;height:100%;object-fit:cover;" />
+                    </div>
+                    <div style="flex:1;">
+                        <div
+                            style="background:linear-gradient(135deg,var(--verde),#2d9e7a);color:#fff;padding:12px 20px;border-radius:10px;font-size:1.95rem;font-weight:700;line-height:1.4;box-shadow:0 3px 10px rgba(27,107,90,0.2);">
+                            Grupo de Investigación en Ingeniería Aplicada y Sostenibilidad (GIIAS)
+                        </div>
+                        <div
+                            style="text-align:center;margin-top:8px;font-size:1.69rem;color:var(--text-muted);font-style:italic;font-weight:500;">
+                            Ingeniería Agroforestal
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRUPO 3: GIEROC -->
+                <div style="display:flex;align-items:center;gap:20px;position:relative;">
+                    <div style="position:absolute;left:-28px;top:50%;width:28px;height:3px;background:var(--gold);">
+                    </div>
+                    <div
+                        style="width:126px;height:126px;border-radius:50%;overflow:hidden;border:3px solid var(--verde);flex-shrink:0;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(27,107,90,0.15);">
+                        <img src="grupos_inv/image5.jpg" alt="GIEROC"
+                            style="width:100%;height:100%;object-fit:cover;" />
+                    </div>
+                    <div style="flex:1;">
+                        <div
+                            style="background:linear-gradient(135deg,var(--verde),#2d9e7a);color:#fff;padding:12px 20px;border-radius:10px;font-size:1.95rem;font-weight:700;line-height:1.4;box-shadow:0 3px 10px rgba(27,107,90,0.2);">
+                            Grupo de Investigación en Energías Renovables de la Orinoquia Colombiana (GIEROC)
+                        </div>
+                        <div
+                            style="text-align:center;margin-top:8px;font-size:1.69rem;color:var(--text-muted);font-style:italic;font-weight:500;">
+                            Ingeniería en Energías
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- FRANJA INFERIOR VERDE -->
+            <div
+                style="margin-top:auto;width:100%;background:linear-gradient(90deg,var(--verde) 0%,#2d9e7a 100%);border-radius:8px;padding:10px 20px;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:1.69rem;font-weight:700;color:#fff;letter-spacing:0.04em;text-align:center;">
+                    Facultad de Ingeniería — Unitrópico
+                </span>
+            </div>
+
+        </section>
+
+        <!-- ===== SLIDE 5: LÍNEAS DE INVESTIGACIÓN ===== -->
+        <section class="slide" id="slide-5">
+            <div class="tag">💡 Investigación</div>
+            <div class="slide-title">Líneas de Investigación</div>
+            <div class="divider"></div>
+            <div class="g3">
+                <div class="card" style="border-top:4px solid var(--verde);">
+                    <div class="card-title"><span class="icon">🏛️</span>Línea de Investigación Institucional</div>
+                    <p style="font-size:1.8rem;color:var(--text);line-height:1.6;margin-top:6px;">
+                        Gestión e innovación de tecnologías informáticas</p>
+                </div>
+                <div class="card" style="border-top:4px solid var(--gold);">
+                    <div class="card-title"><span class="icon">⚙️</span>Líneas de Investigación asociadas al Programa
+                    </div>
+                    <ul class="check-list" style="margin-top:6px;">
+                        <li>Inteligencia Artificial</li>
+                        <li>Internet de las Cosas (IoT)</li>
+                        <li>Inteligencia Computacional</li>
+                        <li>Robótica</li>
+                    </ul>
+                </div>
+                <div class="card" style="border-top:4px solid var(--verde-mid);">
+                    <div class="card-title"><span class="icon">🎯</span>Líneas de Profundización</div>
+                    <ul class="check-list" style="margin-top:6px;">
+                        <li>Inteligencia Artificial</li>
+                        <li>Ingeniería de Datos</li>
+                        <li>Hardware para Inteligencia Artificial</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 6: GRUPO TICTROPICO ===== -->
+        <section class="slide" id="slide-6" style="justify-content:flex-start;padding-top:10px;overflow-y:auto;">
+            <div class="tag" style="align-self:center;margin-top:4px;">🔬 Grupo de Investigación</div>
+            <div class="slide-title" style="align-self:center;">Grupo de Investigación <span class="accent">TICTROPICO
+                    4.0</span></div>
+            <div class="divider"></div>
+
+            <!-- OBJETIVO -->
+            <div
+                style="width:100%;background:linear-gradient(135deg,rgba(27,107,90,0.08),rgba(184,148,63,0.08));border-left:6px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 24px;margin-bottom:16px;">
+                <div
+                    style="font-size:2.16rem;font-weight:800;color:var(--verde);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:8px;">
+                    🎯 Objetivo del Grupo</div>
+                <div style="font-size:2.46rem;color:var(--text);line-height:1.55;">Realizar investigaciones que
+                    contribuyan al avance y desarrollo de nuevas tecnologías de la información y las comunicaciones,
+                    explorando áreas como <strong>inteligencia artificial, inteligencia computacional, internet de las
+                        cosas, ciberseguridad, ciencia de datos, realidad virtual/realidad aumentada</strong> y
+                    <strong>robótica</strong>.
+                </div>
+            </div>
+
+            <!-- LÍDER -->
+            <div class="leader-card" style="padding:14px 20px;margin-bottom:14px;">
+                <div class="leader-avatar" style="width:40px;height:40px;font-size:1rem;min-width:40px;">JC</div>
+                <div>
+                    <div class="leader-name" style="font-size:1.5rem;">PhD. Jorge Enrique Chaparro Mesa</div>
+                    <div class="leader-role" style="font-size:1.2rem;">Líder del Grupo de Investigación</div>
+                    <div class="leader-deg" style="font-size:1.13rem;">
+                        Doctor en Ingeniería Electrónica y Computación (Cum Laude) · Universidad de Antioquia<br>
+                        Investigador Junior (IJ) reconocido por MINCIENCIAS · Par Evaluador MINCIENCIAS. Par Académico
+                        CNA.
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 ÁREAS -->
+            <div class="g4" style="gap:14px;">
+                <!-- IA -->
+                <div class="card" style="text-align:center;border-top:5px solid var(--verde);padding:18px 12px;">
+                    <div class="card-title"
+                        style="font-size:1.8rem;justify-content:center;margin-bottom:10px;cursor:pointer;"
+                        onclick="abrirVideo('videos/ia.mp4')" title="▶ Ver video">🧠
+                        Inteligencia Artificial <span style="font-size:1rem;opacity:0.6;">▶</span></div>
+                    <div style="font-size:1.4rem;color:var(--text-muted);margin-bottom:14px;">PhD. Jorge E. Chaparro
+                        Mesa</div>
+                    <!-- SVG Inteligencia Artificial -->
+                    <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
+                        style="width:100%;max-width:330px;height:auto;">
+                        <rect width="120" height="80" rx="8" fill="rgba(27,107,90,0.06)" />
+                        <circle cx="18" cy="20" r="7" fill="none" stroke="#1B6B5A" stroke-width="1.5" />
+                        <circle cx="18" cy="40" r="7" fill="none" stroke="#1B6B5A" stroke-width="1.5" />
+                        <circle cx="18" cy="60" r="7" fill="none" stroke="#1B6B5A" stroke-width="1.5" />
+                        <circle cx="60" cy="15" r="8" fill="#1B6B5A" opacity="0.85" />
+                        <circle cx="60" cy="40" r="8" fill="#1B6B5A" opacity="0.85" />
+                        <circle cx="60" cy="65" r="8" fill="#1B6B5A" opacity="0.85" />
+                        <circle cx="102" cy="27" r="7" fill="none" stroke="#B8943F" stroke-width="1.8" />
+                        <circle cx="102" cy="53" r="7" fill="none" stroke="#B8943F" stroke-width="1.8" />
+                        <line x1="25" y1="20" x2="52" y2="15" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="20" x2="52" y2="40" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="20" x2="52" y2="65" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="40" x2="52" y2="15" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="40" x2="52" y2="40" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="40" x2="52" y2="65" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="60" x2="52" y2="15" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="60" x2="52" y2="40" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="25" y1="60" x2="52" y2="65" stroke="#1B6B5A" stroke-width="0.8" opacity="0.5" />
+                        <line x1="68" y1="15" x2="95" y2="27" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <line x1="68" y1="40" x2="95" y2="27" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <line x1="68" y1="65" x2="95" y2="27" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <line x1="68" y1="15" x2="95" y2="53" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <line x1="68" y1="40" x2="95" y2="53" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <line x1="68" y1="65" x2="95" y2="53" stroke="#B8943F" stroke-width="1" opacity="0.6" />
+                        <text x="60" y="19" text-anchor="middle" fill="white" font-size="8">ƒ</text>
+                        <text x="60" y="44" text-anchor="middle" fill="white" font-size="8">ƒ</text>
+                        <text x="60" y="69" text-anchor="middle" fill="white" font-size="8">ƒ</text>
+                    </svg>
+                </div>
+
+                <!-- IoT -->
+                <div class="card" style="text-align:center;border-top:5px solid var(--gold);padding:18px 12px;">
+                    <div class="card-title"
+                        style="font-size:1.8rem;justify-content:center;margin-bottom:10px;cursor:pointer;"
+                        onclick="abrirVideo('videos/iot.mp4')" title="▶ Ver video">🌐
+                        Internet de las Cosas <span style="font-size:1rem;opacity:0.6;">▶</span></div>
+                    <div style="font-size:1.4rem;color:var(--text-muted);margin-bottom:14px;">Esp. Fabian A. Ayala
+                        Lozano</div>
+                    <!-- SVG IoT -->
+                    <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
+                        style="width:100%;max-width:330px;height:auto;">
+                        <rect width="120" height="80" rx="8" fill="rgba(184,148,63,0.06)" />
+                        <ellipse cx="60" cy="38" rx="18" ry="12" fill="#1B6B5A" opacity="0.85" />
+                        <text x="60" y="42" text-anchor="middle" fill="white" font-size="9" font-weight="bold">☁</text>
+                        <rect x="6" y="8" width="22" height="16" rx="4" fill="none" stroke="#1B6B5A"
+                            stroke-width="1.5" />
+                        <text x="17" y="20" text-anchor="middle" fill="#1B6B5A" font-size="8">📡</text>
+                        <rect x="92" y="8" width="20" height="16" rx="3" fill="none" stroke="#B8943F"
+                            stroke-width="1.5" />
+                        <text x="102" y="20" text-anchor="middle" fill="#B8943F" font-size="8">📱</text>
+                        <rect x="6" y="56" width="22" height="16" rx="4" fill="none" stroke="#1B6B5A"
+                            stroke-width="1.5" />
+                        <text x="17" y="68" text-anchor="middle" fill="#1B6B5A" font-size="8">💡</text>
+                        <rect x="92" y="56" width="20" height="16" rx="3" fill="none" stroke="#B8943F"
+                            stroke-width="1.5" />
+                        <text x="102" y="68" text-anchor="middle" fill="#B8943F" font-size="8">🔌</text>
+                        <line x1="28" y1="16" x2="42" y2="32" stroke="#1B6B5A" stroke-width="1.2" stroke-dasharray="3,2"
+                            opacity="0.7" />
+                        <line x1="92" y1="16" x2="78" y2="32" stroke="#B8943F" stroke-width="1.2" stroke-dasharray="3,2"
+                            opacity="0.7" />
+                        <line x1="28" y1="64" x2="42" y2="48" stroke="#1B6B5A" stroke-width="1.2" stroke-dasharray="3,2"
+                            opacity="0.7" />
+                        <line x1="92" y1="64" x2="78" y2="48" stroke="#B8943F" stroke-width="1.2" stroke-dasharray="3,2"
+                            opacity="0.7" />
+                        <circle cx="60" cy="38" r="22" fill="none" stroke="#1B6B5A" stroke-width="0.6" opacity="0.3" />
+                        <circle cx="60" cy="38" r="30" fill="none" stroke="#1B6B5A" stroke-width="0.4" opacity="0.2" />
+                    </svg>
+                </div>
+
+                <!-- Inteligencia Computacional -->
+                <div class="card" style="text-align:center;border-top:5px solid var(--verde);padding:18px 12px;">
+                    <div class="card-title"
+                        style="font-size:1.8rem;justify-content:center;margin-bottom:10px;cursor:pointer;"
+                        onclick="abrirVideo('videos/computacional.mp4')" title="▶ Ver video">⚙️ Intel.
+                        Computacional <span style="font-size:1rem;opacity:0.6;">▶</span></div>
+                    <div style="font-size:1.4rem;color:var(--text-muted);margin-bottom:14px;">Ing. Cesar D. Martelo
+                        Varela</div>
+                    <!-- SVG Inteligencia Computacional -->
+                    <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
+                        style="width:100%;max-width:330px;height:auto;">
+                        <rect width="120" height="80" rx="8" fill="rgba(27,107,90,0.06)" />
+                        <circle cx="48" cy="40" r="20" fill="none" stroke="#1B6B5A" stroke-width="2.5"
+                            stroke-dasharray="7,4" />
+                        <circle cx="48" cy="40" r="12" fill="#1B6B5A" opacity="0.85" />
+                        <text x="48" y="45" text-anchor="middle" fill="white" font-size="11" font-weight="bold">⚙</text>
+                        <circle cx="86" cy="25" r="13" fill="none" stroke="#B8943F" stroke-width="2"
+                            stroke-dasharray="5,3" />
+                        <circle cx="86" cy="25" r="7" fill="#B8943F" opacity="0.8" />
+                        <text x="86" y="29" text-anchor="middle" fill="white" font-size="8">AI</text>
+                        <line x1="67" y1="33" x2="75" y2="29" stroke="#144845" stroke-width="1.5" opacity="0.5" />
+                        <path d="M 10 65 Q 20 58 30 65 Q 40 72 50 65 Q 60 58 70 65 Q 80 72 90 65 Q 100 58 110 65"
+                            fill="none" stroke="#1B6B5A" stroke-width="1.2" opacity="0.5" />
+                        <path d="M 10 72 Q 20 65 30 72 Q 40 79 50 72 Q 60 65 70 72 Q 80 79 90 72 Q 100 65 110 72"
+                            fill="none" stroke="#B8943F" stroke-width="1" opacity="0.4" />
+                        <circle cx="105" cy="50" r="3" fill="#1B6B5A" opacity="0.7" />
+                        <circle cx="112" cy="42" r="2" fill="#B8943F" opacity="0.7" />
+                        <circle cx="108" cy="38" r="2.5" fill="#1B6B5A" opacity="0.6" />
+                    </svg>
+                </div>
+
+                <!-- Robótica -->
+                <div class="card" style="text-align:center;border-top:5px solid var(--gold);padding:18px 12px;">
+                    <div class="card-title"
+                        style="font-size:1.8rem;justify-content:center;margin-bottom:10px;cursor:pointer;"
+                        onclick="abrirVideo('videos/robotica.mp4')" title="▶ Ver video">🤖
+                        Robótica <span style="font-size:1rem;opacity:0.6;">▶</span></div>
+                    <div style="font-size:1.4rem;color:var(--text-muted);margin-bottom:14px;">Mg. Luis M. Piamonte
+                        Pardo</div>
+                    <!-- SVG Robótica -->
+                    <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg"
+                        style="width:100%;max-width:330px;height:auto;">
+                        <rect width="120" height="80" rx="8" fill="rgba(184,148,63,0.06)" />
+                        <rect x="42" y="28" width="36" height="32" rx="6" fill="#1B6B5A" />
+                        <rect x="46" y="12" width="28" height="20" rx="5" fill="#144845" />
+                        <circle cx="55" cy="21" r="4" fill="#B8943F" />
+                        <circle cx="65" cy="21" r="4" fill="#B8943F" />
+                        <circle cx="55" cy="21" r="2" fill="white" />
+                        <circle cx="65" cy="21" r="2" fill="white" />
+                        <line x1="60" y1="12" x2="60" y2="6" stroke="#1B6B5A" stroke-width="2" />
+                        <circle cx="60" cy="5" r="3" fill="#B8943F" />
+                        <circle cx="60" cy="40" r="5" fill="rgba(184,148,63,0.7)" />
+                        <circle cx="60" cy="40" r="3" fill="#B8943F" />
+                        <rect x="47" y="50" width="26" height="3" rx="1.5" fill="rgba(255,255,255,0.25)" />
+                        <rect x="47" y="55" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.15)" />
+                        <rect x="24" y="30" width="18" height="8" rx="4" fill="#1B6B5A" opacity="0.8" />
+                        <rect x="78" y="30" width="18" height="8" rx="4" fill="#1B6B5A" opacity="0.8" />
+                        <circle cx="22" cy="34" r="5" fill="none" stroke="#B8943F" stroke-width="1.5" />
+                        <circle cx="98" cy="34" r="5" fill="none" stroke="#B8943F" stroke-width="1.5" />
+                        <rect x="47" y="60" width="10" height="14" rx="3" fill="#144845" />
+                        <rect x="63" y="60" width="10" height="14" rx="3" fill="#144845" />
+                        <rect x="44" y="72" width="16" height="6" rx="3" fill="#1B6B5A" opacity="0.7" />
+                        <rect x="60" y="72" width="16" height="6" rx="3" fill="#1B6B5A" opacity="0.7" />
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 7: SEMILLEROS ===== -->
+        <section class="slide" id="slide-7">
+            <div class="tag">🌱 Semilleros</div>
+            <div class="slide-title">Semilleros de Investigación</div>
+            <div class="divider"></div>
+            <div class="g3">
+                <div class="card" style="text-align:center;padding:32px 22px;border-top:4px solid var(--verde);">
+                    <div style="font-size:2.8rem;margin-bottom:12px;">🔒</div>
+                    <div class="card-title" style="font-size:1.2rem;justify-content:center;">SISLAB</div>
+                    <span class="badge badge-v" style="margin:10px 0 12px;">Seguridad Informática</span>
+                    <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.55;">Seguridad informática e
+                        Internet de las Cosas</p>
+                </div>
+                <div class="card" style="text-align:center;padding:32px 22px;border-top:4px solid var(--gold);">
+                    <div style="font-size:2.8rem;margin-bottom:12px;">🤖</div>
+                    <div class="card-title" style="font-size:1.2rem;justify-content:center;">Connect RIAAC</div>
+                    <span class="badge badge-gout" style="margin:10px 0 12px;">Robótica</span>
+                    <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.55;">Robótica, automatización y
+                        control</p>
+                </div>
+                <div class="card" style="text-align:center;padding:32px 22px;border-top:4px solid var(--verde-mid);">
+                    <div style="font-size:2.8rem;margin-bottom:12px;">💻</div>
+                    <div class="card-title" style="font-size:1.2rem;justify-content:center;">UNIDEVS</div>
+                    <span class="badge badge-v" style="margin:10px 0 12px;">Hardware para Inteligencia Artificial</span>
+                    <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.55;">Hardware para Inteligencia
+                        Artificial e
+                        innovación tecnológica</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 8: PROYECTOS ===== -->
+        <section class="slide" id="slide-8" style="justify-content:flex-start;padding-top:14px;overflow-y:auto;">
+            <div class="tag">🚀 I+D+i</div>
+            <div class="slide-title">Proyectos de Investigación Activos</div>
+            <div class="divider"></div>
+            <div class="g2" style="gap:14px;">
+
+                <!-- Proyecto 1 -->
+                <div class="card" style="border-top:4px solid var(--verde);padding:20px 22px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span style="font-size:3rem;">🚜</span>
+                        <span class="badge badge-v" style="font-size:1.7rem;">Visión · IoT · Robótica</span>
+                    </div>
+                    <div class="card-title" style="font-size:2.3rem;line-height:1.35;">Vehículo Agrícola Autónomo</div>
+                    <p style="font-size:1.96rem;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+                        Desarrollo de un vehículo agrícola autónomo equipado con tecnologías de
+                        <strong>visión por computador</strong> y <strong>sensores IoT</strong> para la
+                        obtención de datos de factores ecológicos.
+                    </p>
+                </div>
+
+                <!-- Proyecto 2 -->
+                <div class="card" style="border-top:4px solid var(--gold);padding:20px 22px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span style="font-size:3rem;">🌾</span>
+                        <span class="badge badge-gout" style="font-size:1.7rem;">IA · Visión Computacional</span>
+                    </div>
+                    <div class="card-title" style="font-size:2.3rem;line-height:1.35;">Detección de Mancha Marrón en
+                        Arroz</div>
+                    <p style="font-size:1.96rem;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+                        Sistema de monitoreo inteligente para la detección de la
+                        <strong>mancha marrón (<em>Bipolaris oryzae</em>)</strong> en cultivos de arroz
+                        del departamento de Casanare.
+                    </p>
+                </div>
+
+                <!-- Proyecto 3 -->
+                <div class="card" style="border-top:4px solid var(--verde);padding:20px 22px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span style="font-size:3rem;">🚗</span>
+                        <span class="badge badge-v" style="font-size:1.7rem;">IA · Visión Computacional</span>
+                    </div>
+                    <div class="card-title" style="font-size:2.3rem;line-height:1.35;">Reconocimiento de Placas y Aforo
+                        Vehicular</div>
+                    <p style="font-size:1.96rem;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+                        Prototipo de sistema inteligente de <strong>reconocimiento de placas</strong> y
+                        <strong>aforo vehicular</strong> basado en visión computacional e
+                        inteligencia artificial.
+                    </p>
+                </div>
+
+                <!-- Proyecto 4 -->
+                <div class="card" style="border-top:4px solid var(--gold);padding:20px 22px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+                        <span style="font-size:3rem;">🗂️</span>
+                        <span class="badge badge-gout" style="font-size:1.7rem;">IA · Gestión del Conocimiento</span>
+                    </div>
+                    <div class="card-title" style="font-size:2.3rem;line-height:1.35;">Sistema Inteligente de Gestión
+                        Investigativa</div>
+                    <p style="font-size:1.96rem;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+                        Sistema inteligente para el apoyo en la <strong>gestión y control de la
+                            información</strong> de los procesos investigativos en Unitrópico.
+                    </p>
+                </div>
+
+                <!-- Proyecto 5 – Ocupa columna completa -->
+                <div class="card" style="border-top:4px solid var(--verde-mid);padding:20px 22px;grid-column:1 / -1;">
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <span style="font-size:3rem;">⚡</span>
+                            <span class="badge badge-v" style="font-size:1.7rem;">IoT · Machine Learning · Transición
+                                Energética</span>
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                            <span class="badge badge-gout" style="font-size:1.64rem;">Convocatoria Interna 2024</span>
+                            <span class="badge badge-g" style="font-size:1.64rem;">CIG24-02</span>
+                        </div>
+                    </div>
+                    <div class="card-title" style="font-size:2.3rem;line-height:1.35;">
+                        Sistema Inteligente de Gestión Energética y Generación Híbrida de Energía Renovable
+                    </div>
+                    <p style="font-size:1.96rem;color:var(--text-muted);line-height:1.6;margin-top:8px;">
+                        Basado en <strong>IoT y Machine Learning</strong> para aplicaciones de
+                        <strong>agricultura de precisión</strong>.
+                        Código: <strong>CIG24-02</strong> · Línea: <strong>Transición Energética</strong>.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 9: PUBLICACIONES ===== -->
+        <section class="slide" id="slide-9" style="justify-content:flex-start;padding-top:14px;overflow-y:auto;">
+            <div class="tag" style="align-self:center;margin-top:4px;">📄 Producción Científica</div>
+            <div class="slide-title" style="align-self:center;">Artículos Científicos Indexados</div>
+            <div class="divider"></div>
+            <div class="pub-wrap">
+
+                <!-- Q1 2026 -->
+                <div class="pub-item">
+                    <div class="year">2026</div>
+                    <div class="tit">Bio-Spectral Tensors and ConvNeXt Architectures: A Proximal Sensing Framework for
+                        Early Detection of <em>Bipolaris oryzae</em> in Tropical Rice Crops</div>
+                    <div class="jrn">
+                        <span class="badge badge-v" style="font-size:0.72rem;margin-right:6px;">Q1</span>
+                        <strong>Crop Design</strong> · ISSN: 2772-8994
+                    </div>
+                </div>
+
+                <!-- Q1 2026 -->
+                <div class="pub-item">
+                    <div class="year">2026</div>
+                    <div class="tit">Multimodal Data Fusion of Multispectral Imagery, IoT Sensors, and Climate Databases
+                        to Predict Water Requirements in Pineapple Cultivation</div>
+                    <div class="jrn">
+                        <span class="badge badge-v" style="font-size:0.72rem;margin-right:6px;">Q1</span>
+                        <strong>Smart Agricultural Technology</strong> · ISSN: 2772-3755
+                    </div>
+                </div>
+
+                <!-- Q1 2024 -->
+                <div class="pub-item">
+                    <div class="year">2024</div>
+                    <div class="tit">Machine Learning for the Estimation of Foliar Nitrogen Content in Pineapple Crops
+                        Using Multispectral Images and Internet of Things (IoT) Platforms</div>
+                    <div class="jrn">
+                        <span class="badge badge-v" style="font-size:0.72rem;margin-right:6px;">Q1</span>
+                        <strong>Journal of Agriculture and Food Research</strong> · ISSN: 2666-1543
+                    </div>
+                </div>
+
+                <!-- A2 2021 -->
+                <div class="pub-item">
+                    <div class="year">2021</div>
+                    <div class="tit">Módulo Terminal Remoto para la Adquisición de Datos, Monitoreo y Control de
+                        Procesos Agroindustriales — AgriculTIC</div>
+                    <div class="jrn">
+                        <span class="badge badge-gout" style="font-size:0.72rem;margin-right:6px;">A2</span>
+                        <strong>Revista Ingeniare</strong> — Revista Chilena de Ingeniería · ISSN: 0718-3291 / 0718-3305
+                    </div>
+                </div>
+
+                <!-- B 2021 -->
+                <div class="pub-item">
+                    <div class="year">2021</div>
+                    <div class="tit">Análisis Comparativo de Técnicas de Clasificación para Determinar la Deserción
+                        Estudiantil de la Facultad de Ingeniería de la Universidad de Antioquia, Colombia</div>
+                    <div class="jrn">
+                        <span class="badge badge-g" style="font-size:0.72rem;margin-right:6px;">B</span>
+                        <strong>Revista Espacios</strong> · ISSN: 0798-1015
+                    </div>
+                </div>
+
+                <!-- B 2019 -->
+                <div class="pub-item">
+                    <div class="year">2019</div>
+                    <div class="tit">AgriculTIC, Plataforma Web para el Desarrollo de Procesos Agroindustriales a partir
+                        de Herramientas de Internet of Underground Things (IOUT)</div>
+                    <div class="jrn">
+                        <span class="badge badge-g" style="font-size:0.72rem;margin-right:6px;">B</span>
+                        <strong>Revista Espacios</strong> · ISSN: 0798-1015
+                    </div>
+                </div>
+
+                <!-- B 2019 -->
+                <div class="pub-item">
+                    <div class="year">2019</div>
+                    <div class="tit">FisicaTIC, Plataforma Hardware-Software para Aplicaciones en Física e Ingeniería
+                    </div>
+                    <div class="jrn">
+                        <span class="badge badge-g" style="font-size:0.72rem;margin-right:6px;">B</span>
+                        <strong>Scientia et Technica</strong> — Universidad Tecnológica de Pereira · ISSN: 0122-701 /
+                        2344-7214
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 10: REGISTROS DE SOFTWARE ===== -->
+        <section class="slide" id="slide-10" style="justify-content:flex-start;padding-top:14px;overflow-y:auto;">
+            <div class="tag" style="align-self:center;margin-top:4px;">💾 Propiedad Intelectual</div>
+            <div class="slide-title" style="align-self:center;">Registros de Software</div>
+            <div class="divider"></div>
+            <div style="width:100%;overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Año</th>
+                            <th>No. Registro</th>
+                            <th>Autor(es)</th>
+                            <th>Título del Software</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025</td>
+                            <td>13-97-198</td>
+                            <td>Cesar Dayan Martelo Varela</td>
+                            <td><strong>GESTORAK</strong> — Aplicativo web para la generación de planes de trabajo de
+                                profesores en UNITRÓPICO</td>
+                        </tr>
+                        <tr>
+                            <td>2024</td>
+                            <td>13-98-473</td>
+                            <td>Cristian L. Camargo Pinilla</td>
+                            <td><strong>UNI COMMERCE</strong> — Plataforma web con roles de vendedor, cliente y
+                                administrador para exhibir y vender productos</td>
+                        </tr>
+                        <tr>
+                            <td>2023</td>
+                            <td>13-94-275</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>FERTIRRIEGO APP</strong> — Aplicación móvil para la gestión eficiente de
+                                nutrientes y riego en cultivos frutales</td>
+                        </tr>
+                        <tr>
+                            <td>2023</td>
+                            <td>13-94-277</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>PINENITRAPREDICT</strong> — Plataforma web para la predicción de requerimientos
+                                de nitrógeno en cultivos de piña con Machine Learning e imágenes multiespectrales</td>
+                        </tr>
+                        <tr>
+                            <td>2021</td>
+                            <td>13-85-13</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>FISICATIC</strong> — Plataforma software para aplicaciones en física e
+                                ingeniería</td>
+                        </tr>
+                        <tr>
+                            <td>2021</td>
+                            <td>13-86-424</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>AgriculTIC Riego</strong> — Aplicativo móvil para la gestión inteligente de
+                                sistemas de riego en cultivos frutales</td>
+                        </tr>
+                        <tr>
+                            <td>2019</td>
+                            <td>13-72-405</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>AGRICULTIC</strong> — Software para la adquisición de datos, monitoreo y control
+                                de procesos agroindustriales</td>
+                        </tr>
+                        <tr>
+                            <td>2019</td>
+                            <td>13-76-281</td>
+                            <td>Jorge E. Chaparro</td>
+                            <td><strong>INVESTIGATIC</strong> — Herramientas TIC para la gestión de la investigación
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 11: PATENTE ===== -->
+        <section class="slide" id="slide-11" style="justify-content:flex-start;padding-top:14px;overflow-y:auto;">
+            <div class="tag">🏛️ Propiedad Industrial</div>
+            <div class="slide-title">Solicitud de Patente</div>
+            <div class="divider"></div>
+
+            <!-- Layout 2 columnas -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;flex:1;min-height:0;">
+
+                <!-- COLUMNA IZQUIERDA: texto + imagen -->
+                <div style="display:flex;flex-direction:column;gap:16px;">
+                    <div class="patent-card" style="flex:0 0 auto;">
+                        <div class="badge badge-g" style="margin-bottom:12px;">SIC Colombia · En Trámite</div>
+                        <div class="patent-num">NC2022/0014133</div>
+                        <div class="patent-tit">"Sensor capacitivo de placas paralelas para determinar humedad en
+                            suelos"</div>
+                        <div class="patent-row"><strong>Inventor(es):</strong> Jorge Enrique Chaparro Mesa y
+                            colaboradores del Grupo TICTROPICO 4.0</div>
+                        <div class="patent-row"><strong>Solicitante:</strong> Universidad Internacional del Trópico
+                            Americano — Unitrópico</div>
+                        <div class="patent-row"><strong>Año de solicitud:</strong> 2022 · <strong>Estado:</strong> En
+                            trámite ante la SIC</div>
+                        <div
+                            style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(27,107,90,0.15);font-size:0.85rem;color:var(--text-muted);line-height:1.5;">
+                            Innovación para la medición precisa de humedad del suelo en sistemas de agricultura de
+                            precisión en regiones tropicales.
+                        </div>
+                    </div>
+                    <!-- Imagen del sensor -->
+                    <div
+                        style="flex:1;border-radius:12px;overflow:hidden;border:2px solid rgba(27,107,90,0.2);background:#f8f9fa;display:flex;align-items:center;justify-content:center;min-height:160px;">
+                        <img src="patente/TARJETA DE ADQUISICION.jpg" alt="Tarjeta de Adquisición — Sensor capacitivo"
+                            style="width:100%;height:100%;object-fit:contain;display:block;" />
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: PDF embebido -->
+                <div style="display:flex;flex-direction:column;gap:8px;min-height:0;">
+                    <div
+                        style="font-size:0.78rem;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:0.07em;">
+                        📄 Resumen Solicitud de Patente
+                    </div>
+                    <iframe src="patente/200 PT Resumen Solicitud de Patente.pdf"
+                        title="Resumen Solicitud de Patente NC2022/0014133"
+                        style="flex:1;width:100%;border:2px solid rgba(27,107,90,0.2);border-radius:12px;min-height:300px;"
+                        loading="lazy">
+                        <p style="padding:16px;color:var(--text-muted);">
+                            Tu navegador no puede mostrar PDFs embebidos.
+                            <a href="patente/200 PT Resumen Solicitud de Patente.pdf" target="_blank">Abrir PDF</a>
+                        </p>
+                    </iframe>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 12: COLABORACIÓN Y REDES ===== -->
+        <section class="slide" id="slide-12">
+            <div class="tag">🤝 Redes Académicas</div>
+            <div class="slide-title">Colaboración y Redes</div>
+            <div class="divider"></div>
+            <div class="g3" style="grid-template-columns:repeat(3,1fr);">
+                <div class="net-chip">
+                    <div class="abbr">INFELCOM</div>
+                    <div class="full">Inf. en Telecomunicaciones<br>UPTC</div>
+                </div>
+                <div class="net-chip">
+                    <div class="abbr">SISTEMIC</div>
+                    <div class="full">Sistemas, Telecomunicaciones<br>e Informática · UdeA</div>
+                </div>
+                <div class="net-chip">
+                    <div class="abbr">CVC · UAB</div>
+                    <div class="full">Centre de Visió per Computador<br>Universitat Autònoma de Barcelona</div>
+                </div>
+                <div class="net-chip">
+                    <div class="abbr">UxTIC</div>
+                    <div class="full">Red Universitaria<br>por las TIC · Colombia</div>
+                </div>
+                <div class="net-chip">
+                    <div class="abbr">REDIS</div>
+                    <div class="full">Red de Investigación<br>en Sistemas de Información</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 13: PONENCIAS ===== -->
+        <section class="slide" id="slide-13" style="justify-content:flex-start;padding-top:14px;overflow-y:auto;">
+            <div class="tag">🌍 Visibilidad Nacional e Internacional</div>
+            <div class="slide-title">Ponencias y Participaciones</div>
+            <div class="divider"></div>
+
+            <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;width:100%;flex:1;min-height:0;">
+
+                <!-- COLUMNA IZQUIERDA: lista de ponencias -->
+                <div style="display:flex;flex-direction:column;gap:10px;overflow-y:auto;">
+
+                    <!-- Ponencia 1 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">Jun 2025</div>
+                        <div class="tit" style="font-size:0.88rem;">XII CIMM — Congreso Internacional de Ingeniería
+                            Mecánica, Mecatrónica y Automatización</div>
+                        <div class="jrn">
+                            <span class="badge badge-gout" style="font-size:0.68rem;margin-right:5px;">Nacional</span>
+                            Universidad de Córdoba, Colombia · Jeffry Giraldo Perdomo · Memorias ISSN 2665-5934
+                        </div>
+                    </div>
+
+                    <!-- Ponencia 2 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">Nov 2025</div>
+                        <div class="tit" style="font-size:0.88rem;">Seminario Procesamiento de Imágenes Aplicado a
+                            Soluciones de Uso de Suelo</div>
+                        <div class="jrn">
+                            <span class="badge badge-v" style="font-size:0.68rem;margin-right:5px;">Internacional</span>
+                            Universidad Mayor de Chile · Jorge E. Chaparro
+                        </div>
+                    </div>
+
+                    <!-- Ponencia 3 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">2025</div>
+                        <div class="tit" style="font-size:0.88rem;">International Conference on Green Energy, Earth
+                            &amp; Environmental Science</div>
+                        <div class="jrn">
+                            <span class="badge badge-v" style="font-size:0.68rem;margin-right:5px;">Internacional</span>
+                            Ámsterdam, Holanda — Universidad de Ámsterdam · Jorge E. Chaparro
+                        </div>
+                    </div>
+
+                    <!-- Ponencia 4 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">2025</div>
+                        <div class="tit" style="font-size:0.88rem;">IV Seminario Internacional de Ingenierías "Una
+                            mirada al futuro — IA"</div>
+                        <div class="jrn">
+                            <span class="badge badge-gout" style="font-size:0.68rem;margin-right:5px;">Nacional</span>
+                            Facultad de Ingeniería — Unitrópico · Jorge E. Chaparro
+                        </div>
+                    </div>
+
+                    <!-- Ponencia 5 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">2025</div>
+                        <div class="tit" style="font-size:0.88rem;">I Seminario de Inteligencia Artificial "Orinoquia
+                            Inteligente"</div>
+                        <div class="jrn">
+                            <span class="badge badge-gout" style="font-size:0.68rem;margin-right:5px;">Nacional</span>
+                            Programa de Ingeniería de Sistemas — Unitrópico · Jorge E. Chaparro
+                        </div>
+                    </div>
+
+                    <!-- Ponencia 6 -->
+                    <div class="pub-item" style="padding:12px 16px;">
+                        <div class="year">Oct 2022</div>
+                        <div class="tit" style="font-size:0.88rem;">Seminario Internacional de Ingenierías en Desarrollo
+                            Sostenible</div>
+                        <div class="jrn">
+                            <span class="badge badge-gout" style="font-size:0.68rem;margin-right:5px;">Nacional</span>
+                            Unitrópico · Jorge E. Chaparro
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA: foto de evidencia -->
+                <div style="display:flex;flex-direction:column;gap:10px;">
+                    <div
+                        style="font-size:0.75rem;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:0.07em;">
+                        📸 Evidencia — Ámsterdam 2025
+                    </div>
+                    <div
+                        style="flex:1;border-radius:14px;overflow:hidden;border:2px solid rgba(27,107,90,0.2);background:#f0f4f2;display:flex;align-items:center;justify-content:center;min-height:200px;">
+                        <img src="ponencias/amsterdam1.jpg"
+                            alt="Ponencia en la International Conference on Green Energy — Ámsterdam 2025"
+                            style="width:100%;height:100%;object-fit:cover;display:block;" />
+                    </div>
+                    <div style="font-size:0.72rem;color:var(--text-muted);text-align:center;line-height:1.5;">
+                        Prof. PhD. Jorge E. Chaparro Mesa<br>
+                        International Conference on Green Energy<br>
+                        <strong>Ámsterdam, Holanda · 2025</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 14: INVESTIGACIÓN FORMATIVA ===== -->
+        <section class="slide" id="slide-14" style="justify-content:flex-start;padding-top:14px;">
+            <div class="tag" style="align-self:center;margin-top:4px;">📚 Formación</div>
+            <div class="slide-title" style="align-self:center;">Investigación Formativa</div>
+            <div class="divider"></div>
+            <div class="form-grid">
+                <div class="form-card">
+                    <div class="fi">📖</div>
+                    <div class="ft">Praxis Investigativa</div>
+                    <div class="fc">Niveles 3, 4 y 5 del Plan de Estudios · Metodología científica aplicada</div>
+                </div>
+                <div class="form-card">
+                    <div class="fi">🌱</div>
+                    <div class="ft">Semilleros</div>
+                    <div class="fc">SISLAB (seguridad &amp; IoT)<br>Connect RIAAC (robótica móvil)<br>UNIDEVS (software)
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="fi">🎓</div>
+                    <div class="ft">Trabajos de Grado</div>
+                    <div class="fc">Asistente · Artículo científico · Práctica empresarial · Desarrollo disciplinar
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="fi">🏫</div>
+                    <div class="ft">Proyectos de Aula</div>
+                    <div class="fc">EXIS (Exposición Interna de Sistemas) — 3 ediciones desde 2022</div>
+                </div>
+                <div class="form-card">
+                    <div class="fi">🌍</div>
+                    <div class="ft">Jornadas</div>
+                    <div class="fc">Seminario Internacional 2022<br>CIISU 2023<br>Ponencias internacionales</div>
+                </div>
+            </div>
+
+            <!-- DIAGRAMA: Investigación en el plan de estudios -->
+            <div style="width:100%;margin-top:28px;display:flex;flex-direction:column;align-items:center;gap:0;">
+
+                <!-- Subtítulo -->
+                <div style="text-align:center;margin-bottom:22px;">
+                    <span style="font-size:2.52rem;font-weight:800;color:var(--verde);">Investigación </span>
+                    <span style="font-size:2.52rem;font-weight:800;color:var(--text);">en el </span>
+                    <span
+                        style="font-size:2.52rem;font-weight:800;color:var(--text);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:6px;">plan
+                        de estudios</span>
+                    <div style="width:280px;height:4px;background:var(--gold);margin:8px auto 0;border-radius:2px;">
+                    </div>
+                </div>
+
+                <!-- Diagrama organigrama -->
+                <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+
+                    <!-- Fila superior: Componente + Burbuja -->
+                    <div style="display:flex;align-items:center;gap:34px;">
+                        <!-- Caja principal con pestaña dorada -->
+                        <div style="position:relative;">
+                            <div
+                                style="position:absolute;top:-11px;left:0;width:42px;height:17px;background:var(--gold);border-radius:5px 5px 0 0;">
+                            </div>
+                            <div
+                                style="border:3px solid var(--verde);border-radius:12px;padding:20px 34px;background:rgba(255,255,255,0.9);text-align:center;min-width:252px;">
+                                <div style="font-size:1.96rem;font-weight:800;color:var(--verde);line-height:1.3;">
+                                    Componente<br>Praxis<br>Investigativa
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Burbuja de porcentaje -->
+                        <div
+                            style="border:3px solid var(--gold);border-radius:50%;width:126px;height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,0.9);">
+                            <div style="font-size:1.82rem;font-weight:800;color:var(--gold);">7,6%</div>
+                            <div style="font-size:1.4rem;color:var(--text-muted);">11</div>
+                            <div style="font-size:1.26rem;color:var(--text-muted);">créditos</div>
+                        </div>
+                    </div>
+
+                    <!-- Línea vertical -->
+                    <div style="width:4px;height:28px;background:var(--verde);"></div>
+
+                    <!-- Línea horizontal conectora con 3 ramales -->
+                    <div style="width:644px;height:4px;background:var(--verde);position:relative;">
+                        <div style="position:absolute;left:0;top:0;width:4px;height:25px;background:var(--verde);">
+                        </div>
+                        <div
+                            style="position:absolute;left:50%;transform:translateX(-50%);top:0;width:4px;height:25px;background:var(--verde);">
+                        </div>
+                        <div style="position:absolute;right:0;top:0;width:4px;height:25px;background:var(--verde);">
+                        </div>
+                    </div>
+
+                    <div style="height:21px;"></div>
+
+                    <!-- 3 cajas inferiores -->
+                    <div style="display:flex;gap:22px;justify-content:center;">
+                        <div
+                            style="border:3px solid var(--verde);border-radius:12px;padding:17px 22px;background:rgba(27,107,90,0.04);text-align:center;min-width:196px;">
+                            <div style="font-size:1.68rem;font-weight:700;color:var(--verde);line-height:1.3;">
+                                Fundamentos de<br>investigación
+                            </div>
+                        </div>
+                        <div
+                            style="border:3px solid var(--verde);border-radius:12px;padding:17px 22px;background:rgba(27,107,90,0.04);text-align:center;min-width:196px;">
+                            <div style="font-size:1.68rem;font-weight:700;color:var(--verde);line-height:1.3;">
+                                Praxis<br>Investigativa<br>específica
+                            </div>
+                        </div>
+                        <div
+                            style="border:3px solid var(--verde);border-radius:12px;padding:17px 22px;background:rgba(27,107,90,0.04);text-align:center;min-width:196px;">
+                            <div style="font-size:1.68rem;font-weight:700;color:var(--verde);line-height:1.3;">
+                                Trabajo de grado
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ===== SLIDE 15: PROYECCIONES ===== -->
+        <section class="slide" id="slide-15">
+            <div class="tag">🔭 Futuro</div>
+            <div class="slide-title">Proyecciones y Objetivos</div>
+            <div class="divider"></div>
+            <div style="width:100%;">
+                <div class="proj-item">
+                    <div class="proj-icon">🚀</div>
+                    <div class="proj-text">Desarrollo de <strong>nuevos productos tecnológicos</strong> y soluciones
+                        innovadoras de alto impacto regional.</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-icon">🎓</div>
+                    <div class="proj-text">Fortalecer la <strong>formación investigativa</strong> de estudiantes
+                        mediante semilleros, trabajos de grado y proyectos de aula.</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-icon">🤝</div>
+                    <div class="proj-text">Ampliar la <strong>colaboración con empresas</strong> del sector TIC,
+                        agricultura y energía en proyectos de I+D+i.</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-icon">📄</div>
+                    <div class="proj-text">Aumentar la producción de <strong>publicaciones científicas</strong> en
+                        revistas indexadas Q1 y Q2 internacionales.</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-icon">🌐</div>
+                    <div class="proj-text">Incrementar la participación en <strong>conferencias internacionales</strong>
+                        y eventos de ciencia y tecnología.</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-icon">🏆</div>
+                    <div class="proj-text">Consolidar el reconocimiento del <strong>Grupo TICTROPICO 4.0</strong> ante
+                        MINCIENCIAS en categoría superior.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 16: CIERRE ===== -->
+        <section class="slide" id="slide-16">
+            <div class="thanks">¡Gracias!</div>
+            <div class="divider" style="width:80px;height:5px;margin:18px auto;"></div>
+            <img src="simbolo-color.png" alt="Unitrópico" style="height:64px;width:auto;margin-bottom:10px;">
+            <div class="cierre-uni">Unitrópico®</div>
+            <div style="font-size:0.9rem;color:var(--text-muted);margin-top:4px;">Universidad Internacional del Trópico
+                Americano</div>
+            <div style="margin-top:4px;font-size:0.72rem;color:var(--text-muted);letter-spacing:0.06em;">Vigilada
+                MinEducación</div>
+            <div style="margin-top:26px;padding-top:20px;border-top:1px solid rgba(27,107,90,0.15);">
+                <div
+                    style="font-size:0.72rem;color:var(--verde);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;">
+                    Contacto Institucional</div>
+                <div class="contact-row">
+                    <span>🌐 https://www.unitropico.edu.co/</span>
+                    <span>📧 tictropico@unitropico.edu.co</span>
+                    <span>📍 Yopal, Casanare, Colombia</span>
+                </div>
+            </div>
+            <div style="margin-top:20px;"><span class="badge badge-v" style="font-size:0.78rem;">Ingeniería en
+                    Inteligencia Artificial
+                    · 2026</span></div>
+        </section>
+
+    </div><!-- /#deck -->
+
+    <!-- FOOTER -->
+    <footer id="site-footer">
+        <div class="ftr-left">Ingeniería en Inteligencia Artificial</div>
+        <div class="ftr-center">Unitrópico — Universidad Internacional del Trópico Americano</div>
+        <div class="ftr-nav">
+            <button class="nav-btn" id="btn-prev" disabled>◀ Anterior</button>
+            <button class="nav-btn" id="btn-next">Siguiente ▶</button>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        (function () {
+            const TOTAL = 16;
+            let current = 1;
+
+            const slides = Array.from({ length: TOTAL }, (_, i) => document.getElementById('slide-' + (i + 1)));
+            const bar = document.getElementById('progress-bar');
+            const counter = document.getElementById('counter');
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+
+            function render(prev, next) {
+                if (slides[prev - 1]) {
+                    slides[prev - 1].classList.remove('active');
+                    slides[prev - 1].classList.add('prev');
+                    setTimeout(() => { if (slides[prev - 1]) slides[prev - 1].classList.remove('prev'); }, 600);
+                }
+                slides[next - 1].classList.add('active');
+                bar.style.width = ((next / TOTAL) * 100) + '%';
+                counter.textContent = next + ' / ' + TOTAL;
+                btnPrev.disabled = (next === 1);
+                btnNext.disabled = (next === TOTAL);
+            }
+
+            function navigate(dir) {
+                const prev = current;
+                const next = Math.min(Math.max(current + dir, 1), TOTAL);
+                if (next === current) return;
+                current = next;
+                render(prev, current);
+            }
+
+            btnPrev.addEventListener('click', () => navigate(-1));
+            btnNext.addEventListener('click', () => navigate(1));
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+            });
+
+            let touchX = 0;
+            document.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; });
+            document.addEventListener('touchend', function (e) {
+                const dx = e.changedTouches[0].clientX - touchX;
+                if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+            });
+
+            // Init
+            slides[0].classList.add('active');
+            bar.style.width = ((1 / TOTAL) * 100) + '%';
+        })();
+    </script>
+
+    <!-- ===== MODAL DE VIDEO ===== -->
+    <div id="video-modal" style="
+        display:none;
+        position:fixed;
+        inset:0;
+        z-index:9999;
+        background:rgba(0,0,0,0.93);
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+    ">
+        <!-- Botón cerrar -->
+        <button onclick="cerrarVideo()" style="
+            position:absolute;top:22px;right:28px;
+            background:rgba(255,255,255,0.12);
+            border:none;border-radius:50%;
+            width:44px;height:44px;
+            font-size:1.4rem;color:#fff;
+            cursor:pointer;line-height:44px;text-align:center;
+            transition:background 0.2s;
+        " title="Cerrar (Esc)">✕</button>
+
+        <!-- Etiqueta del área -->
+        <div id="video-label" style="
+            color:#B8943F;font-size:1rem;font-weight:700;
+            letter-spacing:0.08em;text-transform:uppercase;
+            margin-bottom:16px;opacity:0.9;
+        "></div>
+
+        <!-- Reproductor -->
+        <video id="video-player"
+            style="max-width:90vw;max-height:80vh;border-radius:10px;box-shadow:0 0 60px rgba(0,0,0,0.8);" controls
+            autoplay>
+        </video>
+
+        <!-- Hint teclado -->
+        <div style="margin-top:14px;color:rgba(255,255,255,0.4);font-size:0.75rem;">
+            Presiona <kbd style="background:rgba(255,255,255,0.15);padding:2px 7px;border-radius:4px;">Esc</kbd>
+            o haz clic fuera del video para volver a la presentación
+        </div>
+    </div>
+
+    <script>
+        /* ---- Sistema de Video Modal ---- */
+        const videoModal = document.getElementById('video-modal');
+        const videoPlayer = document.getElementById('video-player');
+        const videoLabel = document.getElementById('video-label');
+
+        const videoTitles = {
+            'videos/ia.mp4': '🧠 Inteligencia Artificial',
+            'videos/iot.mp4': '🌐 Internet de las Cosas',
+            'videos/computacional.mp4': '⚙️ Intel. Computacional',
+            'videos/robotica.mp4': '🤖 Robótica'
+        };
+
+        function abrirVideo(src) {
+            videoLabel.textContent = videoTitles[src] || '';
+            videoPlayer.src = src;
+            videoModal.style.display = 'flex';
+            videoPlayer.play().catch(() => { });  // auto-play
+        }
+
+        function cerrarVideo() {
+            videoPlayer.pause();
+            videoPlayer.src = '';
+            videoModal.style.display = 'none';
+        }
+
+        // Al terminar el video → cierra modal automáticamente
+        videoPlayer.addEventListener('ended', cerrarVideo);
+
+        // Clic en fondo oscuro (fuera del video) → cierra
+        videoModal.addEventListener('click', function (e) {
+            if (e.target === videoModal) cerrarVideo();
+        });
+
+        // Escape → cierra
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && videoModal.style.display === 'flex') {
+                e.stopImmediatePropagation();
+                cerrarVideo();
+            }
+        }, true);   // capture=true para interceptar antes del listener de navegación
+    </script>
+
+</body>
+
+</html>

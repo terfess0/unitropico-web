@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Justificación - Oferta Internacional - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 25px;
+    }
+
+    /* Estilos para Estrategias de flexibilización */
+    .section-header-line {
+      margin-bottom: 40px;
+      text-align: center;
+      padding-top: 10px;
+    }
+
+    .section-header-line h2 {
+      font-weight: 400;
+      font-size: 2.2rem;
+      line-height: 1.35;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+
+    /* Estilos para el Icono Lateral */
+    .comp-icon-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 80px;
+      margin-bottom: 90px;
+      gap: 30px;
+    }
+
+    .comp-icon-container {
+      width: 140px;
+      height: 140px;
+      background-color: #fcfcfc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), inset 0 2px 10px rgba(0, 0, 0, 0.02);
+      border: 3px solid #f2f2f2;
+    }
+
+    .comp-icon-container img {
+      width: 55%;
+      height: auto;
+    }
+
+    .comp-text-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #007580;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 15px;
+        padding: 0 15px;
+      }
+
+      .comp-icon-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .comp-text-title {
+        font-size: 1.8rem;
+      }
+
+      .section-header-line h2 {
+        font-size: 1.5rem !important;
+      }
+
+      .line-gold {
+        width: 100% !important;
+        max-width: 550px;
+      }
+
+      .line-gray {
+        width: 80% !important;
+        max-width: 450px;
+      }
+    }
+
+    /* =========================================
+       NUEVO LAYOUT: INTERNACIONALIZACION
+       ========================================= */
+    .inter-header {
+      margin-top: 50px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+
+    .inter-header h2 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: #007580;
+      margin: 0 0 10px 0;
+    }
+    .inter-header h2 span {
+      font-weight: 300;
+      color: #007580;
+    }
+
+    /* Container for 2 columns */
+    .inter-container {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      gap: 25px;
+      padding-bottom: 50px;
+    }
+
+    /* Left column */
+    .inter-left-col {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .inter-left-box {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .inter-bg-green {
+      background-color: #00594e;
+    }
+
+    .inter-bg-gold {
+      background-color: #bfa773;
+    }
+
+    /* Right column */
+    .inter-right-col {
+      width: 60%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .inter-right-box {
+      background-color: transparent;
+      border-radius: 12px;
+      padding: 18px 25px;
+      color: #007580;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .inter-border-gold {
+      border: 2px solid #bfa773;
+    }
+
+    .inter-border-green {
+      border: 2px solid #00594e;
+    }
+
+    .inter-text-center {
+      text-align: center;
+    }
+
+    .inter-indent {
+      padding-left: 30px;
+      margin: 15px 0;
+    }
+
+    .inter-indent p {
+      margin: 5px 0;
+    }
+
+    @media (max-width: 900px) {
+      .inter-container {
+        flex-direction: column;
+      }
+      .inter-left-col, .inter-right-col {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="container">
+    <!-- Título del artículo (alineado izquierda) -->
+    <div class="top-left-title subtitulo text-verde-1">
+      <span class="text-bronce-1">2.5.3.2.3.2.4. Aspectos curriculares -</span> c) Componentes de interacción
+    </div>
+
+    <!-- Encabezado centrado -->
+    <div class="inter-header">
+      <h2><span>Actividades para favorecer la<br></span>Internacionalización</h2>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0px;">
+        <div class="line-gold" style="width: 450px; height: 3px; background-color: #ba9b5e; border-radius: 2px;"></div>
+        <div class="line-gray" style="width: 400px; height: 6px; background-color: #e0e0e0; border-radius: 3px;"></div>
+      </div>
+    </div>
+
+    <!-- Contenedor 2 Columnas -->
+    <div class="inter-container">
+      
+      <!-- Columna Izquierda (Títulos) -->
+      <div class="inter-left-col">
+        <div class="inter-left-box inter-bg-green">
+          Descripción del contenido curricular<br>que propicia las competencias inter<br>y multiculturales
+        </div>
+        <div class="inter-left-box inter-bg-gold">
+          Competencias comunicativas<br>en una segunda lengua
+        </div>
+        <div class="inter-left-box inter-bg-green">
+          Mecanismos de interacción con<br>comunidades locales, regionales,<br>nacionales e internacionales
+        </div>
+      </div>
+
+      <!-- Columna Derecha (Descripciones) -->
+      <div class="inter-right-col">
+        
+        <div class="inter-right-box inter-border-gold inter-text-center">
+          La adquisición de competencias inter y multiculturales, dentro de estas se<br>debe mencionar las electivas I, II y III, la electiva de contexto.
+        </div>
+
+        <div class="inter-right-box inter-border-green">
+          <p style="margin-top: 0;">La línea de profundización de Inteligencia Artificial incluye tres asignaturas que se orientaran en una segunda lengua así:</p>
+          
+          <div class="inter-indent">
+            <p><strong>Deep Learning</strong> ➔ séptimo semestre ➔ se orientará en un 50%</p>
+            <p><strong>Deep Reinforcement Learning</strong> ➔ octavo semestre ➔ se orientarán en un 60%</p>
+            <p><strong>Computer Vision</strong> ➔ noveno semestre ➔ se orientarán en un 60%</p>
+          </div>
+
+          <p>El profesor desarrollará temáticas de sus asignaturas en un segundo idioma (inglés) dejando evidencias que se presentarán en un informe.</p>
+          
+          <p style="margin-bottom: 0;">La sección de bibliografía de los sílabos se establece como requisito incluir fuentes de consulta en un segundo idioma diferente al español.</p>
+        </div>
+
+        <div class="inter-right-box inter-border-gold">
+          Diseñó un plan de internacionalización.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>
