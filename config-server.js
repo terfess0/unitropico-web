@@ -57,14 +57,55 @@ const server = http.createServer((req, res) => {
         });
         req.on('end', () => {
             try {
-                // Validate JSON before saving
-                const config = JSON.parse(body);
-                fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf-8');
+                const incomingConfig = JSON.parse(body);
 
-                console.log('Project config saved successfully at:', CONFIG_PATH);
+                // Read current config to check version
+                let currentConfig = {};
+                if (fs.existsSync(CONFIG_PATH)) {
+                    currentConfig = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf-8'));
+                }
+
+                const currentRevision = currentConfig.revision || 0;
+                const incomingRevision = incomingConfig.revision || 0;
+
+                // Optimistic Concurrency Check
+                // If the client revision is older than the server revision, reject with 409
+                if (incomingRevision !== 0 && incomingRevision < currentRevision) {
+                    res.writeHead(409, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({
+                        success: false,
+                        message: 'Error de concurrencia: El archivo ha sido modificado por otro usuario.',
+                        latestRevision: currentRevision
+                    }));
+                    return;
+                }
+
+                // Smart Merge:
+                // We increment the revision and merge the contents map.
+                // For sequences, we take the incoming ones as they define the order.
+                const newRevision = Math.max(currentRevision, incomingRevision) + 1;
+
+                const mergedConfig = {
+                    ...incomingConfig, // Take incoming as base
+                    revision: newRevision,
+                    // Ensure we don't accidentally delete contents that might have been added by others
+                    // while we were editing (if we only sent a partial update, but currently client sends all)
+                    contents: {
+                        ...(currentConfig.contents || {}),
+                        ...(incomingConfig.contents || {})
+                    }
+                };
+
+                fs.writeFileSync(CONFIG_PATH, JSON.stringify(mergedConfig, null, 2), 'utf-8');
+
+                console.log('Project config saved successfully (Revision ' + newRevision + ') at:', CONFIG_PATH);
 
                 res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: true, message: 'Configuración guardada correctamente.' }));
+                res.end(JSON.stringify({
+                    success: true,
+                    message: 'Configuración guardada correctamente.',
+                    revision: newRevision
+                }));
             } catch (error) {
                 console.error('Error saving config:', error);
                 res.writeHead(500, { 'Content-Type': 'application/json' });

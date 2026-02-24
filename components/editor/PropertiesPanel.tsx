@@ -55,8 +55,11 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
                     {/* Editable title */}
                     <div>
-                        <label className="block text-xs font-semibold uppercase text-gray-500 mb-1">
-                            Título
+                        <label className="block text-xs font-semibold uppercase text-gray-500 mb-1 flex justify-between items-center">
+                            <span>Título</span>
+                            <span className="font-mono text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded select-all lowercase" title="Click para seleccionar el ID directamente">
+                                {selectedContent.id}
+                            </span>
                         </label>
                         <input
                             type="text"

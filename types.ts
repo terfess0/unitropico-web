@@ -52,6 +52,7 @@ export interface Sequence {
 
 export interface ProjectConfig {
   projectId: string;
+  revision: number;
   sequences: Sequence[];
   contents: Record<string, Content>;
 }

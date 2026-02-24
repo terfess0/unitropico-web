@@ -357,8 +357,18 @@ const Editor: React.FC = () => {
 
             const data = await response.json();
 
+            if (response.status === 409) {
+                setSaveStatus('error');
+                alert('CONFLICTO DE GUARDADO: Otro usuario ha realizado cambios. Por favor, recarga la página para obtener la última versión y vuelve a aplicar tus cambios.');
+                return;
+            }
+
             if (data.success) {
                 setSaveStatus('success');
+                // Update local revision with the one from server
+                if (data.revision) {
+                    setProjectConfig(prev => prev ? { ...prev, revision: data.revision } : null);
+                }
                 setTimeout(() => setSaveStatus('idle'), 3000);
             } else {
                 throw new Error(data.message);
@@ -497,6 +507,7 @@ const Editor: React.FC = () => {
                     onAddHotspot={handleAddHotspot}
                     onNavigate={handleSelectContent}
                     onNavigateBack={handleNavigateBack}
+                    hasHistory={history.length > 0}
                     onUpdateContentHtml={handleUpdateContentHtml}
                 />
             }
