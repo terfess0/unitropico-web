@@ -175,15 +175,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                         <span className="material-icons text-xl">navigate_before</span>
                         Anterior
                     </button>
-                    {/* Back button – only enabled when there is history */}
-                    <button
-                        onClick={handleNavigateBack}
-                        disabled={history.length === 0}
-                        className="flex-1 flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-500 disabled:opacity-30 disabled:cursor-not-allowed py-3 rounded-lg transition-colors text-white text-sm font-medium"
-                    >
-                        <span className="material-icons text-xl">arrow_back</span>
-                        Volver
-                    </button>
+
                     <button
                         onClick={handleNext}
                         disabled={!selectedContentId || activeSequence.contents.indexOf(selectedContentId) === activeSequence.contents.length - 1}
