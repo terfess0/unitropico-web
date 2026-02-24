@@ -11,6 +11,8 @@ interface PresentationContainerProps {
     readOnly?: boolean;
     onHotspotClick?: (hotspot: Hotspot) => void;
     onNavigate?: (targetId: string) => void;
+    onNavigateBack?: () => void;
+    hasHistory?: boolean;
     onUpdateContentHtml?: (contentId: string, newHtml: string) => void;
 }
 
@@ -23,6 +25,8 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     readOnly = false,
     onHotspotClick,
     onNavigate,
+    onNavigateBack,
+    hasHistory,
     onUpdateContentHtml
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -36,12 +40,14 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
         const handleMessage = (event: MessageEvent) => {
             if (event.data?.type === 'NAVIGATE' && event.data?.targetId && onNavigate) {
                 onNavigate(event.data.targetId);
+            } else if (event.data?.type === 'NAVIGATE_BACK' && onNavigateBack) {
+                onNavigateBack();
             }
         };
 
         window.addEventListener('message', handleMessage);
         return () => window.removeEventListener('message', handleMessage);
-    }, [onNavigate]);
+    }, [onNavigate, onNavigateBack]);
 
     // Reset drawing state when content changes
     useEffect(() => {
@@ -259,6 +265,16 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                     )}
                 </motion.div>
             </AnimatePresence>
+            {/* Back button – bottom left, only when there is history */}
+            {hasHistory && (
+                <button
+                    onClick={onNavigateBack}
+                    className="absolute bottom-4 left-4 bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded shadow-md transition-colors text-sm"
+                    title="Volver al contenido anterior"
+                >
+                    <span className="material-icons align-middle" style={{ fontSize: '1.2rem' }}>arrow_back</span>
+                </button>
+            )}
         </div>
     );
 };

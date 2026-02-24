@@ -11,6 +11,8 @@ const Editor: React.FC = () => {
     const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
     const [selectedHotspotId, setSelectedHotspotId] = useState<string | null>(null);
     const [selectedSequenceId, setSelectedSequenceId] = useState<string | null>(null);
+    // Navigation history stack (stores previously visited content IDs)
+    const [history, setHistory] = useState<string[]>([]);
     // In-session blob URLs for preview only — not persisted to projectConfig
     const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
 
@@ -42,8 +44,25 @@ const Editor: React.FC = () => {
     }, [selectedSequenceId]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleSelectContent = (id: string) => {
+        // Push current content onto history before navigating to a new one
+        if (selectedContentId && selectedContentId !== id) {
+            setHistory(prev => [...prev, selectedContentId]);
+        }
         setSelectedContentId(id);
         setSelectedHotspotId(null);
+    };
+
+    // Navigate back to the previous content using the history stack
+    const handleNavigateBack = () => {
+        setHistory(prev => {
+            if (prev.length === 0) return prev; // No history
+            const newHistory = [...prev];
+            const previousId = newHistory.pop();
+            if (previousId) {
+                setSelectedContentId(previousId);
+            }
+            return newHistory;
+        });
     };
 
     const handleUpdateHotspot = (updatedHotspot: Hotspot) => {
@@ -477,6 +496,7 @@ const Editor: React.FC = () => {
                     onSelectHotspot={setSelectedHotspotId}
                     onAddHotspot={handleAddHotspot}
                     onNavigate={handleSelectContent}
+                    onNavigateBack={handleNavigateBack}
                     onUpdateContentHtml={handleUpdateContentHtml}
                 />
             }

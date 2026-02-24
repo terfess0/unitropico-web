@@ -14,6 +14,8 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
     const [selectedContentId, setSelectedContentId] = useState<string | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+    // Navigation history stack for back navigation
+    const [history, setHistory] = useState<string[]>([]);
 
     // Load project config
     useEffect(() => {
@@ -43,6 +45,10 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
     const selectedContent = (projectConfig && selectedContentId) ? projectConfig.contents[selectedContentId] : null;
 
     const handleSelectContent = (id: string) => {
+        // Push current content onto history before navigating
+        if (selectedContentId && selectedContentId !== id) {
+            setHistory(prev => [...prev, selectedContentId]);
+        }
         setSelectedContentId(id);
     };
 
@@ -62,6 +68,19 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
             setSelectedContentId(activeSequence.contents[currentIndex + 1]);
         }
     }, [activeSequence, selectedContentId]);
+
+    // Navigate back using history stack
+    const handleNavigateBack = React.useCallback(() => {
+        setHistory(prev => {
+            if (prev.length === 0) return prev;
+            const newHistory = [...prev];
+            const previousId = newHistory.pop();
+            if (previousId) {
+                setSelectedContentId(previousId);
+            }
+            return newHistory;
+        });
+    }, []);
 
     const handlePrev = React.useCallback(() => {
         if (!activeSequence || !selectedContentId) return;
@@ -156,6 +175,15 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                         <span className="material-icons text-xl">navigate_before</span>
                         Anterior
                     </button>
+                    {/* Back button – only enabled when there is history */}
+                    <button
+                        onClick={handleNavigateBack}
+                        disabled={history.length === 0}
+                        className="flex-1 flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-500 disabled:opacity-30 disabled:cursor-not-allowed py-3 rounded-lg transition-colors text-white text-sm font-medium"
+                    >
+                        <span className="material-icons text-xl">arrow_back</span>
+                        Volver
+                    </button>
                     <button
                         onClick={handleNext}
                         disabled={!selectedContentId || activeSequence.contents.indexOf(selectedContentId) === activeSequence.contents.length - 1}
@@ -177,6 +205,8 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                     readOnly={true}
                     onHotspotClick={handleHotspotClick}
                     onNavigate={handleSelectContent}
+                    onNavigateBack={handleNavigateBack}
+                    hasHistory={history.length > 0}
                 />
             </main>
         </div>
