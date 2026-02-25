@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asignación de Actividades Académicas - Unitrópico</title>
+  <!-- Fuente Montserrat y CSS base -->
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
+  <style>
+    /* =========================
+       ESTILOS ADICIONALES
+    ========================= */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow-x: hidden;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    /* Navbar superior recortado */
+    .navbar-img {
+      width: 100%;
+      background: var(--verde-1);
+      text-align: center;
+    }
+
+    .navbar-img img {
+      width: 100%;
+      height: auto;
+      max-height: 110px;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Contenedor principal */
+    .content-container {
+      max-width: 1300px;
+      margin: 30px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    /* Encabezados */
+    .main-title {
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      color: var(--verde-1, #004b40);
+    }
+
+    .main-title .font-light {
+      font-weight: 400;
+    }
+
+    .main-title .font-bold {
+      font-weight: 800;
+    }
+
+    .sub-title {
+      font-size: 1.25rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+    }
+
+    .sub-title .text-verde {
+      color: var(--verde-1, #004b40);
+    }
+
+    .sub-title .text-dorado {
+      color: var(--bronce-1, #b58c49);
+    }
+
+    /* Grid de Banners */
+    .banners-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 30px;
+      align-items: stretch;
+    }
+
+    .banner {
+      position: relative;
+      padding: 12px;
+      padding-bottom: 45px;
+      /* espacio para la punta inferior (12px borde inferior rect + 33px de punta) */
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 33px), 50% 100%, 0 calc(100% - 33px));
+      display: flex;
+      flex-direction: column;
+    }
+
+    .banner-green {
+      background-color: var(--verde-1, #004b40);
+    }
+
+    .banner-gold {
+      background-color: var(--bronce-1, #b58c49);
+    }
+
+    .white-card {
+      background-color: #ffffff;
+      padding: 25px 20px;
+      flex-grow: 1;
+      /* Para que todas las tarjetas midan igual de alto internamente */
+    }
+
+    .card-header {
+      font-weight: 800;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #000;
+      line-height: 1.3;
+      text-transform: uppercase;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    .checklist li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: #333;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .checklist li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-weight: bold;
+      color: #000;
+      font-size: 1rem;
+    }
+
+    .spaced-header {
+      margin-top: 40px;
+    }
+
+    /* Título inferior */
+    .bottom-title {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .banners-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .main-title {
+        font-size: 1.5rem;
+      }
+
+      .sub-title {
+        font-size: 1rem;
+      }
+
+      .bottom-title {
+        font-size: 1.3rem;
+      }
+
+      .banners-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar de imagen superior -->
+  <div class="navbar-img">
+    <img src="media/denominacion/navbar.png" alt="Navbar Unitropico">
+  </div>
+
+  <div class="content-container">
+
+    <!-- Encabezados -->
+    <h1 class="main-title">
+      <span class="font-light">Asignación y gestión de las</span>
+      <span class="font-bold">actividades académicas</span>
+    </h1>
+    <h2 class="sub-title">
+      <span class="text-verde">Artículo 2.5.3.2.3.2.8. Profesores</span>
+      <span class="text-dorado">– Asignación y gestión de las actividades de los profesores.</span>
+    </h2>
+
+    <!-- Grid de Banners -->
+    <div class="banners-grid">
+
+      <!-- Banner 1: MISIONALES -->
+      <div class="banner banner-green">
+        <div class="white-card">
+          <div class="card-header">ACTIVIDADES<br>MISIONALES</div>
+          <ul class="checklist">
+            <li>Docencia directa</li>
+            <li id="docencia-indirecta">Docencia Indirecta (Preparación de clases, acompañamiento a opciones de grado,
+              tutorías etc.).</li>
+            <li>Actividades de Investigación</li>
+            <li>Actividades de Proyección social</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Banner 2: ACADEMICO-ADMINISTRATIVAS -->
+      <div class="banner banner-gold">
+        <div class="white-card">
+          <div class="card-header">ACTIVIDADES<br>ACADEMICO-ADMINISTRATIVAS</div>
+          <ul class="checklist">
+            <li>En unidades académico Administrativas.</li>
+            <li>Actividades de creación, renovación y acreditación de programas académicos e institucional.</li>
+            <li>Actividades dispuestas para el desarrollo y cumplimiento de planes y programas de Bienestar
+              Universitario que promuevan la permanencia y graduación.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Banner 3: FORMACIÓN PROFESORAL -->
+      <div class="banner banner-green">
+        <div class="white-card">
+          <div class="card-header">ACTIVIDADES DE<br>FORMACIÓN<br>PROFESORAL</div>
+          <ul class="checklist">
+            <li>Actividades de formación</li>
+          </ul>
+          <div class="card-header spaced-header">ACTIVIDADES DE<br>APOYO AL PROGRAMA</div>
+        </div>
+      </div>
+
+      <!-- Banner 4: ASESORÍA -->
+      <div class="banner banner-gold">
+        <div class="white-card">
+          <div class="card-header">ACTIVIDADES DE<br>ASESORÍA</div>
+          <ul class="checklist">
+            <li>Comité Curricular</li>
+            <li>Consejo de Facultad</li>
+            <li>Otros Colegiados</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Título inferior -->
+    <h2 class="bottom-title">ELEMENTOS DEL PLAN DE TRABAJO</h2>
+
+  </div>
+
+</body>
+
+</html>

@@ -15,10 +15,11 @@ const Editor: React.FC = () => {
     const [history, setHistory] = useState<string[]>([]);
     // In-session blob URLs for preview only — not persisted to projectConfig
     const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
+    const [isSavingContent, setIsSavingContent] = useState(false);
 
-    // Load project config
+
     useEffect(() => {
-        fetch(`http://${window.location.hostname}:3001/api/config`)
+        fetch(`/api/config`)
             .then(res => res.json())
             .then((data: ProjectConfig) => {
                 setProjectConfig(data);
@@ -247,7 +248,7 @@ const Editor: React.FC = () => {
 
         // Attempt to find actual file location on server
         try {
-            const response = await fetch(`http://${window.location.hostname}:3001/api/find-asset?filename=${encodeURIComponent(file.name)}`);
+            const response = await fetch(`/api/find-asset?filename=${encodeURIComponent(file.name)}`);
             if (response.ok) {
                 const data = await response.json();
                 if (data.path) {
@@ -304,7 +305,11 @@ const Editor: React.FC = () => {
                 sequences: updatedSequences
             };
         });
+
+        // Trigger granular sequence save
+        setTimeout(() => handleSaveSequence(selectedSequenceId), 100);
     };
+
 
     const handleDeleteContent = (contentId: string) => {
         if (!projectConfig) return;
@@ -347,7 +352,7 @@ const Editor: React.FC = () => {
         setSaveStatus('idle');
 
         try {
-            const response = await fetch(`http://${window.location.hostname}:3001/api/save-config`, {
+            const response = await fetch(`/api/save-config`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -389,6 +394,46 @@ const Editor: React.FC = () => {
             setIsSaving(false);
         }
     };
+
+    const handleSaveContent = async () => {
+        if (!projectConfig || !selectedContentId) return;
+        const content = projectConfig.contents[selectedContentId];
+        if (!content) return;
+
+        setIsSavingContent(true);
+        try {
+            const response = await fetch(`/api/save-content`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...content, projectId: projectConfig.projectId })
+            });
+            if (!response.ok) throw new Error('Error al guardar contenido');
+            console.log('Contenido guardado individualmente');
+        } catch (error) {
+            console.error(error);
+            alert('Error al guardar el contenido individual');
+        } finally {
+            setIsSavingContent(false);
+        }
+    };
+
+    const handleSaveSequence = async (sequenceId: string) => {
+        if (!projectConfig) return;
+        const sequence = projectConfig.sequences.find(s => s.id === sequenceId);
+        if (!sequence) return;
+
+        try {
+            const response = await fetch(`/api/save-sequence`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sequence)
+            });
+            if (!response.ok) throw new Error('Error al guardar secuencia');
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
 
     if (!projectConfig) {
         return <div className="flex h-screen items-center justify-center">Cargando proyecto...</div>;
@@ -521,10 +566,13 @@ const Editor: React.FC = () => {
                     onUpdateContentTitle={handleUpdateContentTitle}
                     onUpdateContentHtml={handleUpdateContentHtml}
                     onUpdateContentSrc={handleUpdateContentSrc}
+                    onSaveContent={handleSaveContent}
+                    isSavingContent={isSavingContent}
                 />
             }
         />
     );
 };
+
 
 export default Editor;

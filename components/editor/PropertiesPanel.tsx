@@ -10,7 +10,10 @@ interface PropertiesPanelProps {
     onUpdateContentTitle: (contentId: string, newTitle: string) => void;
     onUpdateContentHtml: (contentId: string, newHtml: string) => void;
     onUpdateContentSrc: (contentId: string, newSrc: string) => void;
+    onSaveContent: () => void;
+    isSavingContent?: boolean;
 }
+
 
 const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     selectedHotspot,
@@ -20,8 +23,11 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     onDeleteHotspot,
     onUpdateContentTitle,
     onUpdateContentHtml,
-    onUpdateContentSrc
+    onUpdateContentSrc,
+    onSaveContent,
+    isSavingContent = false
 }) => {
+
     if (!selectedContent && !selectedHotspot) {
         return (
             <div className="p-6 text-center text-gray-500">
@@ -51,7 +57,18 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             {/* ── Content Title Section ── */}
             {selectedContent && (
                 <div className="border-b border-gray-200 dark:border-gray-700 pb-4 space-y-3">
-                    <h3 className="font-bold text-sm">Contenido Seleccionado</h3>
+                    <div className="flex justify-between items-center">
+                        <h3 className="font-bold text-sm">Contenido Seleccionado</h3>
+                        <button
+                            onClick={onSaveContent}
+                            disabled={isSavingContent}
+                            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-bold transition-all shadow-sm ${isSavingContent ? 'bg-gray-400' : 'bg-[#00594E] hover:bg-[#347B72]'} text-white`}
+                        >
+                            <span className="material-icons text-[14px]">{isSavingContent ? 'sync' : 'save'}</span>
+                            {isSavingContent ? 'Guardando...' : 'Guardar'}
+                        </button>
+                    </div>
+
 
                     {/* Editable title */}
                     <div>

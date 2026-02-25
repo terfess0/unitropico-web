@@ -56,7 +56,7 @@ const ContentList: React.FC<ContentListProps> = ({
   return (
     <div className={`p-4 space-y-6 ${readOnly ? 'h-full overflow-y-auto' : ''}`}>
       <div className="flex justify-between items-center">
-        <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/80">
+        <h3 className="text-[12px] font-black uppercase tracking-[0.2em] text-accent/80">
           {readOnly ? 'NAVEGACIÓN' : 'ESTRUCTURA DEL PROYECTO'}
         </h3>
         {!readOnly && (

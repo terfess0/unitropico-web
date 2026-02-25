@@ -19,8 +19,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
 
     // Load project config
     useEffect(() => {
-        // In a real app we might cache this or pass it as prop, but fetching is fine for MVP
-        fetch(`http://${window.location.hostname}:3001/api/config`)
+        fetch(`/api/config`)
             .then(res => res.json())
             .then((data: ProjectConfig) => {
                 setProjectConfig(data);
@@ -139,7 +138,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                         <Link to={backLink} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
                             <span className="material-icons">arrow_back</span>
                         </Link>
-                        <h2 className="font-black text-sm uppercase tracking-tight leading-tight" style={{ color: '#B5A160' }} title={activeSequence.title}>
+                        <h2 className="font-bold text-lg uppercase tracking-tight leading-tight" style={{ color: '#B5A160' }} title={activeSequence.title}>
                             {activeSequence.title}
                         </h2>
                     </div>

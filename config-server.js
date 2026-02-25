@@ -7,7 +7,7 @@ import pool from './db.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 async function getFullConfig() {
     // 1. Get Project
@@ -97,6 +97,130 @@ const server = http.createServer(async (req, res) => {
         }
         return;
     }
+
+    // NEW: POST /api/save-content - Save individual content & hotspots
+    if (req.method === 'POST' && req.url === '/api/save-content') {
+        let body = '';
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', async () => {
+            let connection;
+            try {
+                const c = JSON.parse(body);
+                const projectId = c.projectId || 'unitropico-virtual-tour';
+                const id = c.id;
+
+                if (!id) throw new Error('Missing content ID');
+
+                connection = await pool.getConnection();
+                await connection.beginTransaction();
+
+                let htmlValueToSave = c.html || '';
+
+                // HTML File Persistence
+                if (c.type === 'html' && htmlValueToSave) {
+                    // Try to find sequence ID for folder organization
+                    const [seqRows] = await connection.query('SELECT sequence_id FROM sequence_contents WHERE content_id = ? LIMIT 1', [id]);
+                    const sectionId = seqRows[0]?.sequence_id || 'unassigned';
+
+                    const htmlDir = path.join(__dirname, 'public', 'media', 'html', sectionId);
+                    if (!fs.existsSync(htmlDir)) {
+                        fs.mkdirSync(htmlDir, { recursive: true });
+                    }
+                    const htmlFilename = `${id}.html`;
+                    const htmlFilePath = path.join(htmlDir, htmlFilename);
+
+                    if (!htmlValueToSave.startsWith('/media/html/')) {
+                        fs.writeFileSync(htmlFilePath, htmlValueToSave, 'utf-8');
+                    }
+                    htmlValueToSave = `/media/html/${sectionId}/${htmlFilename}`;
+                }
+
+                // Update Content
+                await connection.execute(
+                    `INSERT INTO contents (id, project_id, title, type, src, html, allow_scripts) 
+                     VALUES (?, ?, ?, ?, ?, ?, ?)
+                     ON DUPLICATE KEY UPDATE title=?, type=?, src=?, html=?, allow_scripts=?`,
+                    [
+                        id, projectId, c.title || '', c.type || 'image', c.src || '', htmlValueToSave, c.allowScripts !== false,
+                        c.title || '', c.type || 'image', c.src || '', htmlValueToSave, c.allowScripts !== false
+                    ]
+                );
+
+                // Update Hotspots
+                await connection.execute('DELETE FROM hotspots WHERE content_id = ?', [id]);
+                if (Array.isArray(c.hotspots)) {
+                    for (const h of c.hotspots) {
+                        await connection.execute(
+                            `INSERT INTO hotspots (id, content_id, x, y, width, height, action, target, title, zindex)
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                            [h.id, id, h.x, h.y, h.width, h.height, h.action, h.target || '', h.title || '', h.zindex || 0]
+                        );
+                    }
+                }
+
+                await connection.commit();
+                connection.release();
+
+                console.log(`✅ Saved individual content: ${id}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+
+            } catch (error) {
+                if (connection) {
+                    await connection.rollback();
+                    connection.release();
+                }
+                console.error('Error saving granular content:', error);
+                res.writeHead(500);
+                res.end(JSON.stringify({ success: false, message: error.message }));
+            }
+        });
+        return;
+    }
+
+    // NEW: POST /api/save-sequence - Save sequence order
+    if (req.method === 'POST' && req.url === '/api/save-sequence') {
+        let body = '';
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', async () => {
+            let connection;
+            try {
+                const seq = JSON.parse(body);
+                if (!seq.id || !Array.isArray(seq.contents)) throw new Error('Invalid sequence data');
+
+                connection = await pool.getConnection();
+                await connection.beginTransaction();
+
+                // Rebuild sequence contents mapping
+                await connection.execute('DELETE FROM sequence_contents WHERE sequence_id = ?', [seq.id]);
+                for (let j = 0; j < seq.contents.length; j++) {
+                    const contentId = seq.contents[j];
+                    await connection.execute(
+                        'INSERT IGNORE INTO sequence_contents (sequence_id, content_id, order_index) VALUES (?, ?, ?)',
+                        [seq.id, contentId, j]
+                    );
+                }
+
+                await connection.commit();
+                connection.release();
+
+                console.log(`✅ Saved sequence order: ${seq.id}`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true }));
+
+            } catch (error) {
+                if (connection) {
+                    await connection.rollback();
+                    connection.release();
+                }
+                console.error('Error saving sequence:', error);
+                res.writeHead(500);
+                res.end(JSON.stringify({ success: false, message: error.message }));
+            }
+        });
+        return;
+    }
+
 
     // POST /api/save-config: Smart modular save into MySQL
     if (req.method === 'POST' && req.url === '/api/save-config') {
