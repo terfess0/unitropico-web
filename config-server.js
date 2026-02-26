@@ -9,14 +9,20 @@ const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3001;
 
-async function getFullConfig() {
+async function getFullConfig(targetSequenceId = null) {
     // 1. Get Project
     const [projects] = await pool.query('SELECT * FROM projects LIMIT 1');
     const project = projects[0] || { id: 'default', revision: 0 };
 
     // 2. Get Sequences and ordered contents
-    const [sequences] = await pool.query('SELECT * FROM sequences ORDER BY order_index ASC');
-    const [sequenceContentsMap] = await pool.query('SELECT * FROM sequence_contents ORDER BY sequence_id, order_index ASC');
+    let sequences, sequenceContentsMap;
+    if (targetSequenceId) {
+        [sequences] = await pool.query('SELECT * FROM sequences WHERE id = ?', [targetSequenceId]);
+        [sequenceContentsMap] = await pool.query('SELECT * FROM sequence_contents WHERE sequence_id = ? ORDER BY order_index ASC', [targetSequenceId]);
+    } else {
+        [sequences] = await pool.query('SELECT * FROM sequences ORDER BY order_index ASC');
+        [sequenceContentsMap] = await pool.query('SELECT * FROM sequence_contents ORDER BY sequence_id, order_index ASC');
+    }
 
     // Map contents to sequences
     const seqMap = sequences.map(s => {
@@ -31,8 +37,22 @@ async function getFullConfig() {
     });
 
     // 3. Get Contents
-    const [contentsRows] = await pool.query('SELECT * FROM contents');
-    const [hotspotsRows] = await pool.query('SELECT * FROM hotspots');
+    let contentsRows, hotspotsRows;
+    if (targetSequenceId) {
+        // Only get contents that are in the sequenceContentsMap we just fetched
+        const contentIds = sequenceContentsMap.map(sc => sc.content_id);
+        if (contentIds.length > 0) {
+            const placeholders = contentIds.map(() => '?').join(',');
+            [contentsRows] = await pool.query(`SELECT * FROM contents WHERE id IN (${placeholders})`, contentIds);
+            [hotspotsRows] = await pool.query(`SELECT * FROM hotspots WHERE content_id IN (${placeholders})`, contentIds);
+        } else {
+            contentsRows = [];
+            hotspotsRows = [];
+        }
+    } else {
+        [contentsRows] = await pool.query('SELECT * FROM contents');
+        [hotspotsRows] = await pool.query('SELECT * FROM hotspots');
+    }
 
     const contentsMap = {};
     for (const c of contentsRows) {
@@ -78,10 +98,13 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    // GET /api/config: Read from MySQL
-    if (req.method === 'GET' && req.url === '/api/config') {
+    // GET /api/config: Read from MySQL (supports ?sequenceId=xx)
+    if (req.method === 'GET' && req.url.startsWith('/api/config')) {
+        const url = new URL(req.url, `http://${req.headers.host}`);
+        const sequenceId = url.searchParams.get('sequenceId');
+
         try {
-            const config = await getFullConfig();
+            const config = await getFullConfig(sequenceId);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(config));
         } catch (error) {
@@ -122,11 +145,21 @@ const server = http.createServer(async (req, res) => {
                     }
                     const htmlFilename = `${id}.html`;
                     const htmlFilePath = path.join(htmlDir, htmlFilename);
+                    const expectedPath = `/media/html/${sectionId}/${htmlFilename}`;
 
                     if (!htmlValueToSave.startsWith('/media/html/')) {
+                        // It's raw source code, save it
                         fs.writeFileSync(htmlFilePath, htmlValueToSave, 'utf-8');
+                    } else if (htmlValueToSave !== expectedPath) {
+                        // It's a path but doesn't match (likely moved sequence)
+                        // Read from old location and write to new one
+                        const oldPath = path.join(__dirname, 'public', htmlValueToSave);
+                        if (fs.existsSync(oldPath)) {
+                            fs.copyFileSync(oldPath, htmlFilePath);
+                            // Optionally delete old file, but keeping it is safer to avoid breaking other projects if shared
+                        }
                     }
-                    htmlValueToSave = `/media/html/${sectionId}/${htmlFilename}`;
+                    htmlValueToSave = expectedPath;
                 }
 
                 // Update Content
@@ -291,13 +324,20 @@ const server = http.createServer(async (req, res) => {
                             }
                             const htmlFilename = `${id}.html`;
                             const htmlFilePath = path.join(htmlDir, htmlFilename);
+                            const expectedPath = `/media/html/${sectionId}/${htmlFilename}`;
 
-                            // Only write if it's the actual raw HTML code, not just a returning path
                             if (!htmlValueToSave.startsWith('/media/html/')) {
+                                // Raw code, write it
                                 fs.writeFileSync(htmlFilePath, htmlValueToSave, 'utf-8');
+                            } else if (htmlValueToSave !== expectedPath) {
+                                // Moved slide - path mismatch
+                                const oldPath = path.join(__dirname, 'public', htmlValueToSave);
+                                if (fs.existsSync(oldPath)) {
+                                    fs.copyFileSync(oldPath, htmlFilePath);
+                                }
                             }
                             // Store the path in the DB instead of the raw code
-                            htmlValueToSave = `/media/html/${sectionId}/${htmlFilename}`;
+                            htmlValueToSave = expectedPath;
                         }
 
                         await connection.execute(

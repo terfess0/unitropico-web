@@ -19,7 +19,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
 
     // Load project config
     useEffect(() => {
-        fetch(`/api/config`)
+        fetch(`/api/config?sequenceId=${sequenceId}`)
             .then(res => res.json())
             .then((data: ProjectConfig) => {
                 setProjectConfig(data);

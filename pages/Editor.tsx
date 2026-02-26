@@ -57,6 +57,39 @@ const Editor: React.FC = () => {
         setViewMode('preview');
     };
 
+    // Lazy load HTML content for editor if it's just a path
+    useEffect(() => {
+        if (!selectedContentId || !projectConfig) return;
+        const content = projectConfig.contents[selectedContentId];
+
+        if (content?.type === 'html' && content.html && content.html.startsWith('/media/html/')) {
+            const path = content.html;
+            fetch(path)
+                .then(res => res.text())
+                .then(htmlString => {
+                    // Update projectConfig with the actual HTML string
+                    setProjectConfig(prev => {
+                        if (!prev) return null;
+                        // Extra check to ensure we are still on the same content
+                        const currentContent = prev.contents[selectedContentId];
+                        if (currentContent?.id !== content.id) return prev;
+
+                        return {
+                            ...prev,
+                            contents: {
+                                ...prev.contents,
+                                [selectedContentId]: {
+                                    ...currentContent,
+                                    html: htmlString
+                                }
+                            }
+                        };
+                    });
+                })
+                .catch(err => console.error('Error lazy loading HTML for editor:', err));
+        }
+    }, [selectedContentId, projectConfig]); // Dependencies need to include projectConfig to re-evaluate when contents change or are initially loaded
+
     // Navigate back to the previous content using the history stack
     const handleNavigateBack = () => {
         setHistory(prev => {
