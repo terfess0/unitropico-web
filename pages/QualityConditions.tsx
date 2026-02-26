@@ -12,10 +12,10 @@ const QualityConditions: React.FC = () => {
         window.scrollTo(0, 0);
 
         const updateScale = () => {
-            // ~240px buffer for title, back button, logo and padding
-            const availableHeight = window.innerHeight - 240;
-            // Calculate scale needed to fit 1000px container, max 0.85, min 0.4
-            const newScale = Math.min(0.85, Math.max(0.4, availableHeight / 1000));
+            // ~180px buffer for title, back button, logo and padding
+            const availableHeight = window.innerHeight - 180;
+            // Calculate scale needed to fit 1000px container, max 0.95, min 0.4
+            const newScale = Math.min(0.95, Math.max(0.4, availableHeight / 1000));
             setOrbitScale(newScale);
         };
 
@@ -98,9 +98,12 @@ const QualityConditions: React.FC = () => {
             <section className="relative w-full min-h-screen flex flex-col items-center justify-start lg:pt-16 z-10 overflow-x-hidden">
 
                 <div className="text-center relative z-20 max-w-4xl mx-auto">
-                    <h1 className="text-5xl font-montserrat font-black tracking-tighter drop-shadow-sm" style={{ color: '#00594E' }}>
+                    <h1 className="text-5xl font-montserrat font-black tracking-tighter drop-shadow-sm mb-1" style={{ color: '#00594E' }}>
                         CONDICIONES DE <span style={{ color: '#B5A160' }}>CALIDAD</span>
                     </h1>
+                    <h2 className="text-2xl font-montserrat font-black tracking-tight mb-2 opacity-90" style={{ color: '#00594E' }}>
+                        INGENIERÍA EN INTELIGENCIA ARTIFICIAL
+                    </h2>
                     <div className="mx-auto w-24 h-[3px] rounded-full" style={{ backgroundColor: '#B5A160' }}></div>
                 </div>
 
