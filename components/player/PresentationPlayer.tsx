@@ -106,6 +106,23 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleNext, handlePrev]);
 
+    // PREFETCHING LOGIC: Background load the next slide's HTML
+    useEffect(() => {
+        if (!activeSequence || !selectedContentId || !projectConfig) return;
+
+        const currentIndex = activeSequence.contents.indexOf(selectedContentId);
+        const nextContentId = activeSequence.contents[currentIndex + 1];
+
+        if (nextContentId) {
+            const nextContent = projectConfig.contents[nextContentId];
+            if (nextContent && nextContent.type === 'html' && nextContent.html.startsWith('/media/html/')) {
+                // Fetch in background to populate browser cache
+                // No timestamp here so it matches the fetch in PresentationContainer
+                fetch(nextContent.html).catch(() => { });
+            }
+        }
+    }, [selectedContentId, activeSequence, projectConfig]);
+
     if (!projectConfig || !activeSequence) {
         return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Cargando presentación...</div>;
     }

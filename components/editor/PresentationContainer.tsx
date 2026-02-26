@@ -34,6 +34,34 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     const [currentPos, setCurrentPos] = useState<{ x: number, y: number } | null>(null);
     const [scale, setScale] = useState(1);
 
+    // State for lazy-loaded HTML
+    const [htmlData, setHtmlData] = useState<string>('');
+    const [isLoadingHtml, setIsLoadingHtml] = useState(false);
+
+    // Fetch HTML content if it's just a path
+    useEffect(() => {
+        if (content?.type === 'html') {
+            if (content.html && content.html.startsWith('/media/html/')) {
+                setIsLoadingHtml(true);
+                fetch(content.html)
+                    .then(res => res.text())
+                    .then(htmlString => {
+                        setHtmlData(htmlString);
+                        setIsLoadingHtml(false);
+                    })
+                    .catch(e => {
+                        console.error('Error fetching HTML:', e);
+                        setHtmlData('<h2>Error loading content</h2>');
+                        setIsLoadingHtml(false);
+                    });
+            } else {
+                setHtmlData(content.html || '');
+            }
+        } else {
+            setHtmlData('');
+        }
+    }, [content]);
+
     // Scaling logic for 16:9 canvas
     useEffect(() => {
         if (!outerRef.current) return;
@@ -193,12 +221,19 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                                 autoPlay={readOnly}
                             />
                         ) : content.type === 'html' ? (
-                            <iframe
-                                srcDoc={content.html}
-                                sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
-                                className="w-full h-full border-none"
-                                title={content.title}
-                            />
+                            isLoadingHtml ? (
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-gray-900 border-none">
+                                    <div className="w-16 h-16 border-4 border-t-primary border-r-primary border-b-gray-800 border-l-gray-800 rounded-full animate-spin mb-4"></div>
+                                    <span className="text-white font-montserrat text-lg animate-pulse" style={{ color: '#B5A160' }}>Cargando presentación...</span>
+                                </div>
+                            ) : (
+                                <iframe
+                                    srcDoc={htmlData}
+                                    sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
+                                    className="w-full h-full border-none"
+                                    title={content.title}
+                                />
+                            )
                         ) : content.type === 'pdf' ? (
                             <div className="w-full h-full bg-gray-100 rounded-lg overflow-hidden flex flex-col">
                                 <div className="bg-white/80 backdrop-blur-md p-3 border-b border-gray-200 flex items-center justify-between shrink-0">

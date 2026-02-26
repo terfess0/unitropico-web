@@ -44,16 +44,10 @@ async function getFullConfig() {
         delete c.allow_scripts;
         delete c.project_id;
 
-        // Read physical HTML file if applicable
+        // Keep physical HTML file path if applicable, do NOT read the gigantic source code
         if (c.type === 'html' && c.html && c.html.startsWith('/media/html/')) {
-            try {
-                const filePath = path.join(__dirname, 'public', c.html);
-                if (fs.existsSync(filePath)) {
-                    c.html = fs.readFileSync(filePath, 'utf-8');
-                }
-            } catch (e) {
-                console.error(`Error reading physical HTML file for ${c.id}:`, e);
-            }
+            // We consciously leave c.html as the path string instead of reading the file
+            // Let the frontend fetch it lazy-loaded when needed to save massive payload size
         }
 
         // hotspots cleanup
