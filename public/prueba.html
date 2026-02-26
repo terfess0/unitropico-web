@@ -1,19 +1,25 @@
 <!DOCTYPE html>
+<!-- UNITROPICO-SCALED-V1 -->
 <html lang="es">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ambientes de Aprendizaje - Unitrópico</title>
+  <title>Mecanismos de Interacción - Unitrópico</title>
   <!-- Fuente Montserrat y CSS base -->
   <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
   <style>
-    /* =========================
-       ESTILOS ADICIONALES (Refinados)
-    ========================= */
+    /* Usar variables de unitropico_base.css */
+    :root {
+      --verde-oscuro: var(--verde-1);
+      --bronce: var(--bronce-1);
+      --verde-claro: var(--verde-3);
+    }
+
     html,
     body {
-      height: 100%;
+      min-height: 100%;
+      height: auto;
       margin: 0;
       overflow-x: hidden;
       background: url("../img/background-1.jpg") no-repeat center center fixed;
@@ -21,230 +27,225 @@
       font-family: 'Montserrat', sans-serif;
     }
 
-    /* Navbar Responsiva - Fondo que cubre todo el ancho */
+    /* Navbar Responsiva */
     .navbar-img {
       width: 100%;
       height: 110px;
       padding: 0;
       margin: 0;
-      background: #004b40 url("media/denominacion/navbar.png") no-repeat center right;
+      background: var(--verde-1) url("media/denominacion/navbar.png") no-repeat center right;
       background-size: cover;
       display: block;
     }
 
-    .navbar-img img {
-      display: none;
+    /* Encabezado descriptivo arriba a la izquierda */
+    .top-left-header {
+      padding: 15px 30px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--verde-1);
+      text-align: left;
     }
 
     /* Contenedor principal */
     .container {
-      max-width: 1250px;
-      margin: 40px auto;
-      padding: 0 40px;
-    }
-
-    /* Título del artículo */
-    .top-left-title {
-      margin-bottom: 40px;
-      font-size: 1.1rem;
-      color: #004b40;
-    }
-
-    /* =========================================
-       LAYOUT: AMBIENTES DE APRENDIZAJE
-       ========================================= */
-    .ambientes-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      /* Más espacio entre filas para limpieza visual */
-    }
-
-    /* Caja gris superior */
-    .amb-top-box {
-      background-color: #e0e0e0;
-      border-radius: 35px;
-      padding: 35px 50px;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #333;
-      text-align: left;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    }
-
-    .amb-top-box strong {
-      color: #004b40;
-      font-weight: 800;
-    }
-
-    /* Contenedor fila intermedia (Verdes) */
-    .amb-mid-row {
-      display: flex;
-      gap: 25px;
-      /* Gap consistente con el inferior */
-    }
-
-    /* Cajas verdes medias */
-    .amb-mid-box {
-      flex: 1;
-      background-color: #004b40;
-      border-radius: 25px;
-      color: white;
+      max-width: 1200px;
+      margin: 0 auto 50px auto;
+      padding: 0 25px;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 30px 20px;
-      min-height: 140px;
-      box-shadow: 0 5px 15px rgba(0, 75, 64, 0.2);
     }
 
-    .amb-mid-box-title {
-      font-weight: 800;
-      font-size: 1.3rem;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    /* Encabezado de sección centrado */
+    .section-header {
+      margin-bottom: 60px;
     }
 
-    .amb-mid-box-subtitle {
+    .section-header h1 {
+      font-size: 3.5rem;
       font-weight: 400;
-      font-size: 0.95rem;
-      opacity: 0.9;
+      color: var(--verde-1);
+      margin: 0;
+      letter-spacing: -1px;
     }
 
-    /* Contenedor fila inferior (Cajas Altas) */
-    .amb-bottom-row {
-      display: flex;
-      gap: 25px;
-      /* Gap que coincide con la fila verde superior */
-    }
-
-    /* Grupos que alinean perfectamente bajo lo verde */
-    .amb-bottom-group {
-      display: flex;
-      gap: 15px;
-      /* Separación entre las cards doradas */
-      flex: 1;
-    }
-
-    /* Cajas doradas altas */
-    .amb-gold-card {
-      flex: 1;
-      background-color: #b58c49;
-      border-radius: 35px;
-      /* Bordes muy redondeados como la imagen */
-      color: white;
-      font-size: 1.05rem;
+    .section-header h1 strong {
       font-weight: 700;
+    }
+
+    /* Contenedor de las líneas dinámicas */
+    .lines-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .line-gold {
+      width: 500px;
+      height: 3px;
+      background-color: var(--bronce-1);
+      border-radius: 2px;
+    }
+
+    .line-gray {
+      width: 250px;
+      height: 8px;
+      background-color: #E0E0E0;
+      margin-top: 0px;
+      border-radius: 3px;
+    }
+
+    /* Lista de Mecanismos */
+    .mechanisms-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      padding: 20px 0;
+    }
+
+    /* Efecto de líneas horizontales de fondo detrás de las cápsulas */
+    .mechanisms-list::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 100%;
+      background-image: linear-gradient(#f0f0f0 1px, transparent 1px);
+      background-size: 100% 45px;
+      z-index: 1;
+      opacity: 0.5;
+    }
+
+    .mechanism-pill {
+      position: relative;
+      z-index: 2;
+      width: 650px;
+      padding: 15px 20px;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.4rem;
+      font-weight: 600;
       text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      /* Ajuste de alineación para que se vean desplazadas como en la imagen */
+      margin-left: -150px;
+    }
+
+    /* Contenedor de la cápsula para manejar el "fondo" de la línea que se ve a los lados */
+    .pill-wrapper {
+      position: relative;
+      width: 900px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 25px 15px;
-      min-height: 240px;
-      /* Tallas altas como en la imagen */
-      box-shadow: 0 6px 15px rgba(181, 140, 73, 0.2);
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      cursor: pointer;
+      border: 1px solid #ddd;
+      background: white;
     }
 
-    .amb-gold-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 25px rgba(181, 140, 73, 0.3);
-      filter: brightness(1.05);
+    .mechanism-pill:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
 
-    @media (max-width: 1024px) {
-      .amb-mid-box-title {
+    /* Colores específicos de la imagen */
+    .pill-green {
+      background-color: #004b40;
+    }
+
+    .pill-bronze {
+      background-color: #bfa15f;
+    }
+
+    .pill-teal {
+      background-color: #9abdb8;
+    }
+
+    /* Responsive */
+    @media (max-width: 998px) {
+      .section-header h1 {
+        font-size: 2.5rem;
+      }
+
+      .pill-wrapper {
+        width: 100%;
+      }
+
+      .mechanism-pill {
+        width: 80%;
+        margin-left: 0;
         font-size: 1.1rem;
       }
 
-      .amb-gold-card {
-        font-size: 0.9rem;
-        border-radius: 25px;
-      }
-    }
-
-    @media (max-width: 900px) {
-
-      .amb-mid-row,
-      .amb-bottom-row {
-        flex-direction: column;
-        gap: 20px;
+      .line-gold {
+        width: 300px;
       }
 
-      .amb-bottom-group {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .amb-gold-card {
-        flex: 1 1 45%;
-        min-height: 150px;
+      .line-gray {
+        width: 150px;
       }
     }
   </style>
 </head>
 
 <body>
-  <!-- Navbar Responsiva -->
-  <div class="navbar-img">
-    <!-- El logo se maneja por el fondo CSS -->
+  <!-- Navbar de imagen -->
+  <div class="navbar-img"></div>
+
+  <!-- Encabezado descriptivo -->
+  <div class="top-left-header">
+    2.5.3.2.3.2.5. Organización de actividades académicas y proceso formativo
   </div>
 
   <div class="container">
-    <!-- Título superior -->
-    <div class="top-left-title subtitulo">
-      <span class="text-bronce-1">2.5.3.2.3.2.4. Aspectos curriculares -</span> b) Componentes pedagógicos
+    <!-- Título Principal -->
+    <div class="section-header">
+      <h1>Mecanismos de <strong>Interacción</strong></h1>
+      <div class="lines-container">
+        <div class="line-gold"></div>
+        <div class="line-gray"></div>
+      </div>
     </div>
 
-    <!-- Layout Ambientes de Aprendizaje -->
-    <div class="ambientes-container">
+    <!-- Lista de Mecanismos -->
+    <div class="mechanisms-list">
 
-      <!-- Bloque 1: Generalidades -->
-      <div class="amb-top-box">
-        <strong>AMBIENTES DE APRENDIZAJE:</strong> Espacios o entornos tanto físicos como virtuales que proporcionan las
-        condiciones necesarias para descubrir, comprender, problematizar y asimilar los temas educativos. Estructurados
-        en cuatro componentes fundamentales: <strong>Información, Interacción, Producción y Exhibición.</strong>
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-green">Juego de roles</div>
       </div>
 
-      <!-- Bloque 2: Categorías Principales -->
-      <div class="amb-mid-row">
-        <div class="amb-mid-box">
-          <div class="amb-mid-box-title">AMBIENTES FÍSICOS</div>
-        </div>
-        <div class="amb-mid-box">
-          <div class="amb-mid-box-title">AMBIENTES VIRTUALES Y HERRAMIENTAS TECNOLÓGICAS</div>
-          <div class="amb-mid-box-subtitle">(Basadas en Tecnologías Transmisivas, Tecnologías Interactivas y Tecnologías
-            Colaborativas)</div>
-        </div>
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-bronze">Técnicas de dinámica de grupos</div>
       </div>
 
-      <!-- Bloque 3: Detalle (Cards Altas) -->
-      <div class="amb-bottom-row">
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-teal">Lluvia de ideas</div>
+      </div>
 
-        <!-- Grupo 1: Bajo Ambientes Físicos -->
-        <div class="amb-bottom-group">
-          <div class="amb-gold-card">Laboratorios</div>
-          <div class="amb-gold-card">Biblioteca</div>
-          <div class="amb-gold-card">Salidas de campo</div>
-          <div class="amb-gold-card">Campus<br>Universitario</div>
-        </div>
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-green">Centro de recursos digitales en línea</div>
+      </div>
 
-        <!-- Grupo 2: Bajo Ambientes Virtuales -->
-        <div class="amb-bottom-group">
-          <div class="amb-gold-card">Suite Google</div>
-          <div class="amb-gold-card">Suite de<br>Office de MS</div>
-          <div class="amb-gold-card">Aulas<br>Informática</div>
-          <div class="amb-gold-card">LMS -<br>Learning Management System en la Plataforma Q10</div>
-        </div>
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-bronze">Organizar espacios de trabajo virtual y cooperativo</div>
+      </div>
 
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-teal">Generar espacios de intercambio remoto</div>
+      </div>
+
+      <div class="pill-wrapper">
+        <div class="mechanism-pill pill-green">Mentorías</div>
       </div>
 
     </div>
-
   </div>
+
 </body>
 
 </html>

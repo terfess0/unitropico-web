@@ -23,7 +23,7 @@
 }
 
 .pos-3 {
-    transform: translate(-50%, -50%) rotate(-10deg) translate(400px) rotate(10deg);
+    transform: translate(-50%, -50%) rotate(-10deg) translate(380px) rotate(10deg);
 }
 
 .pos-4 {
@@ -31,19 +31,19 @@
 }
 
 .pos-5 {
-    transform: translate(-50%, -40%) rotate(68deg) translate(320px) rotate(-68deg);
+    transform: translate(-50%, -50%) rotate(68deg) translate(360px) rotate(-68deg);
 }
 
 .pos-6 {
-    transform: translate(-50%, -50%) rotate(112deg) translate(350px) rotate(-112deg);
+    transform: translate(-50%, -50%) rotate(112deg) translate(360px) rotate(-112deg);
 }
 
 .pos-7 {
-    transform: translate(-50%, -50%) rotate(158deg) translate(400px) rotate(-158deg);
+    transform: translate(-50%, -50%) rotate(160deg) translate(400px) rotate(-160deg);
 }
 
 .pos-8 {
-    transform: translate(-50%, -50%) rotate(190deg) translate(400px) rotate(-190deg);
+    transform: translate(-50%, -50%) rotate(190deg) translate(380px) rotate(-190deg);
 }
 
 .pos-9 {

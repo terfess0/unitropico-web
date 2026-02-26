@@ -62,6 +62,13 @@ docker-compose up -d --build
 docker-compose exec backend npm run migrate
 ```
 
+### 🔄 Reconstruir un solo servicio (Frontend o Backend)
+Si hiciste cambios exclusivamente en el código de React/Frontend y no quieres apagar ni reconstruir toda la base de datos o el backend, puedes reconstruir únicamente este contenedor:
+```powershell
+docker-compose up -d --build frontend
+```
+*(Puedes hacer lo mismo con el backend usando `backend` en lugar de `frontend`).*
+
 ### Ver Logs del Servidor
 ```powershell
 docker-compose logs -f backend
