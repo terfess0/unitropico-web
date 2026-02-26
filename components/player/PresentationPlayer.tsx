@@ -106,22 +106,20 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [handleNext, handlePrev]);
 
-    // PREFETCHING LOGIC: Background load the next slide's HTML
+    // AGGRESSIVE PREFETCHING: Background load ALL slides in the sequence
     useEffect(() => {
-        if (!activeSequence || !selectedContentId || !projectConfig) return;
+        if (!activeSequence || !projectConfig) return;
 
-        const currentIndex = activeSequence.contents.indexOf(selectedContentId);
-        const nextContentId = activeSequence.contents[currentIndex + 1];
-
-        if (nextContentId) {
-            const nextContent = projectConfig.contents[nextContentId];
-            if (nextContent && nextContent.type === 'html' && nextContent.html.startsWith('/media/html/')) {
-                // Fetch in background to populate browser cache
-                // No timestamp here so it matches the fetch in PresentationContainer
-                fetch(nextContent.html).catch(() => { });
+        // Loop through all contents in the current sequence
+        activeSequence.contents.forEach(contentId => {
+            const content = projectConfig.contents[contentId];
+            if (content && content.type === 'html' && content.html && content.html.startsWith('/media/html/')) {
+                // Fetch ALL in background to populate browser cache
+                // The browser will handle concurrency and caching automatically
+                fetch(content.html).catch(() => { });
             }
-        }
-    }, [selectedContentId, activeSequence, projectConfig]);
+        });
+    }, [activeSequence, projectConfig]);
 
     if (!projectConfig || !activeSequence) {
         return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Cargando presentación...</div>;
