@@ -82,3 +82,27 @@ docker-compose logs -f backend
 - **Persistencia**: La base de datos se guarda en un volumen llamado `db_data`. Si borras los contenedores (sin `-v`), los datos NO se pierden.
 - **Media**: La carpeta `public/media` está vinculada (Bind Mount), lo que significa que cualquier imagen o HTML generado se verá reflejado instantáneamente tanto en Windows como en los contenedores.
 - **Codificación**: Todo el sistema está forzado a `utf8mb4` para garantizar que las tildes y caracteres especiales se vean correctamente.
+
+---
+
+## 🔎 Escalado Automático de Presentaciones HTML (Zoom)
+Si necesitas hacer un "zoom global" a la fuente y a los gráficos de los archivos HTML extraídos para que se vean mejor en pantallas grandes (como proyectores o televisores), el proyecto incluye un script inteligente (`scripts/batch_scale.cjs`).
+
+**Características del script:**
+- **Idempotente**: No daña los archivos si se ejecuta múltiples veces accidentalmente (usa una etiqueta de seguridad `<!-- UNITROPICO-SCALED-V1 -->`).
+- **Recursivo**: Recorre automáticamente todas las subcarpetas dentro de `public/media/html/`.
+
+### ¿Cómo usarlo? (Recomendado)
+
+La forma más sencilla y moderna de escalar todos los contenidos HTML es **directamente desde la interfaz gráfica** sin tocar la consola:
+
+1. Ingresa a la ruta del Editor en tu navegador (`/#/editor`).
+2. Entra a cualquier sección o plan de estudios para abrir la vista del editor.
+3. En la barra superior (junto a Guardar Cambios), haz clic en el botón amarillo **"Escalar (Batch)"**.
+4. ¡Listo! El botón se deshabilitará unos segundos mientras el servidor hace el trabajo pesado en segundo plano y te mostrará una alerta de éxito cuando termine.
+
+> [!TIP]
+> **Configuración avanzada:** Si en el futuro necesitas cambiar *qué tanto* crecen las letras, puedes abrir el archivo `scripts/batch_scale.cjs` y modificar los valores numéricos dentro del objeto estructurado `CONFIG` (por ejemplo: `fontScale: 1.4`). 
+
+*(El uso manual vía comandos de `docker exec` sigue siendo posible internamente para depuración técnica, pero ya no es necesario para el flujo de trabajo normal del administrador).*
+

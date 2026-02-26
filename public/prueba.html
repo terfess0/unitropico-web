@@ -4,414 +4,247 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estamentos - Unitrópico</title>
+  <title>Ambientes de Aprendizaje - Unitrópico</title>
   <!-- Fuente Montserrat y CSS base -->
-  <link rel="stylesheet" href="./css_presentaciones/unitropico_base.css">
+  <link rel="stylesheet" href="../css_presentaciones/unitropico_base.css">
   <style>
     /* =========================
-       ESTILOS ADICIONALES
+       ESTILOS ADICIONALES (Refinados)
     ========================= */
     html,
     body {
       height: 100%;
       margin: 0;
       overflow-x: hidden;
-      background: #ffffff url("img/background-1.jpg") no-repeat center center fixed;
+      background: url("../img/background-1.jpg") no-repeat center center fixed;
       background-size: cover;
       font-family: 'Montserrat', sans-serif;
     }
 
-    /* Navbar superior estática simulando la verde de Unitrópico */
-    .top-banner {
+    /* Navbar Responsiva - Fondo que cubre todo el ancho */
+    .navbar-img {
       width: 100%;
-      height: 70px;
-      background: url('img/background-1.jpg') center/cover no-repeat;
-      background-color: #e0e0e0;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding-right: 50px;
-      position: relative;
+      height: 110px;
+      padding: 0;
+      margin: 0;
+      background: #004b40 url("media/denominacion/navbar.png") no-repeat center right;
+      background-size: cover;
+      display: block;
     }
 
-    .top-banner-overlay {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 350px;
-      /* Color original Unitropico Verde */
-      background-color: var(--verde-1);
-      clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .top-banner-text {
-      color: var(--bronce-1);
-      font-size: 2.2rem;
-      font-weight: 700;
-      z-index: 10;
-      padding-left: 40px;
+    .navbar-img img {
+      display: none;
     }
 
     /* Contenedor principal */
     .container {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 25px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      max-width: 1250px;
+      margin: 40px auto;
+      padding: 0 40px;
     }
 
-    /* Título principal ESTAMENTOS */
-    .main-title {
-      font-size: 2.8rem;
-      font-weight: 800;
-      color: var(--bronce-1);
-      text-transform: uppercase;
-      margin-bottom: 50px;
-      letter-spacing: 2px;
+    /* Título del artículo */
+    .top-left-title {
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+      color: #004b40;
     }
 
-    /* =======================================
-       LAYOUT PRINCIPAL DE CONTENIDO
-       ======================================= */
-    .content-layout {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: center;
+    /* =========================================
+       LAYOUT: AMBIENTES DE APRENDIZAJE
+       ========================================= */
+    .ambientes-container {
       width: 100%;
-      position: relative;
-    }
-
-    /* Textos (Posicionamiento Absoluto para no desplazar nada) */
-    .col-left-texts,
-    .col-right-texts {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 40%;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
-      /* Animaciones de entrada distintas por lado */
-    }
-
-    /* Columna IZQUIERDA: Textos de "Estudiantes" (Default left) */
-    .col-left-texts {
-      left: -5%;
       display: flex;
       flex-direction: column;
-      align-items: flex-end;
-      padding-right: 30px;
+      gap: 30px;
+      /* Más espacio entre filas para limpieza visual */
     }
 
-    .col-left-texts.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(-50%) translateX(20px);
-    }
-
-    /* Columna CENTRAL: El Triángulo SVG (Fijo en el centro) */
-    .col-triangle {
-      width: 450px;
-      display: flex;
-      justify-content: center;
-      position: relative;
-      z-index: 10;
-      margin: 0 auto;
-    }
-
-    /* Columna DERECHA: Textos variables (Formación y Función) */
-    .col-right-texts {
-      right: -5%;
-      padding-left: 30px;
-    }
-
-    .col-right-texts.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(-50%) translateX(-20px);
-    }
-
-    /* Cajas de texto individuales */
-    .text-box {
-      margin-bottom: 30px;
-      max-width: 380px;
+    /* Caja gris superior */
+    .amb-top-box {
+      background-color: #e0e0e0;
+      border-radius: 35px;
+      padding: 35px 50px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
       text-align: left;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
 
-    .text-box.align-right {
-      text-align: right;
-    }
-
-    .text-title {
+    .amb-top-box strong {
+      color: #004b40;
       font-weight: 800;
-      font-size: 1rem;
-      color: #00594E;
-      /* Títulos en verde unitropico */
-      margin-bottom: 5px;
     }
 
-    .text-desc {
-      font-weight: 500;
-      font-size: 0.95rem;
-      color: #666666;
-      line-height: 1.4;
+    /* Contenedor fila intermedia (Verdes) */
+    .amb-mid-row {
+      display: flex;
+      gap: 25px;
+      /* Gap consistente con el inferior */
     }
 
-    /* Ajuste de márgenes para los textos */
-
-    /* Grupo de Formación Profesoral (Base). Abajo del triángulo */
-    .bottom-texts {
-      width: 100%;
+    /* Cajas verdes medias */
+    .amb-mid-box {
+      flex: 1;
+      background-color: #004b40;
+      border-radius: 25px;
+      color: white;
+      text-align: center;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      position: absolute;
-      bottom: -150px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.4s ease;
+      justify-content: center;
+      padding: 30px 20px;
+      min-height: 140px;
+      box-shadow: 0 5px 15px rgba(0, 75, 64, 0.2);
     }
 
-    .bottom-texts.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateX(-50%) translateY(0);
+    .amb-mid-box-title {
+      font-weight: 800;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
 
-    .bottom-texts .text-box {
-      text-align: center;
-      max-width: 450px;
+    .amb-mid-box-subtitle {
+      font-weight: 400;
+      font-size: 0.95rem;
+      opacity: 0.9;
     }
 
-    /* =======================================
-       SVG TRIÁNGULO INTERACTIVO
-       ======================================= */
-    .triangle-svg {
-      width: 380px;
-      height: 350px;
-      overflow: visible;
-      filter: drop-shadow(0px 10px 15px rgba(0, 0, 0, 0.15));
+    /* Contenedor fila inferior (Cajas Altas) */
+    .amb-bottom-row {
+      display: flex;
+      gap: 25px;
+      /* Gap que coincide con la fila verde superior */
     }
 
-    .tri-path {
-      cursor: pointer;
-      transition: all 0.2s ease;
-      transform-origin: center;
-      stroke: white;
-      /* Borde blanco sutil para dar separación entre las partes del triángulo como en la imagen */
-      stroke-width: 4px;
+    /* Grupos que alinean perfectamente bajo lo verde */
+    .amb-bottom-group {
+      display: flex;
+      gap: 15px;
+      /* Separación entre las cards doradas */
+      flex: 1;
     }
 
-    .tri-path:hover {
-      filter: brightness(1.1);
-    }
-
-    /* Paleta de colores del triángulo según imagen */
-    .color-estudiantes {
-      fill: #8BB2CC;
-      /* Celeste Unitropico */
-    }
-
-    .color-funcion {
-      fill: #BBAA74;
-      /* Dorado Unitropico */
-    }
-
-    .color-formacion {
-      fill: var(--verde-1);
-      /* Verde base */
-    }
-
-    /* Textos dentro del SVG */
-    .svg-text {
-      fill: #ffffff;
-      font-family: 'Montserrat', sans-serif;
+    /* Cajas doradas altas */
+    .amb-gold-card {
+      flex: 1;
+      background-color: #b58c49;
+      border-radius: 35px;
+      /* Bordes muy redondeados como la imagen */
+      color: white;
+      font-size: 1.05rem;
       font-weight: 700;
-      font-size: 18px;
-      letter-spacing: 1px;
-      pointer-events: none;
-      /* Que no interrumpan el clic del polígono */
-      text-anchor: middle;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 15px;
+      min-height: 240px;
+      /* Tallas altas como en la imagen */
+      box-shadow: 0 6px 15px rgba(181, 140, 73, 0.2);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
     }
 
-    /* Decoraciones puntilladas alrededor del SVG */
-    .dots-dec {
-      fill: #8BB2CC;
+    .amb-gold-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(181, 140, 73, 0.3);
+      filter: brightness(1.05);
     }
 
-    .dots-dec-gold {
-      fill: #BBAA74;
+    @media (max-width: 1024px) {
+      .amb-mid-box-title {
+        font-size: 1.1rem;
+      }
+
+      .amb-gold-card {
+        font-size: 0.9rem;
+        border-radius: 25px;
+      }
     }
 
-    .dots-dec-green {
-      fill: var(--verde-1);
+    @media (max-width: 900px) {
+
+      .amb-mid-row,
+      .amb-bottom-row {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .amb-bottom-group {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .amb-gold-card {
+        flex: 1 1 45%;
+        min-height: 150px;
+      }
     }
   </style>
 </head>
 
 <body>
-
-  <!-- Top Banner -->
-  <div class="top-banner">
-    <div class="top-banner-overlay">
-      <span class="top-banner-text">Unitrópico</span>
-    </div>
+  <!-- Navbar Responsiva -->
+  <div class="navbar-img">
+    <!-- El logo se maneja por el fondo CSS -->
   </div>
 
   <div class="container">
-    <div class="main-title">ESTAMENTOS</div>
-
-    <div class="content-layout">
-
-      <!-- GRUPO IZQUIERDO: Estudiantes (Aparece a la izq del triángulo) -->
-      <div id="section-estudiantes" class="col-left-texts active">
-        <div class="text-box align-right">
-          <div class="text-title">Resolución Rectoral 014 de 2021</div>
-          <div class="text-desc">Reglamento estudiantil.</div>
-        </div>
-        <div class="text-box align-right">
-          <div class="text-title">Acuerdo CS 039 de 2023</div>
-          <div class="text-desc">Reglamento que contiene las opciones de grado y los requisitos de los posgrados.</div>
-        </div>
-        <div class="text-box align-right">
-          <div class="text-title">Acuerdo CA 075 de 2024</div>
-          <div class="text-desc">Reglamento que regula las prácticas académicas curriculares, salidas de campo y salidas
-            de campo de investigación.</div>
-        </div>
-      </div>
-
-      <!-- EL TRIÁNGULO -->
-      <div class="col-triangle">
-        <!-- SVG Canvas: 400x380 approx. Center is ~ 200, 190.
-             Triangle points (Equilateral approx applied slightly scalene visually if needed, but we do symmetric): 
-             Top: 200, 20
-             Bottom-Left: 40, 300
-             Bottom-Right: 360, 300
-             Center hole: 200, 210
-        -->
-        <svg class="triangle-svg" viewBox="0 0 400 350">
-
-          <!-- LADO IZQUIERDO: ESTUDIANTES -->
-          <g onclick="switchTarget('estudiantes')">
-            <!-- Polygon mapping the Left leg of the triangle:
-                  Top tip, down outside left, inner cut right, inner cut up -->
-            <polygon class="tri-path color-estudiantes" points="200,30  50,290  120,290  200,150" />
-            <!-- Text rotated along the side -->
-            <text x="110" y="160" transform="rotate(-60, 110, 160)" class="svg-text">ESTUDIANTES</text>
-          </g>
-
-          <!-- LADO DERECHO: FUNCIÓN PROFESORAL -->
-          <g onclick="switchTarget('funcion')">
-            <polygon class="tri-path color-funcion" points="200,30  200,150  280,290  350,290" />
-            <text x="290" y="180" transform="rotate(60, 290, 180)" class="svg-text">
-              <tspan x="290" dy="-10">FUNCIÓN</tspan>
-              <tspan x="290" dy="20">PROFESORAL</tspan>
-            </text>
-          </g>
-
-          <!-- BASE: FORMACIÓN PROFESORAL -->
-          <g onclick="switchTarget('formacion')">
-            <!-- The base spans left to right, overlapping securely the inner vertices -->
-            <polygon class="tri-path color-formacion" points="50,290  350,290  290,360  110,360" />
-            <!-- We'll expand the bottom a bit more manually for text space -->
-            <polygon class="tri-path color-formacion" points="40,290  360,290  340,350  60,350" />
-            <text x="200" y="315" class="svg-text">
-              <tspan x="200" dy="0">FORMACIÓN</tspan>
-              <tspan x="200" dy="20">PROFESORAL</tspan>
-            </text>
-          </g>
-
-          <!-- Left dots -->
-          <circle cx="160" cy="110" r="5" class="dots-dec" />
-          <circle cx="140" cy="110" r="5" class="dots-dec" />
-          <circle cx="120" cy="110" r="5" class="dots-dec" />
-
-          <!-- Right dots -->
-          <!-- Punto verde principal entre los conectores de funcion profesoral -->
-          <circle cx="215" cy="150" r="6" class="color-formacion" stroke="white" stroke-width="2" />
-          <circle cx="230" cy="150" r="4" class="dots-dec-gold" />
-          <circle cx="245" cy="150" r="4" class="dots-dec-gold" />
-
-          <!-- Bottom dots -->
-          <!-- Punto dorado centrado en la base verde -->
-          <circle cx="200" cy="290" r="7" class="color-funcion" stroke="white" stroke-width="3" />
-          <circle cx="200" cy="315" r="4" class="color-formacion" />
-          <circle cx="200" cy="330" r="4" class="color-formacion" />
-
-        </svg>
-      </div>
-
-      <!-- GRUPO DERECHO: Función Profesoral -->
-      <div class="col-right-texts" id="section-funcion">
-        <div class="text-box">
-          <div class="text-title">Acuerdo CS 024 de 2023</div>
-          <div class="text-desc">Profesores con nombramiento provisional.</div>
-        </div>
-        <div class="text-box">
-          <div class="text-title">Acuerdo CS 029 de 2023</div>
-          <div class="text-desc">Profesores no pertenecientes a la carrera profesoral.</div>
-        </div>
-        <div class="text-box">
-          <div class="text-title">Acuerdo CA 044 de 2023</div>
-          <div class="text-desc">Sistemas de evaluación de desempeño profesoral para profesores no pertenecientes a la
-            carrera profesoral.</div>
-        </div>
-        <div class="text-box">
-          <div class="text-title">Acuerdo CA 054 de 2023</div>
-          <div class="text-desc">Reglamenta la asignación de la labor académica para el desarrollo de las funciones
-            sustantivas por parte de los profesores no pertenecientes a la carrera profesoral.</div>
-        </div>
-      </div>
-
-    </div> <!-- End content-layout -->
-
-    <!-- GRUPO INFERIOR: Formación Profesoral (Debajo del triángulo) -->
-    <div class="bottom-texts" id="section-formacion">
-      <div class="text-box">
-        <div class="text-title">Acuerdo CS 009 de 2022</div>
-        <div class="text-desc">Política de Formación Profesoral</div>
-      </div>
-      <div class="text-box">
-        <div class="text-title">Acuerdo CA No. 025 de 2022, 034 de 2023, 070 de 2024, 086 de 2025</div>
-        <div class="text-desc">Plan de Formación Profesoral vigencia 2025.</div>
-      </div>
+    <!-- Título superior -->
+    <div class="top-left-title subtitulo">
+      <span class="text-bronce-1">2.5.3.2.3.2.4. Aspectos curriculares -</span> b) Componentes pedagógicos
     </div>
 
-  </div> <!-- End container -->
+    <!-- Layout Ambientes de Aprendizaje -->
+    <div class="ambientes-container">
 
-  <!-- SCRIPT LOGIC -->
-  <script>
-    function switchTarget(targetId) {
-      // Obtener todos los grupos
-      const estudiantes = document.getElementById('section-estudiantes');
-      const funcion = document.getElementById('section-funcion');
-      const formacion = document.getElementById('section-formacion');
+      <!-- Bloque 1: Generalidades -->
+      <div class="amb-top-box">
+        <strong>AMBIENTES DE APRENDIZAJE:</strong> Espacios o entornos tanto físicos como virtuales que proporcionan las
+        condiciones necesarias para descubrir, comprender, problematizar y asimilar los temas educativos. Estructurados
+        en cuatro componentes fundamentales: <strong>Información, Interacción, Producción y Exhibición.</strong>
+      </div>
 
-      // Remover 'active' de todos
-      estudiantes.classList.remove('active');
-      funcion.classList.remove('active');
-      formacion.classList.remove('active');
+      <!-- Bloque 2: Categorías Principales -->
+      <div class="amb-mid-row">
+        <div class="amb-mid-box">
+          <div class="amb-mid-box-title">AMBIENTES FÍSICOS</div>
+        </div>
+        <div class="amb-mid-box">
+          <div class="amb-mid-box-title">AMBIENTES VIRTUALES Y HERRAMIENTAS TECNOLÓGICAS</div>
+          <div class="amb-mid-box-subtitle">(Basadas en Tecnologías Transmisivas, Tecnologías Interactivas y Tecnologías
+            Colaborativas)</div>
+        </div>
+      </div>
 
-      // Añadir 'active' al que corresponde
-      if (targetId === 'estudiantes') {
-        estudiantes.classList.add('active');
-      } else if (targetId === 'funcion') {
-        funcion.classList.add('active');
-      } else if (targetId === 'formacion') {
-        formacion.classList.add('active');
-      }
-    }
-  </script>
+      <!-- Bloque 3: Detalle (Cards Altas) -->
+      <div class="amb-bottom-row">
+
+        <!-- Grupo 1: Bajo Ambientes Físicos -->
+        <div class="amb-bottom-group">
+          <div class="amb-gold-card">Laboratorios</div>
+          <div class="amb-gold-card">Biblioteca</div>
+          <div class="amb-gold-card">Salidas de campo</div>
+          <div class="amb-gold-card">Campus<br>Universitario</div>
+        </div>
+
+        <!-- Grupo 2: Bajo Ambientes Virtuales -->
+        <div class="amb-bottom-group">
+          <div class="amb-gold-card">Suite Google</div>
+          <div class="amb-gold-card">Suite de<br>Office de MS</div>
+          <div class="amb-gold-card">Aulas<br>Informática</div>
+          <div class="amb-gold-card">LMS -<br>Learning Management System en la Plataforma Q10</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 </body>
 
 </html>

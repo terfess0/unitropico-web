@@ -4,6 +4,7 @@ import EditorLayout from '../components/editor/EditorLayout';
 import ContentList from '../components/editor/ContentList';
 import PresentationContainer from '../components/editor/PresentationContainer';
 import PropertiesPanel from '../components/editor/PropertiesPanel';
+import HtmlCodeEditor from '../components/editor/HtmlCodeEditor';
 import { ProjectConfig, Hotspot } from '../types';
 
 const Editor: React.FC = () => {
@@ -16,6 +17,8 @@ const Editor: React.FC = () => {
     // In-session blob URLs for preview only — not persisted to projectConfig
     const [previewUrls, setPreviewUrls] = useState<Record<string, string>>({});
     const [isSavingContent, setIsSavingContent] = useState(false);
+    const [isScaling, setIsScaling] = useState(false);
+    const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
 
 
     useEffect(() => {
@@ -51,6 +54,7 @@ const Editor: React.FC = () => {
         }
         setSelectedContentId(id);
         setSelectedHotspotId(null);
+        setViewMode('preview');
     };
 
     // Navigate back to the previous content using the history stack
@@ -434,6 +438,27 @@ const Editor: React.FC = () => {
         }
     };
 
+    const handleRunBatchScale = async () => {
+        if (!window.confirm('¿Ejecutar escalado automático? Esto aumentará el tamaño de fuentes y gráficos en TODOS los archivos HTML (seguro reejecutar gracias a la etiqueta de seguridad).')) return;
+
+        setIsScaling(true);
+        try {
+            const response = await fetch(`/api/run-batch-scale`, {
+                method: 'POST'
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert('Success: ' + data.message + '\nSi tenías una vista previa abierta, recárgala para ver los cambios.');
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error: any) {
+            console.error('Error al ejecutar batch scale:', error);
+            alert('Error de conexión al intentar ejecutar el script de escalado.');
+        } finally {
+            setIsScaling(false);
+        }
+    };
 
     if (!projectConfig) {
         return <div className="flex h-screen items-center justify-center">Cargando proyecto...</div>;
@@ -509,23 +534,39 @@ const Editor: React.FC = () => {
                     {activeSequence?.title || 'Editor'}
                 </h1>
             </div>
-            <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className={`flex items-center gap-2 px-4 py-2 rounded shadow transition-all ${isSaving ? 'bg-gray-400 cursor-not-allowed' :
-                    saveStatus === 'success' ? 'bg-green-600 hover:bg-green-700' :
-                        saveStatus === 'error' ? 'bg-orange-600 hover:bg-orange-700' :
-                            'bg-primary hover:bg-primary-dark'
-                    } text-white`}
-                title={saveStatus === 'error' ? 'Servidor no detectado. Se descargará el archivo.' : 'Guarda los cambios directamente en el proyecto'}
-            >
-                <span className="material-icons">
-                    {isSaving ? 'sync' : saveStatus === 'success' ? 'check_circle' : saveStatus === 'error' ? 'warning' : 'save'}
-                </span>
-                <span>
-                    {isSaving ? 'Guardando...' : saveStatus === 'success' ? 'Guardado' : saveStatus === 'error' ? 'Descargado (Local Offline)' : 'Guardar Cambios'}
-                </span>
-            </button>
+            <div className="flex items-center gap-2">
+                <button
+                    onClick={handleRunBatchScale}
+                    disabled={isScaling}
+                    className={`flex items-center gap-2 px-4 py-2 rounded shadow transition-all ${isScaling ? 'bg-gray-400 cursor-not-allowed' : 'bg-secondary hover:bg-secondary-dark'} text-white`}
+                    title="Ejecuta el script automático para aumentar el tamaño de letras y gráficos en los HTML"
+                >
+                    <span className="material-icons">
+                        {isScaling ? 'hourglass_empty' : 'zoom_in'}
+                    </span>
+                    <span>
+                        {isScaling ? 'Escalando...' : 'Escalar (Batch)'}
+                    </span>
+                </button>
+
+                <button
+                    onClick={handleSave}
+                    disabled={isSaving}
+                    className={`flex items-center gap-2 px-4 py-2 rounded shadow transition-all ${isSaving ? 'bg-gray-400 cursor-not-allowed' :
+                        saveStatus === 'success' ? 'bg-green-600 hover:bg-green-700' :
+                            saveStatus === 'error' ? 'bg-orange-600 hover:bg-orange-700' :
+                                'bg-primary hover:bg-primary-dark'
+                        } text-white`}
+                    title={saveStatus === 'error' ? 'Servidor no detectado. Se descargará el archivo.' : 'Guarda los cambios directamente en el proyecto'}
+                >
+                    <span className="material-icons">
+                        {isSaving ? 'sync' : saveStatus === 'success' ? 'check_circle' : saveStatus === 'error' ? 'warning' : 'save'}
+                    </span>
+                    <span>
+                        {isSaving ? 'Guardando...' : saveStatus === 'success' ? 'Guardado' : saveStatus === 'error' ? 'Descargado (Local Offline)' : 'Guardar Cambios'}
+                    </span>
+                </button>
+            </div>
         </div>
     );
 
@@ -544,17 +585,51 @@ const Editor: React.FC = () => {
                 />
             }
             centerPanel={
-                <PresentationContainer
-                    content={selectedContent}
-                    previewUrl={selectedContentId ? previewUrls[selectedContentId] : undefined}
-                    selectedHotspotId={selectedHotspotId}
-                    onSelectHotspot={setSelectedHotspotId}
-                    onAddHotspot={handleAddHotspot}
-                    onNavigate={handleSelectContent}
-                    onNavigateBack={handleNavigateBack}
-                    hasHistory={history.length > 0}
-                    onUpdateContentHtml={handleUpdateContentHtml}
-                />
+                <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                    {/* ── View Mode Switcher (only for HTML in editor) ── */}
+                    {selectedContent?.type === 'html' && (
+                        <div className="absolute top-12 right-12 z-50 flex bg-white/90 dark:bg-gray-800/90 backdrop-blur shadow-lg rounded-full p-1 border border-gray-200 dark:border-gray-700">
+                            <button
+                                onClick={() => setViewMode('preview')}
+                                className={`p-2 rounded-full flex items-center justify-center transition-all ${viewMode === 'preview' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                                title="Ver Previsualización"
+                            >
+                                <span className="material-icons text-sm">visibility</span>
+                            </button>
+                            <button
+                                onClick={() => setViewMode('code')}
+                                className={`p-2 rounded-full flex items-center justify-center transition-all ${viewMode === 'code' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
+                                title="Ver Código HTML"
+                            >
+                                <span className="material-icons text-sm">code</span>
+                            </button>
+                        </div>
+                    )}
+
+                    {/* The presentation scaler/viewer */}
+                    <div className={`absolute inset-0 overflow-hidden transition-opacity duration-200 ${viewMode === 'preview' ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+                        <PresentationContainer
+                            content={selectedContent}
+                            previewUrl={selectedContentId ? previewUrls[selectedContentId] : undefined}
+                            selectedHotspotId={selectedHotspotId}
+                            onSelectHotspot={setSelectedHotspotId}
+                            onAddHotspot={handleAddHotspot}
+                            onNavigate={handleSelectContent}
+                            onNavigateBack={handleNavigateBack}
+                            hasHistory={history.length > 0}
+                        />
+                    </div>
+
+                    {/* Fullscreen HTML Editor Overlay */}
+                    {selectedContent?.type === 'html' && (
+                        <HtmlCodeEditor
+                            id={selectedContent.id}
+                            html={selectedContent.html || ''}
+                            isVisible={viewMode === 'code'}
+                            onUpdateHtml={handleUpdateContentHtml}
+                        />
+                    )}
+                </div>
             }
             rightPanel={
                 <PropertiesPanel

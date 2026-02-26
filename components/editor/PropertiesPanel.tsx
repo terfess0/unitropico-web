@@ -1,5 +1,8 @@
 import React from 'react';
 import { Hotspot, ActionType, ProjectConfig, Content } from '../../types';
+import Editor from 'react-simple-code-editor';
+import Prism from 'prismjs';
+import 'prismjs/components/prism-markup';
 
 interface PropertiesPanelProps {
     selectedHotspot: Hotspot | null;
@@ -93,12 +96,21 @@ const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                             <label className="block text-xs font-semibold uppercase text-gray-500 mb-1">
                                 Código HTML
                             </label>
-                            <textarea
-                                value={selectedContent.html || ''}
-                                onChange={(e) => onUpdateContentHtml(selectedContent.id, e.target.value)}
-                                className="w-full px-3 py-2 h-48 font-mono text-xs border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary resize-y"
-                                placeholder="<div>Escribe tu HTML aquí...</div>"
-                            />
+                            <div className="w-full h-48 overflow-y-auto border border-gray-300 dark:border-gray-600 rounded bg-[#272822]">
+                                <Editor
+                                    value={selectedContent.html || ''}
+                                    onValueChange={(code) => onUpdateContentHtml(selectedContent.id, code)}
+                                    highlight={code => Prism.highlight(code || '', Prism.languages.markup, 'markup')}
+                                    padding={12}
+                                    style={{
+                                        fontFamily: 'Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace',
+                                        fontSize: 12,
+                                        minHeight: '100%',
+                                        color: '#f8f8f2'
+                                    }}
+                                    textareaClassName="focus:outline-none"
+                                />
+                            </div>
                             <p className="mt-2 text-[10px] text-gray-500 italic">
                                 Puedes usar JS para navegar:<br />
                                 <code>window.parent.postMessage({"{ type: 'NAVIGATE', targetId: 'id' }"}, '*')</code>

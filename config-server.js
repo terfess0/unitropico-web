@@ -359,6 +359,24 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
+    // NEW: POST /api/run-batch-scale - Execute the HTML scaling script
+    if (req.method === 'POST' && req.url === '/api/run-batch-scale') {
+        const { exec } = await import('child_process');
+
+        exec('node scripts/batch_scale.cjs', { cwd: __dirname }, (error, stdout, stderr) => {
+            if (error) {
+                console.error('Error executing batch scale script:', error);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, message: error.message, output: stderr }));
+                return;
+            }
+            console.log('Batch scaling executed successfully:\n', stdout);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, message: 'Escalado completado con éxito', output: stdout }));
+        });
+        return;
+    }
+
     // Asset Discovery
     if (req.method === 'GET' && req.url.startsWith('/api/find-asset')) {
         const url = new URL(req.url, `http://${req.headers.host}`);

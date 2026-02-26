@@ -13,7 +13,6 @@ interface PresentationContainerProps {
     onNavigate?: (targetId: string) => void;
     onNavigateBack?: () => void;
     hasHistory?: boolean;
-    onUpdateContentHtml?: (contentId: string, newHtml: string) => void;
 }
 
 const PresentationContainer: React.FC<PresentationContainerProps> = ({
@@ -26,14 +25,53 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     onHotspotClick,
     onNavigate,
     onNavigateBack,
-    hasHistory,
-    onUpdateContentHtml
+    hasHistory
 }) => {
+    const outerRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [startPos, setStartPos] = useState<{ x: number, y: number } | null>(null);
     const [currentPos, setCurrentPos] = useState<{ x: number, y: number } | null>(null);
-    const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
+    const [scale, setScale] = useState(1);
+
+    // Scaling logic for 16:9 canvas
+    useEffect(() => {
+        if (!outerRef.current) return;
+
+        const handleResize = () => {
+            if (outerRef.current) {
+                const rect = outerRef.current.getBoundingClientRect();
+                // Account for p-8 padding if not readOnly (32px each side = 64px)
+                const padding = readOnly ? 0 : 64;
+                const availableW = Math.max(0, rect.width - padding);
+                const availableH = Math.max(0, rect.height - padding);
+
+                const scaleX = availableW / 1920;
+                const scaleY = availableH / 1080;
+                const newScale = Math.min(scaleX, scaleY);
+                setScale(newScale);
+            }
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize, { passive: true });
+
+        // Use ResizeObserver on the outer container to catch sidebar toggles
+        const resizeObserver = new ResizeObserver(() => {
+            // Use requestAnimationFrame to sync with browser render/transitions
+            requestAnimationFrame(handleResize);
+        });
+        resizeObserver.observe(outerRef.current);
+
+        // Initial small delay to ensure rendering is stable
+        const timer = setTimeout(handleResize, 100);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            resizeObserver.disconnect();
+            clearTimeout(timer);
+        };
+    }, [readOnly]);
 
     // Handle messages from iframe
     useEffect(() => {
@@ -54,8 +92,6 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
         setIsDrawing(false);
         setStartPos(null);
         setCurrentPos(null);
-        // Reset view mode to preview when changing content
-        setViewMode('preview');
     }, [content?.id]);
 
     if (!content) {
@@ -67,7 +103,7 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     }
 
     const handleMouseDown = (e: React.MouseEvent) => {
-        if (readOnly || !containerRef.current || viewMode === 'code') return;
+        if (readOnly || !containerRef.current) return;
 
         const rect = containerRef.current.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
@@ -80,7 +116,7 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     };
 
     const handleMouseMove = (e: React.MouseEvent) => {
-        if (readOnly || !isDrawing || !containerRef.current || viewMode === 'code') return;
+        if (readOnly || !isDrawing || !containerRef.current) return;
 
         const rect = containerRef.current.getBoundingClientRect();
         const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
@@ -90,7 +126,7 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     };
 
     const handleMouseUp = () => {
-        if (readOnly || !isDrawing || !startPos || !currentPos || viewMode === 'code') return;
+        if (readOnly || !isDrawing || !startPos || !currentPos) return;
 
         const x = Math.min(startPos.x, currentPos.x);
         const y = Math.min(startPos.y, currentPos.y);
@@ -111,39 +147,22 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     };
 
     return (
-        <div className={`relative w-full h-full flex items-center justify-center ${readOnly ? 'bg-black' : 'p-8'}`}>
-
-            {/* ── View Mode Switcher (only for HTML in editor) ── */}
-            {!readOnly && content.type === 'html' && (
-                <div className="absolute top-12 right-12 z-50 flex bg-white/90 dark:bg-gray-800/90 backdrop-blur shadow-lg rounded-full p-1 border border-gray-200 dark:border-gray-700">
-                    <button
-                        onClick={() => setViewMode('preview')}
-                        className={`p-2 rounded-full flex items-center justify-center transition-all ${viewMode === 'preview' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-                        title="Ver Previsualización"
-                    >
-                        <span className="material-icons text-sm">visibility</span>
-                    </button>
-                    <button
-                        onClick={() => setViewMode('code')}
-                        className={`p-2 rounded-full flex items-center justify-center transition-all ${viewMode === 'code' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
-                        title="Ver Código HTML"
-                    >
-                        <span className="material-icons text-sm">code</span>
-                    </button>
-                </div>
-            )}
+        <div ref={outerRef} className={`absolute inset-0 flex items-center justify-center overflow-hidden ${readOnly ? 'bg-black' : 'p-8'}`}>
 
             <AnimatePresence mode="wait">
                 <motion.div
-                    key={`${content.id}-${viewMode}`}
+                    key={`${content.id}-preview`}
                     initial={{ opacity: 0.8, scale: 0.99 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0.8, scale: 1.01 }}
                     transition={{ duration: 0.25, ease: "easeOut" }}
                     ref={containerRef}
-                    className={`relative w-full shadow-2xl overflow-hidden select-none 
-                        ${readOnly ? '' : viewMode === 'code' ? 'bg-gray-900' : 'cursor-crosshair group bg-black'}`}
-                    style={{ aspectRatio: '16/9', maxHeight: '100%' }}
+                    className={`relative shadow-2xl overflow-hidden select-none flex-shrink-0
+                        ${readOnly ? '' : 'cursor-crosshair group bg-black'}`}
+                    style={{
+                        width: 1920 * scale,
+                        height: 1080 * scale
+                    }}
                     onMouseDown={handleMouseDown}
                     onMouseMove={handleMouseMove}
                     onMouseUp={handleMouseUp}
@@ -155,114 +174,109 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                         }
                     }}
                 >
-                    {/* Content Layer */}
-                    {content.type === 'video' ? (
-                        <video
-                            src={previewUrl || content.src}
-                            className="w-full h-full object-contain pointer-events-none"
-                            controls
-                            autoPlay={readOnly}
-                        />
-                    ) : content.type === 'html' ? (
-                        viewMode === 'preview' ? (
+                    {/* Scaling Wrapper - Projects everything into a virtual 1920x1080 space */}
+                    <div
+                        className="absolute top-0 left-0 origin-top-left overflow-hidden"
+                        style={{
+                            width: 1920,
+                            height: 1080,
+                            transform: `scale(${scale})`,
+                            pointerEvents: 'auto'
+                        }}
+                    >
+                        {/* Content Layer */}
+                        {content.type === 'video' ? (
+                            <video
+                                src={previewUrl || content.src}
+                                className="w-full h-full object-contain pointer-events-none"
+                                controls
+                                autoPlay={readOnly}
+                            />
+                        ) : content.type === 'html' ? (
                             <iframe
                                 srcDoc={content.html}
                                 sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation"
                                 className="w-full h-full border-none"
                                 title={content.title}
                             />
-                        ) : (
-                            <div className="w-full h-full flex flex-col p-4 bg-gray-900 overflow-hidden">
-                                <div className="flex items-center gap-2 mb-2 text-primary font-mono text-xs font-bold uppercase tracking-widest opacity-70">
-                                    <span className="material-icons text-xs">code</span>
-                                    Editor de Código
+                        ) : content.type === 'pdf' ? (
+                            <div className="w-full h-full bg-gray-100 rounded-lg overflow-hidden flex flex-col">
+                                <div className="bg-white/80 backdrop-blur-md p-3 border-b border-gray-200 flex items-center justify-between shrink-0">
+                                    <div className="flex items-center gap-2">
+                                        <span className="material-icons text-red-600">picture_as_pdf</span>
+                                        <span className="text-sm font-bold text-gray-700 truncate">{content.title}</span>
+                                    </div>
+                                    <a
+                                        href={encodeURI(content.src || 'error')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0"
+                                    >
+                                        <span className="material-icons text-xs">open_in_new</span>
+                                        Ampliar
+                                    </a>
                                 </div>
-                                <textarea
-                                    value={content.html || ''}
-                                    onChange={(e) => onUpdateContentHtml && onUpdateContentHtml(content.id, e.target.value)}
-                                    className="w-full flex-grow p-4 font-mono text-sm bg-gray-800 text-green-400 border border-gray-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary/50 resize-none overflow-y-auto"
-                                    placeholder="<div>Escribe tu HTML aquí...</div>"
-                                    spellCheck={false}
+                                <iframe
+                                    src={`${previewUrl || encodeURI(content.src || '')}#toolbar=1`}
+                                    className="w-full h-full border-none"
+                                    title={content.title}
                                 />
                             </div>
-                        )
-                    ) : content.type === 'pdf' ? (
-                        <div className="w-full h-full bg-gray-100 rounded-lg overflow-hidden flex flex-col">
-                            <div className="bg-white/80 backdrop-blur-md p-3 border-b border-gray-200 flex items-center justify-between shrink-0">
-                                <div className="flex items-center gap-2">
-                                    <span className="material-icons text-red-600">picture_as_pdf</span>
-                                    <span className="text-sm font-bold text-gray-700 truncate">{content.title}</span>
-                                </div>
-                                <a
-                                    href={encodeURI(content.src || 'error')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs font-bold text-primary hover:underline flex items-center gap-1 shrink-0"
-                                >
-                                    <span className="material-icons text-xs">open_in_new</span>
-                                    Ampliar
-                                </a>
-                            </div>
-                            <iframe
-                                src={`${previewUrl || encodeURI(content.src || '')}#toolbar=1`}
-                                className="w-full h-full border-none"
-                                title={content.title}
+                        ) : (
+                            <img
+                                src={previewUrl || content.src}
+                                alt={content.title}
+                                className="w-full h-full object-contain pointer-events-none user-select-none"
+                                draggable={false}
                             />
-                        </div>
-                    ) : (
-                        <img
-                            src={previewUrl || content.src}
-                            alt={content.title}
-                            className="w-full h-full object-contain pointer-events-none user-select-none"
-                            draggable={false}
-                        />
-                    )}
+                        )}
 
-                    {/* Hotspots Layer - Only show in preview mode and not in code view */}
-                    {viewMode === 'preview' && content.hotspots.map((hotspot) => (
-                        <div
-                            key={hotspot.id}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (readOnly && onHotspotClick) {
-                                    onHotspotClick(hotspot);
-                                } else {
-                                    onSelectHotspot(hotspot.id);
-                                }
-                            }}
-                            className={`absolute transition-all cursor-pointer
-                    ${readOnly
-                                    ? 'hover:bg-white/10 z-20' // Read-only style
-                                    : `${selectedHotspotId === hotspot.id ? 'border-2 border-primary bg-primary/20 z-20 opacity-100' : 'border-2 border-transparent hover:border-white/50 hover:bg-white/10 z-10'}`
-                                }`}
-                            style={{
-                                left: `${hotspot.x * 100}%`,
-                                top: `${hotspot.y * 100}%`,
-                                width: `${hotspot.width * 100}%`,
-                                height: `${hotspot.height * 100}%`,
-                            }}
-                            title={readOnly ? hotspot.title : undefined}
-                        >
-                            {!readOnly && selectedHotspotId === hotspot.id && (
-                                <div className="absolute -top-6 left-0 bg-primary text-white text-xs px-2 py-1 rounded">
-                                    {hotspot.title || 'Hotspot'}
-                                </div>
-                            )}
-                        </div>
-                    ))}
+                        {/* Hotspots Layer */}
+                        {content.hotspots.map((hotspot) => (
+                            <div
+                                key={hotspot.id}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (readOnly && onHotspotClick) {
+                                        onHotspotClick(hotspot);
+                                    } else {
+                                        onSelectHotspot(hotspot.id);
+                                    }
+                                }}
+                                className={`absolute transition-all cursor-pointer
+                        ${readOnly
+                                        ? 'hover:bg-white/10 z-20' // Read-only style
+                                        : `${selectedHotspotId === hotspot.id ? 'border-2 border-primary bg-primary/20 z-20 opacity-100' : 'border-2 border-transparent hover:border-white/50 hover:bg-white/10 z-10'}`
+                                    }`}
+                                style={{
+                                    left: `${hotspot.x * 100}%`,
+                                    top: `${hotspot.y * 100}%`,
+                                    width: `${hotspot.width * 100}%`,
+                                    height: `${hotspot.height * 100}%`,
+                                }}
+                                title={readOnly ? hotspot.title : undefined}
+                            >
+                                {!readOnly && selectedHotspotId === hotspot.id && (
+                                    <div className="absolute -top-6 left-0 bg-primary text-white text-xs px-2 py-1 rounded">
+                                        {hotspot.title || 'Hotspot'}
+                                    </div>
+                                )}
+                            </div>
+                        ))}
 
-                    {/* Drawing Preview Layer */}
-                    {!readOnly && isDrawing && startPos && currentPos && viewMode === 'preview' && (
-                        <div
-                            className="absolute border-2 border-dashed border-yellow-400 bg-yellow-400/20 z-30 pointer-events-none"
-                            style={{
-                                left: `${Math.min(startPos.x, currentPos.x) * 100}%`,
-                                top: `${Math.min(startPos.y, currentPos.y) * 100}%`,
-                                width: `${Math.abs(currentPos.x - startPos.x) * 100}%`,
-                                height: `${Math.abs(currentPos.y - startPos.y) * 100}%`,
-                            }}
-                        />
-                    )}
+                        {/* Drawing Preview Layer */}
+                        {!readOnly && isDrawing && startPos && currentPos && (
+                            <div
+                                className="absolute border-2 border-dashed border-yellow-400 bg-yellow-400/20 z-30 pointer-events-none"
+                                style={{
+                                    left: `${Math.min(startPos.x, currentPos.x) * 100}%`,
+                                    top: `${Math.min(startPos.y, currentPos.y) * 100}%`,
+                                    width: `${Math.abs(currentPos.x - startPos.x) * 100}%`,
+                                    height: `${Math.abs(currentPos.y - startPos.y) * 100}%`,
+                                }}
+                            />
+                        )}
+                    </div>
                 </motion.div>
             </AnimatePresence>
             {/* Back button – bottom left, only when there is history */}
