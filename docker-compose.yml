@@ -47,7 +47,13 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./public:/usr/share/nginx/html/live_public
+      - ./public/media:/usr/share/nginx/html/media
+      - ./public/img:/usr/share/nginx/html/img
+      - ./public/css_presentaciones:/usr/share/nginx/html/css_presentaciones
+      - ./public/project-config.json:/usr/share/nginx/html/project-config.json
+      - ./public/agenda.html:/usr/share/nginx/html/agenda.html
+      - ./public/prueba.html:/usr/share/nginx/html/prueba.html
+      - ./public/presentacion_inicial.html:/usr/share/nginx/html/presentacion_inicial.html
 
     networks:
       - app_network
