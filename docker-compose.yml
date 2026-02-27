@@ -31,7 +31,7 @@ services:
       DB_NAME: ${MYSQL_DATABASE}
       PORT: 3001
     volumes:
-      - ./public/media:/app/public/media
+      - ./public:/app/public
       - ./data:/app/data
 
     networks:
@@ -47,8 +47,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./public/media:/usr/share/nginx/html/media
-      - ./public/css_presentaciones:/usr/share/nginx/html/css_presentaciones
+      - ./public:/usr/share/nginx/html/external_public
 
     networks:
       - app_network
