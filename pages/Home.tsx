@@ -11,10 +11,9 @@ const Home: React.FC = () => {
 
       {/* ── Persisten Background Image Layer ── */}
       <div className="absolute inset-0 z-0 bg-white">
-        <img
-          src="/img/background-1.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-50 mix-blend-multiply"
+        <div
+          className="w-full h-full bg-cover bg-center opacity-50 mix-blend-multiply"
+          style={{ backgroundImage: 'url("/img/background-1.jpg")' }}
         />
 
         {/* Institutional Glows */}
@@ -24,11 +23,10 @@ const Home: React.FC = () => {
 
       {/* ── Lateral Image layer (lateral.webp fades on the right) ── */}
       <div className="absolute inset-0 z-0">
-        <img
-          src="/img/lateral.webp"
-          alt=""
+        <div
+          className="w-full h-full bg-cover bg-left animate-pulse-subtle origin-left opacity-90"
+          style={{ backgroundImage: 'url("/img/lateral.webp")' }}
           aria-hidden="true"
-          className="w-full h-full object-cover object-left animate-pulse-subtle origin-left opacity-90"
         />
         {/* Right-side fade (Enhanced transparency to show background-1) */}
         <div className="absolute inset-0"
