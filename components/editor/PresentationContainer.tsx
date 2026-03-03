@@ -13,6 +13,7 @@ interface PresentationContainerProps {
     onNavigate?: (targetId: string) => void;
     onNavigateBack?: () => void;
     hasHistory?: boolean;
+    projectRevision?: number;
 }
 
 const PresentationContainer: React.FC<PresentationContainerProps> = ({
@@ -25,7 +26,8 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     onHotspotClick,
     onNavigate,
     onNavigateBack,
-    hasHistory
+    hasHistory,
+    projectRevision
 }) => {
     const outerRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +45,10 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
         if (content?.type === 'html') {
             if (content.html && content.html.startsWith('/media/html/')) {
                 setIsLoadingHtml(true);
-                fetch(content.html)
+                // Use a cache-busting version parameter based on project revision
+                // This ensures we load fresh after a save, but reuse cache during navigation
+                const version = projectRevision !== undefined ? `?v=${projectRevision}` : '';
+                fetch(`${content.html}${version}`)
                     .then(res => res.text())
                     .then(htmlString => {
                         setHtmlData(htmlString);

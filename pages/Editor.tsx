@@ -64,7 +64,8 @@ const Editor: React.FC = () => {
 
         if (content?.type === 'html' && content.html && content.html.startsWith('/media/html/')) {
             const path = content.html;
-            fetch(path)
+            const buster = projectConfig.revision ? `?v=${projectConfig.revision}` : `?t=${Date.now()}`;
+            fetch(`${path}${buster}`)
                 .then(res => res.text())
                 .then(htmlString => {
                     // Update projectConfig with the actual HTML string
@@ -493,6 +494,10 @@ const Editor: React.FC = () => {
         }
     };
 
+    const handleExportSql = () => {
+        window.open('/api/export-sql', '_blank');
+    };
+
     if (!projectConfig) {
         return <div className="flex h-screen items-center justify-center">Cargando proyecto...</div>;
     }
@@ -568,6 +573,15 @@ const Editor: React.FC = () => {
                 </h1>
             </div>
             <div className="flex items-center gap-2">
+                <button
+                    onClick={handleExportSql}
+                    className="flex items-center gap-2 px-4 py-2 rounded shadow transition-all bg-gray-700 hover:bg-gray-800 text-white"
+                    title="Descarga un backup completo de la base de datos en formato SQL"
+                >
+                    <span className="material-icons">storage</span>
+                    <span>Backup SQL</span>
+                </button>
+
                 <button
                     onClick={handleRunBatchScale}
                     disabled={isScaling}
@@ -650,6 +664,7 @@ const Editor: React.FC = () => {
                             onNavigate={handleSelectContent}
                             onNavigateBack={handleNavigateBack}
                             hasHistory={history.length > 0}
+                            projectRevision={projectConfig.revision}
                         />
                     </div>
 

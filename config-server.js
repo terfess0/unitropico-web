@@ -448,6 +448,52 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
+    // NEW: GET /api/export-sql - Generate a SQL dump for the user to download
+    if (req.method === 'GET' && req.url === '/api/export-sql') {
+        try {
+            let sqlDump = `-- UNITROPICO SQL BACKUP\n-- Generated on: ${new Date().toISOString()}\n\n`;
+            sqlDump += "SET NAMES utf8mb4;\nSET FOREIGN_KEY_CHECKS = 0;\n\n";
+
+            const tables = ['projects', 'sequences', 'contents', 'sequence_contents', 'hotspots'];
+            
+            for (const table of tables) {
+                const [rows] = await pool.query(`SELECT * FROM ${table}`);
+                if (rows.length === 0) continue;
+
+                sqlDump += `-- Dumping data for table ${table}\n`;
+                sqlDump += `DELETE FROM ${table};\n`; // Clear existing to avoid PK conflicts on import
+                
+                const columns = Object.keys(rows[0]).join(', ');
+                for (const row of rows) {
+                    const values = Object.values(row).map(val => {
+                        if (val === null) return 'NULL';
+                        if (typeof val === 'number') return val;
+                        // Escape single quotes for SQL string
+                        const escaped = String(val).replace(/'/g, "''");
+                        return `'${escaped}'`;
+                    }).join(', ');
+                    
+                    sqlDump += `INSERT INTO ${table} (${columns}) VALUES (${values});\n`;
+                }
+                sqlDump += "\n";
+            }
+            
+            sqlDump += "SET FOREIGN_KEY_CHECKS = 1;\n";
+
+            res.writeHead(200, {
+                'Content-Type': 'application/sql',
+                'Content-Disposition': 'attachment; filename="unitropico_backup.sql"',
+                'Cache-Control': 'no-store, no-cache, must-revalidate'
+            });
+            res.end(sqlDump);
+        } catch (error) {
+            console.error('Error generating SQL dump:', error);
+            res.writeHead(500);
+            res.end(JSON.stringify({ error: 'Failed to generate backup' }));
+        }
+        return;
+    }
+
     res.writeHead(404);
     res.end();
 });

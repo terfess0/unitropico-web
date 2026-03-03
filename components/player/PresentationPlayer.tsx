@@ -115,8 +115,9 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
             const content = projectConfig.contents[contentId];
             if (content && content.type === 'html' && content.html && content.html.startsWith('/media/html/')) {
                 // Fetch ALL in background to populate browser cache
-                // The browser will handle concurrency and caching automatically
-                fetch(content.html).catch(() => { });
+                // Use same version parameter to ensure cache hit on actual load
+                const version = projectConfig.revision !== undefined ? `?v=${projectConfig.revision}` : '';
+                fetch(`${content.html}${version}`).catch(() => { });
             }
         });
     }, [activeSequence, projectConfig]);
@@ -213,6 +214,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                     onNavigate={handleSelectContent}
                     onNavigateBack={handleNavigateBack}
                     hasHistory={history.length > 0}
+                    projectRevision={projectConfig.revision}
                 />
             </main>
         </div>
