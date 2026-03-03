@@ -42,22 +42,30 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
 
     // Fetch HTML content if it's just a path
     useEffect(() => {
+        let isCurrent = true;
+        const controller = new AbortController();
+
         if (content?.type === 'html') {
             if (content.html && content.html.startsWith('/media/html/')) {
                 setIsLoadingHtml(true);
                 // Use a cache-busting version parameter based on project revision
-                // This ensures we load fresh after a save, but reuse cache during navigation
                 const version = projectRevision !== undefined ? `?v=${projectRevision}` : '';
-                fetch(`${content.html}${version}`)
+
+                fetch(`${content.html}${version}`, { signal: controller.signal })
                     .then(res => res.text())
                     .then(htmlString => {
-                        setHtmlData(htmlString);
-                        setIsLoadingHtml(false);
+                        if (isCurrent) {
+                            setHtmlData(htmlString);
+                            setIsLoadingHtml(false);
+                        }
                     })
                     .catch(e => {
+                        if (e.name === 'AbortError') return; // Silent ignore for intentional cancellations
                         console.error('Error fetching HTML:', e);
-                        setHtmlData('<h2>Error loading content</h2>');
-                        setIsLoadingHtml(false);
+                        if (isCurrent) {
+                            setHtmlData('<h2>Error loading content</h2>');
+                            setIsLoadingHtml(false);
+                        }
                     });
             } else {
                 setHtmlData(content.html || '');
@@ -65,7 +73,12 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
         } else {
             setHtmlData('');
         }
-    }, [content]);
+
+        return () => {
+            isCurrent = false;
+            controller.abort();
+        };
+    }, [content, projectRevision]);
 
     // Scaling logic for 16:9 canvas
     useEffect(() => {
