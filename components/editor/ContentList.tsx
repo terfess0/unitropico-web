@@ -24,6 +24,15 @@ const ContentList: React.FC<ContentListProps> = ({
 }) => {
   const [draggedIndex, setDraggedIndex] = React.useState<number | null>(null);
 
+  React.useEffect(() => {
+    if (readOnly && selectedContentId) {
+      const el = document.getElementById(`content-item-${selectedContentId}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [selectedContentId, readOnly]);
+
   // ... (keep helper functions unchanged) ...
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0] && onUploadContent) {
@@ -120,6 +129,7 @@ const ContentList: React.FC<ContentListProps> = ({
                       </button>
                     )}
                     <button
+                      id={`content-item-${contentId}`}
                       onClick={() => onSelectContent(contentId)}
                       className={`flex-1 text-left px-4 py-3 rounded-lg text-sm transition-all duration-300 flex items-center gap-3 min-w-0 shadow-sm
                           ${!readOnly ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProjectConfig, Hotspot } from '../../types';
 import ContentList from '../editor/ContentList';
-import PresentationContainer from '../editor/PresentationContainer';
+import PresentationContainer, { prefetchHtmlToCache } from '../editor/PresentationContainer';
 import { Link } from 'react-router-dom';
 
 interface PresentationPlayerProps {
@@ -114,10 +114,8 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
         activeSequence.contents.forEach(contentId => {
             const content = projectConfig.contents[contentId];
             if (content && content.type === 'html' && content.html && content.html.startsWith('/media/html/')) {
-                // Fetch ALL in background to populate browser cache
-                // Use same version parameter to ensure cache hit on actual load
-                const version = projectConfig.revision !== undefined ? `?v=${projectConfig.revision}` : '';
-                fetch(`${content.html}${version}`).catch(() => { });
+                // Fetch ALL in background to populate browser cache AND memory cache
+                prefetchHtmlToCache(content.html, projectConfig.revision);
             }
         });
     }, [activeSequence, projectConfig]);

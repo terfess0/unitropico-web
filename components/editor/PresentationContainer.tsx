@@ -2,6 +2,25 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Content, Hotspot } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Global memory cache for HTML contents in read-only mode (Player)
+// This guarantees instant, synchronous rendering of HTML slides without network jumps.
+export const readOnlyHtmlCache: Record<string, string> = {};
+
+export const prefetchHtmlToCache = async (htmlPath: string, revision?: number) => {
+    const version = revision !== undefined ? `?v=${revision}` : '';
+    const cacheKey = `${htmlPath}_${revision || 'latest'}`;
+
+    if (readOnlyHtmlCache[cacheKey]) return; // Already cached
+
+    try {
+        const res = await fetch(`${htmlPath}${version}`);
+        const text = await res.text();
+        readOnlyHtmlCache[cacheKey] = text;
+    } catch (e) {
+        // Silent catch for prefetching
+    }
+};
+
 interface PresentationContainerProps {
     content: Content | null;
     previewUrl?: string; // In-session blob URL for newly uploaded files
@@ -47,14 +66,26 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
 
         if (content?.type === 'html') {
             if (content.html && content.html.startsWith('/media/html/')) {
-                setIsLoadingHtml(true);
-                // Use a cache-busting version parameter based on project revision
                 const version = projectRevision !== undefined ? `?v=${projectRevision}` : '';
+                const cacheKey = `${content.html}_${projectRevision || 'latest'}`;
+
+                // VERY FAST PATH FOR PLAYER: Instant synchronous load from memory
+                if (readOnly && readOnlyHtmlCache[cacheKey]) {
+                    setHtmlData(readOnlyHtmlCache[cacheKey]);
+                    setIsLoadingHtml(false);
+                    return; // Skip fetch and loading states entirely!
+                }
+
+                setIsLoadingHtml(true);
 
                 fetch(`${content.html}${version}`, { signal: controller.signal })
                     .then(res => res.text())
                     .then(htmlString => {
                         if (isCurrent) {
+                            if (readOnly) {
+                                // Save to memory cache for subsequent instant loads
+                                readOnlyHtmlCache[cacheKey] = htmlString;
+                            }
                             setHtmlData(htmlString);
                             setIsLoadingHtml(false);
                         }
@@ -69,16 +100,18 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                     });
             } else {
                 setHtmlData(content.html || '');
+                setIsLoadingHtml(false);
             }
         } else {
             setHtmlData('');
+            setIsLoadingHtml(false);
         }
 
         return () => {
             isCurrent = false;
             controller.abort();
         };
-    }, [content, projectRevision]);
+    }, [content, projectRevision, readOnly]);
 
     // Scaling logic for 16:9 canvas
     useEffect(() => {
