@@ -33,6 +33,10 @@ interface PresentationContainerProps {
     onNavigateBack?: () => void;
     hasHistory?: boolean;
     projectRevision?: number;
+    onNext?: () => void;
+    onPrev?: () => void;
+    hasNext?: boolean;
+    hasPrev?: boolean;
 }
 
 const PresentationContainer: React.FC<PresentationContainerProps> = ({
@@ -46,7 +50,11 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
     onNavigate,
     onNavigateBack,
     hasHistory,
-    projectRevision
+    projectRevision,
+    onNext,
+    onPrev,
+    hasNext,
+    hasPrev
 }) => {
     const outerRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -365,15 +373,41 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                     </div>
                 </motion.div>
             </AnimatePresence>
-            {/* Back button – bottom left, only when there is history */}
-            {hasHistory && (
-                <button
-                    onClick={onNavigateBack}
-                    className="absolute bottom-4 left-4 bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded shadow-md transition-colors text-sm"
-                    title="Volver al contenido anterior"
-                >
-                    <span className="material-icons align-middle" style={{ fontSize: '1.2rem' }}>arrow_back</span>
-                </button>
+            {/* Controles abajo a la izquierda (Back, Anterior) */}
+            <div className="absolute bottom-4 left-4 flex gap-2 z-50">
+                {hasHistory && onNavigateBack && (
+                    <button
+                        onClick={onNavigateBack}
+                        className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm"
+                        title="Volver al contenido anterior"
+                    >
+                        <span className="material-icons align-middle" style={{ fontSize: '1.2rem' }}>arrow_back</span>
+                    </button>
+                )}
+                {onPrev && (
+                    <button
+                        onClick={onPrev}
+                        disabled={!hasPrev}
+                        className={`bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm ${!hasPrev ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        title="Anterior"
+                    >
+                        <span className="font-bold flex items-center justify-center leading-none mt-[2px]" style={{ fontSize: '1.1rem' }}>&lt;</span>
+                    </button>
+                )}
+            </div>
+
+            {/* Controles abajo a la derecha (Siguiente) */}
+            {onNext && (
+                <div className="absolute bottom-4 right-4 z-50">
+                    <button
+                        onClick={onNext}
+                        disabled={!hasNext}
+                        className={`bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm ${!hasNext ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        title="Siguiente"
+                    >
+                        <span className="font-bold flex items-center justify-center leading-none mt-[2px]" style={{ fontSize: '1.1rem' }}>&gt;</span>
+                    </button>
+                </div>
             )}
         </div>
     );

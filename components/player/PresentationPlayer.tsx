@@ -124,6 +124,10 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
         return <div className="flex justify-center items-center h-screen bg-gray-900 text-white">Cargando presentación...</div>;
     }
 
+    const currentIndex = selectedContentId ? activeSequence.contents.indexOf(selectedContentId) : -1;
+    const hasPrev = currentIndex > 0;
+    const hasNext = currentIndex !== -1 && currentIndex < activeSequence.contents.length - 1;
+
     return (
         <div className="flex h-screen w-full bg-gray-900 text-white overflow-hidden relative">
             {/* Expand Button (Floating) - Visible only when sidebar is hidden */}
@@ -213,6 +217,10 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                     onNavigateBack={handleNavigateBack}
                     hasHistory={history.length > 0}
                     projectRevision={projectConfig.revision}
+                    onNext={handleNext}
+                    onPrev={handlePrev}
+                    hasNext={hasNext}
+                    hasPrev={hasPrev}
                 />
             </main>
         </div>
