@@ -1,0 +1,91 @@
+/* Soft Minimalism Reset & Base */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #F8FAFC;
+    color: #1E293B;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Scrollbar Hide */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+    animation: slideInRight 0.8s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+
+/* Gradient Text Utility */
+.text-gradient {
+    background: linear-gradient(135deg, #002855 0%, #8CC63F 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Hero Scroll Effect Wrapper */
+.hero-scroll-wrapper {
+    perspective: 1000px;
+    overflow-y: auto;
+    height: 100%;
+    scrollbar-width: none; /* Firefox */
+}
+
+/* Slide Transitions */
+.slide-enter {
+    opacity: 0;
+    transform: scale(0.95);
+}
+.slide-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.slide-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+.slide-exit-active {
+    opacity: 0;
+    transform: scale(1.05);
+    transition: opacity 0.4s ease-in, transform 0.4s ease-in;
+}
