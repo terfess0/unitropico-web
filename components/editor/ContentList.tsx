@@ -28,7 +28,7 @@ const ContentList: React.FC<ContentListProps> = ({
     if (readOnly && selectedContentId) {
       const el = document.getElementById(`content-item-${selectedContentId}`);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
   }, [selectedContentId, readOnly]);
@@ -130,11 +130,12 @@ const ContentList: React.FC<ContentListProps> = ({
                     )}
                     <button
                       id={`content-item-${contentId}`}
-                      onClick={() => onSelectContent(contentId)}
+                      tabIndex={readOnly ? -1 : 0}
+                      onClick={(e) => { e.currentTarget.blur(); onSelectContent(contentId); }}
                       className={`flex-1 text-left px-4 py-3 rounded-lg text-sm transition-all duration-300 flex items-center gap-3 min-w-0 shadow-sm
                           ${!readOnly ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}
                           ${isSelected
-                          ? (readOnly ? 'bg-accent text-white font-black scale-[1.02] shadow-accent/20' : 'bg-primary/20 text-primary border border-primary/30 font-bold')
+                          ? (readOnly ? 'bg-accent text-white font-black scale-[1.02] shadow-accent/20 ring-2 ring-white/20' : 'bg-primary/20 text-primary border border-primary/30 font-bold')
                           : (readOnly ? 'text-white/90 hover:bg-primary-mid/20 hover:text-white border border-transparent' : 'hover:bg-gray-100 dark:hover:bg-gray-700 border border-transparent')
                         } `}
                     >

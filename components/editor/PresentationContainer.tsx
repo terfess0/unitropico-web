@@ -374,11 +374,12 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                 </motion.div>
             </AnimatePresence>
             {/* Controles abajo a la izquierda (Back, Anterior) */}
-            <div className="absolute bottom-4 left-4 flex gap-2 z-50">
+            <div className="absolute bottom-4 left-2 flex gap-2 z-50">
                 {hasHistory && onNavigateBack && (
                     <button
-                        onClick={onNavigateBack}
-                        className="bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm"
+                        onClick={(e) => { e.currentTarget.blur(); onNavigateBack(); }}
+                        tabIndex={-1}
+                        className="bg-gray-800/80 hover:bg-gray-700 backdrop-blur-md text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm border border-white/10"
                         title="Volver al contenido anterior"
                     >
                         <span className="material-icons align-middle" style={{ fontSize: '1.2rem' }}>arrow_back</span>
@@ -386,9 +387,10 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
                 )}
                 {onPrev && (
                     <button
-                        onClick={onPrev}
+                        onClick={(e) => { e.currentTarget.blur(); onPrev(); }}
+                        tabIndex={-1}
                         disabled={!hasPrev}
-                        className={`bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm ${!hasPrev ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`bg-gray-800/80 hover:bg-gray-700 backdrop-blur-md text-white px-1.5 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm border border-white/10 min-w-[28px] ${!hasPrev ? 'opacity-30 cursor-not-allowed' : ''}`}
                         title="Anterior"
                     >
                         <span className="font-bold flex items-center justify-center leading-none mt-[2px]" style={{ fontSize: '1.1rem' }}>&lt;</span>
@@ -398,11 +400,12 @@ const PresentationContainer: React.FC<PresentationContainerProps> = ({
 
             {/* Controles abajo a la derecha (Siguiente) */}
             {onNext && (
-                <div className="absolute bottom-4 right-4 z-50">
+                <div className="absolute bottom-4 right-2 z-50">
                     <button
-                        onClick={onNext}
+                        onClick={(e) => { e.currentTarget.blur(); onNext(); }}
+                        tabIndex={-1}
                         disabled={!hasNext}
-                        className={`bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm ${!hasNext ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`bg-gray-800/80 hover:bg-gray-700 backdrop-blur-md text-white px-1.5 py-1 flex items-center justify-center rounded shadow-md transition-colors text-sm border border-white/10 min-w-[28px] ${!hasNext ? 'opacity-30 cursor-not-allowed' : ''}`}
                         title="Siguiente"
                     >
                         <span className="font-bold flex items-center justify-center leading-none mt-[2px]" style={{ fontSize: '1.1rem' }}>&gt;</span>

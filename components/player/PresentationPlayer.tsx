@@ -96,8 +96,10 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
             if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') return;
 
             if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
                 handleNext();
             } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
                 handlePrev();
             }
         };
@@ -134,6 +136,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
             {!isSidebarVisible && (
                 <button
                     onClick={() => setIsSidebarVisible(true)}
+                    tabIndex={-1}
                     className="fixed top-32 left-4 z-50 w-12 h-12 flex items-center justify-center bg-[#347b72] rounded-full shadow-2xl transition-all hover:scale-110 active:scale-95 group border border-[#e1d9bf]/20"
                     title="Mostrar menú de navegación"
                 >
@@ -153,7 +156,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
             >
                 <div className="p-4 border-b border-gray-800 flex items-center justify-between gap-3 min-w-[20rem]">
                     <div className="flex items-center gap-3">
-                        <Link to={backLink} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
+                        <Link to={backLink} tabIndex={-1} className="text-gray-400 hover:text-white transition-colors flex-shrink-0">
                             <span className="material-icons">arrow_back</span>
                         </Link>
                         <h2 className="font-bold text-lg uppercase tracking-tight leading-tight" style={{ color: '#B5A160' }} title={activeSequence.title}>
@@ -162,6 +165,7 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                     </div>
                     <button
                         onClick={() => setIsSidebarVisible(false)}
+                        tabIndex={-1}
                         className="p-1 hover:bg-white/10 rounded-full transition-colors flex items-center justify-center text-gray-400 hover:text-white"
                         title="Ocultar menú"
                     >
@@ -185,7 +189,8 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                 {/* Navigation Controls */}
                 <div className="p-4 border-t border-gray-800 flex justify-between gap-4 min-w-[20rem]">
                     <button
-                        onClick={handlePrev}
+                        onClick={(e) => { e.currentTarget.blur(); handlePrev(); }}
+                        tabIndex={-1}
                         disabled={!selectedContentId || activeSequence.contents.indexOf(selectedContentId) === 0}
                         className="flex-1 flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed py-3 rounded-lg transition-colors text-sm font-medium"
                     >
@@ -194,7 +199,8 @@ const PresentationPlayer: React.FC<PresentationPlayerProps> = ({ sequenceId, bac
                     </button>
 
                     <button
-                        onClick={handleNext}
+                        onClick={(e) => { e.currentTarget.blur(); handleNext(); }}
+                        tabIndex={-1}
                         disabled={!selectedContentId || activeSequence.contents.indexOf(selectedContentId) === activeSequence.contents.length - 1}
                         className="flex-1 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark disabled:opacity-30 disabled:cursor-not-allowed py-3 rounded-lg transition-colors text-white text-sm font-medium shadow-lg hover:shadow-primary/20"
                     >
